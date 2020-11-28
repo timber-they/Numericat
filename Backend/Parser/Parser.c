@@ -5,12 +5,12 @@
 #include <string.h>
 #include <math.h>
 
-static double currentNumber = -1;
+static double currentNumber;
 // 0    -> No current number
 // 1    -> Current number, no decimal point yet
 // n<0  -> Current number, -nth digit after decimal point
-static int currentNumberState = 0;
-static int j = 0;
+static int currentNumberState;
+static int j;
 static Function func;
 
 static int handleNumber(int val);
@@ -23,15 +23,25 @@ static int handleVariable(char val);
 
 static int validateEnd();
 
+static void initialize();
+
 Function Parse(char *raw)
 {
+    if (raw == NULL)
+        return NULL;
+
+    initialize();
+
     size_t length = strlen(raw);
     func = malloc((length + 1) * sizeof(*func));
 
     for (int i = 0; i < length; i++)
     {
         if (raw[i] == ' ')
+        {
+            finishNumber();
             continue;
+        }
         if (raw[i] >= '0' && raw[i] <= '9')
         {
             int val = raw[i] - '0';
@@ -91,6 +101,16 @@ static int handleNumber(int val)
     switch (currentNumberState)
     {
         case 0:
+            if (j > 0 && func[j-1].atomType == value)
+            {
+                fprintf(stderr, "A number can't follow a number\n");
+                return 2;
+            }
+            if (j > 0 && func[j-1].atomType == variable)
+            {
+                fprintf(stderr, "A number can't follow a variable\n");
+                return 3;
+            }
             currentNumberState = 1;
             currentNumber = val;
             break;
@@ -153,7 +173,7 @@ static void finishNumber()
 
 static int handleVariable(__attribute__((unused)) char val)
 {
-    if (currentNumberState != 0)
+    if (currentNumberState != 0 || (j > 0 && func[j-1].atomType == value))
     {
         fprintf(stderr, "A variable can't follow a number\n");
         return 1;
@@ -166,4 +186,11 @@ static int handleVariable(__attribute__((unused)) char val)
 
     func[j++] = (Element) {.atomType=variable, .atom.value=-1};
     return 0;
+}
+
+static void initialize()
+{
+    currentNumber = -1;
+    currentNumberState = 0;
+    j = 0;
 }
