@@ -4,22 +4,26 @@
 typedef int bool;
 
 typedef enum Operator{
-    plus,   // +
-    minus,  // -
-    times,  // *
-    divide  // /
+    plus,       // +
+    minus,      // -
+    times,      // *
+    divide,     // /
 } Operator;
+
+typedef enum AtomType{
+    value,
+    operator,
+    variable,
+    end
+} AtomType;
 
 typedef union Atom{
     double value;
-    Operator operator;
+    Operator op;
 } Atom;
 
 typedef struct Element {
-    // Indicates whether the Atom is a value or an operator
-    bool isValue;
-    // Indicates that the function is at its end
-    bool end;
+    AtomType atomType;
     Atom atom;
 } Element;
 

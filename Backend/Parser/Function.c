@@ -10,27 +10,37 @@ double Evaluate(Function func, double in)
 
 void Print(Function func)
 {
-    while (!func->end)
+    while (1)
     {
-        if (func->isValue)
-            printf("%f", func->atom.value);
-        else
-            switch (func->atom.operator)
-            {
-                case plus:
-                    printf("+");
-                    break;
-                case minus:
-                    printf("-");
-                    break;
-                case times:
-                    printf("*");
-                    break;
-                case divide:
-                    printf("/");
-                    break;
-            }
+        switch (func->atomType)
+        {
+            case value:
+                printf("%f", func->atom.value);
+                break;
+            case operator:
+                switch (func->atom.op)
+                {
+                    case plus:
+                        printf("+");
+                        break;
+                    case minus:
+                        printf("-");
+                        break;
+                    case times:
+                        printf("*");
+                        break;
+                    case divide:
+                        printf("/");
+                        break;
+                }
+                break;
+            case variable:
+                printf("x");
+                break;
+            case end:
+                printf("\n");
+                return;
+        }
         func++;
     }
-    printf("\n");
 }
