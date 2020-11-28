@@ -80,6 +80,9 @@ int handleNumber(int val)
 
 int handleOperator(char val)
 {
+    if (j > 0 && !func[j-1].isValue)
+        // Two operators in a row
+        return 2;
     switch (val)
     {
         case '+':
