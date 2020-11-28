@@ -30,6 +30,7 @@ typedef struct Element {
 typedef Element *Function;
 
 double Evaluate(Function func, double in);
+// Note that it's not really possible to test printing to the console
 void Print(Function func);
 
 #endif //BACKEND_FUNCTION_H
