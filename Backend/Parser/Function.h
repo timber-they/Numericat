@@ -18,9 +18,14 @@ typedef union Atom{
 typedef struct Element {
     // Indicates whether the Atom is a value or an operator
     bool isValue;
+    // Indicates that the function is at its end
+    bool end;
     Atom atom;
 } Element;
 
 typedef Element *Function;
+
+double Evaluate(Function func, double in);
+void Print(Function func);
 
 #endif //BACKEND_FUNCTION_H

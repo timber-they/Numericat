@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -O3 -pedantic
+CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -O3 -pedantic -lm
 FILE_BASE=Program
 DEPENDENCIES=Parser/Parser.c Parser/Function.c
 
