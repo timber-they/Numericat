@@ -61,6 +61,16 @@ Function Parse(char *raw)
     }
 
     finishNumber();
+    if (j == 0)
+    {
+        fprintf(stderr, "Empty function not allowed\n");
+        return NULL;
+    }
+    if (func[j-1].atomType == operator)
+    {
+        fprintf(stderr, "Function may not end with an operator\n");
+        return NULL;
+    }
     func[j] = (Element) {.atomType=end, .atom.value=0};
 
     return func;
