@@ -13,13 +13,15 @@ static int currentNumberState = 0;
 static int j = 0;
 static Function func;
 
-int handleNumber(int val);
+static int handleNumber(int val);
 
-int handleOperator(char val);
+static int handleOperator(char val);
 
-void finishNumber();
+static void finishNumber();
 
-int handleVariable(char val);
+static int handleVariable(char val);
+
+static int validateEnd();
 
 Function Parse(char *raw)
 {
@@ -61,22 +63,30 @@ Function Parse(char *raw)
     }
 
     finishNumber();
-    if (j == 0)
-    {
-        fprintf(stderr, "Empty function not allowed\n");
+    if (validateEnd())
         return NULL;
-    }
-    if (func[j-1].atomType == operator)
-    {
-        fprintf(stderr, "Function may not end with an operator\n");
-        return NULL;
-    }
     func[j] = (Element) {.atomType=end, .atom.value=0};
 
     return func;
 }
 
-int handleNumber(int val)
+static int validateEnd()
+{
+    if (j == 0)
+    {
+        fprintf(stderr, "Empty function not allowed\n");
+        return 1;
+    }
+    if (func[j-1].atomType == operator)
+    {
+        fprintf(stderr, "Function may not end with an operator\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+static int handleNumber(int val)
 {
     switch (currentNumberState)
     {
@@ -101,7 +111,7 @@ int handleNumber(int val)
     return 0;
 }
 
-int handleOperator(char val)
+static int handleOperator(char val)
 {
     if (j > 0 && func[j-1].atomType == operator)
     {
@@ -130,7 +140,7 @@ int handleOperator(char val)
     return 0;
 }
 
-void finishNumber()
+static void finishNumber()
 {
     if (currentNumberState == 0)
         // No number to finish
@@ -141,7 +151,7 @@ void finishNumber()
     currentNumber = -1;
 }
 
-int handleVariable(__attribute__((unused)) char val)
+static int handleVariable(__attribute__((unused)) char val)
 {
     if (currentNumberState != 0)
     {
