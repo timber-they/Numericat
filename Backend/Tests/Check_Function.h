@@ -21,12 +21,6 @@ START_TEST(test_Evaluate)
     double inNegative = -42;
     double in1 = 1;
     double in0 = 0;
-#ifdef INFINTY
-    double inInfinity = INFINITY;
-#endif
-#ifdef NAN
-    double inNan = NAN;
-#endif
 
     double expectedNormal1 = 7847.142857;
     double expectedNormal2 = 6.912151067;
@@ -53,11 +47,13 @@ START_TEST(test_Evaluate)
     double res12 = Evaluate(parsed2, in1);
     double res01 = Evaluate(parsed1, in0);
 #ifdef INFINITY
+    double inInfinity = INFINITY;
     double res02 = Evaluate(parsed2, in0);
     double resInfinity1 = Evaluate(parsed1, inInfinity);
     double resInfinity2 = Evaluate(parsed2, inInfinity);
 #endif
 #ifdef NAN
+    double inNan = NAN;
     double resNan1 = Evaluate(parsed1, inNan);
     double resNan2 = Evaluate(parsed2, inNan);
 #endif
