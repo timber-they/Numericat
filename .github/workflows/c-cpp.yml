@@ -1,0 +1,39 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ Develop,actions#11 ]
+  pull_request:
+    branches: [ Develop,main ]
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: update PGP key
+      run: curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+    - name: determine check version
+      run: apt policy check
+    - name: install check
+      run: sudo apt-get install check
+    - name: determine OS
+      run: grep ^NAME=".*" /etc/os-release
+    - name: make Backend
+      run: (cd Backend && make)
+    - name: executable infos
+      run: (file Backend/Tests/Checks.x; file Backend/Program.x) | tr "\n" "\n"
+    - name: run tests
+      run: (cd Backend/Tests && ./Checks.x)
+
+  macOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install check
+      run: brew install check
+    - name: make Backend
+      run: (cd Backend && make)
+    - name: run tests
+      run: (cd Backend/Tests && ./Checks.x)

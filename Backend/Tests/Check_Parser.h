@@ -1,5 +1,6 @@
 #include "../Parser/Parser.h"
 #include <stdio.h>
+#include "check.h"
 
 #ifndef BACKEND_CHECK_PARSER_H
 #define BACKEND_CHECK_PARSER_H
