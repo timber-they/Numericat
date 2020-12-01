@@ -2,6 +2,7 @@
 #include "../Parser/Function.h"
 #include <float.h>
 #include <stdio.h>
+#include "check.h"
 
 #ifndef BACKEND_CHECK_FUNCTION_H
 #define BACKEND_CHECK_FUNCTION_H
@@ -29,15 +30,6 @@ START_TEST(test_Evaluate)
     double expected11 = 7601.142857;
     double expected12 = -78.68965517;
     double expected01 = 7595.142857;
-#ifdef INFINITY
-    double expected02 = INFINITY;
-    double expectedInfinity1 = INFINITY;
-    double expectedInfinity2 = INFINITY;
-#endif
-#ifdef NAN
-    double expectedNan1 = NAN;
-    double expectedNan2 = NAN;
-#endif
 
     double resNormal1 = Evaluate(parsed1, inNormal);
     double resNormal2 = Evaluate(parsed2, inNormal);
@@ -46,17 +38,6 @@ START_TEST(test_Evaluate)
     double res11 = Evaluate(parsed1, in1);
     double res12 = Evaluate(parsed2, in1);
     double res01 = Evaluate(parsed1, in0);
-#ifdef INFINITY
-    double inInfinity = INFINITY;
-    double res02 = Evaluate(parsed2, in0);
-    double resInfinity1 = Evaluate(parsed1, inInfinity);
-    double resInfinity2 = Evaluate(parsed2, inInfinity);
-#endif
-#ifdef NAN
-    double inNan = NAN;
-    double resNan1 = Evaluate(parsed1, inNan);
-    double resNan2 = Evaluate(parsed2, inNan);
-#endif
 
     assertFloatEq(expectedNormal1, resNormal1);
     assertFloatEq(expectedNormal2, resNormal2);
@@ -65,15 +46,6 @@ START_TEST(test_Evaluate)
     assertFloatEq(expected11, res11);
     assertFloatEq(expected12, res12);
     assertFloatEq(expected01, res01);
-#ifdef INFINITY
-    assertFloatEq(expected02, res02);
-    assertFloatEq(expectedInfinity1, resInfinity1);
-    assertFloatEq(expectedInfinity2, resInfinity2);
-#endif
-#ifdef NAN
-    assertFloatEq(expectedNan1, resNan1);
-    assertFloatEq(expectedNan2, resNan2);
-#endif
 }
 END_TEST
 
