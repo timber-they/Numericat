@@ -30,11 +30,11 @@ public class Main {
         frame.setVisible(true);
     }
 
-    private static double dx = 1;
-    private static double maxX = 1000;
+    // Just for demonstrational purposes - will later be removed
+    private static final double dx = 1;
+    private static final double maxX = 1000;
     private static double deltaX = 0;
-    private static List<Coordinate> getTestData()
-    {
+    private static List<Coordinate> getTestData() {
         List<Coordinate> coordinates = new ArrayList<>((int) (maxX / dx));
         for (double x = 1; x < maxX; x += dx)
             coordinates.add(new Coordinate(x, (Math.sin((x-deltaX) / 50.0) + 1) * 200));
