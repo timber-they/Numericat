@@ -1,18 +1,26 @@
 package de.numericat;
 
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Numericanvas extends JPanel
 {
-    private int posY1 = 10;
-    private int posY2 = 690;
+    private List<Coordinate> coordinates = new ArrayList<>(0);
 
     @Override
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
-        g.drawLine(10, posY1++, 990, posY2--);
+        for (int i = 1; i < coordinates.size(); i++)
+            g.drawLine(coordinates.get(i-1).roundX(), getSize().height - coordinates.get(i-1).roundY(),
+                    coordinates.get(i).roundX(), getSize().height - coordinates.get(i).roundY());
+    }
+
+    public void drawData(List<Coordinate> coordinates) {
+        this.coordinates = coordinates;
+        repaint();
     }
 }
