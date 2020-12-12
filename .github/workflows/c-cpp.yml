@@ -22,6 +22,8 @@ jobs:
       run: grep ^NAME=".*" /etc/os-release
     - name: make Backend
       run: (cd Backend && make)
+    - name: make Frontend
+      run: (cd Frontend && make)
     - name: executable infos
       run: (file Backend/Tests/Checks.x; file Backend/Program.x) | tr "\n" "\n"
     - name: run tests
@@ -35,5 +37,7 @@ jobs:
       run: brew install check
     - name: make Backend
       run: (cd Backend && make)
+    - name: make Frontend
+      run: (cd Frontend && make)
     - name: run tests
       run: (cd Backend/Tests && ./Checks.x)

@@ -15,3 +15,11 @@ Supported platforms:
 * Linux
 * MacOS
 * Eventually Windows (not actively tested, some changes might have to be made to the Makefile)
+
+## Use
+Prerequisities:
+* Make
+* Some sort of C compiler (e.g. `gcc`)
+* A Java 8 or higher JDK (e.g. OpenJDK 8)
+Install:
+* Install using `make` (not yet fully supported)
