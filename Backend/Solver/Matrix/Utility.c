@@ -4,20 +4,20 @@
 typedef struct Matrix {
     int rowSize;
     int columnSize;
-    double **ptr = (double**)matrix;
+    double **matrix;
+    int dimension;
 } Matrix;
 
 double GetRandomNumber(double minimum, double maximum)
 { 
-    Random random = new Random();
-    return random.NextDouble() * (maximum - minimum) + minimum;
-}
+    return (int) drand48() * (maximum - minimum) + minimum;
+}   
 
 void randomize(Matrix *m){
     int i,j;
     for(i = 0; i < m->rowSize ; i++){
         for(j = 0; j < m->columnSize; j++){
-            m->matrix[i][j] = GetRandomNumber(0,10) % 5000;
+            m->matrix[i][j] = (double)rand()/(double)(RAND_MAX/10);
         }
     }
 }
@@ -27,7 +27,7 @@ Matrix createMatrix(int r, int c){
 
     if (temp.matrix == NULL) {
         fprintf(stderr, "Empty Matrix not allowed\n");
-        return 1;
+        exit(EXIT_FAILURE);
     }
 
     for (int i = 0; i < r; i++) {
@@ -35,7 +35,7 @@ Matrix createMatrix(int r, int c){
 
         if (temp.matrix[i] == NULL) {
             fprintf(stderr, "Empty Matrix Element not allowed\n");
-        return 1;
+        exit(EXIT_FAILURE);
         }
     }
 
@@ -53,10 +53,14 @@ void printMatrix(Matrix *m){
     int i,j;
     for(i = 0; i < m->rowSize ; i++){
         for(j = 0; j < m->columnSize; j++){
-            printf("%d ", *(m->matrix + i*m->rowSize  + j));
+            printf("%f ", (**m->matrix + i * m->rowSize  + j));
         }
         printf("\n");
     }
+}
+
+double getElement(const Matrix *m, const int r, const int c){
+    return (**m->matrix + r * m->rowSize + c);
 }
 
 Matrix multiply(Matrix *a, Matrix *b){
@@ -78,48 +82,94 @@ Matrix multiply(Matrix *a, Matrix *b){
             int k;
             for(k = 0; k < a->columnSize; k++){
                 //sum += a[i][k] * b[k][j]
-                sum = sum + (*(a->matrix + i*a->rowSize  + k)**(b->matrix + k*b->rowSize  + j));
+                sum = sum + (**a->matrix + i * a->rowSize  + k)*(**b->matrix + k * b->rowSize  + j);
             }
             // not optimal at the moment
-            *(result.matrix+ i*r  + j) = sum;
+            sum = getElement(&result, i, j);
         }
     }
     return result;
 }
-
-Matrix determinant(Matrix *a)
+void getCofactor(Matrix *a, int p, int q, int n)
 {
-    float det, ratio;
-     for(i = 0; i < n; i++){
-        for(j = 0; j < n; j++){
-            if(j>i){
-                ratio = a.matrix[j][i]/a.matrix[i][i];
-                for(k = 0; k < n; k++){
-                    a.matrix[j][k] -= ratio * a.matrix[i][k];
+    double temp[a->rowSize][a->columnSize];
+    int i = 0, j = 0;
+    for (int row = 0; row < n; row++)
+    {
+        for (int col = 0; col < n; col++) 
+        {
+            if (row != p && col != q) 
+            {
+                temp[i][j++] = a->matrix[row][col];
+
+                if (j == n - 1) 
+                {
+                    j = 0;
+                    i++;
                 }
             }
         }
     }
-    det = 1; //storage for determinant
-    for(i = 0; i < n; i++)
-        det *= a.matrix[i][i];
-    printf("Det is: %.2f\n\n", det);
-    return det;
 }
 
+int getDimension(Matrix *a)
+{
+    return sizeof(a->matrix)/a->rowSize;
+}
 
-Matrix invert(Matrix *a){
-    for(i = 0; i < 3; i++){
-		for(j = 0; j < 3; j++)
-        {
-            a.matrix[i][j] = ((mat[(j+1)%3][(i+1)%3] * 
-                               mat[(j+2)%3][(i+2)%3]) - 
-                              (mat[(j+1)%3][(i+2)%3] * 
-                               mat[(j+2)%3][(i+1)%3]))/ 
-                               determinant(a));
-		
-		printf("\n");
+// n is the dimension of a.matrix
+double determinant(Matrix *a, int n)
+{
+    int Det = 0;
+    if (n ==  1)
+        return a->matrix[0][0];
+    double sign = 1.0;
+    for(int f = 0; f < n; f++)
+    {
+        getCofactor(a, 0, f, n);
+        Det += sign * a->matrix[0][f]
+             * determinant(a, n - 1);
+ 
+        sign = -sign;
+    }
+    return Det;
+}
+
+Matrix adjoint(Matrix *a){
+    int n = getDimension(a);
+    Matrix adj = createMatrix(a->rowSize, a->columnSize);
+    Matrix temp = createMatrix(a->rowSize, a->columnSize);
+    if (n == 1) 
+    { 
+        adj.matrix[0][0] = 1; 
+        return adj; 
+    } 
+    int sign = 1;
+    for (int i=0; i<n; i++){
+        for (int j=0; j<n; j++){
+            getCofactor(a, i, j, n); 
+            sign = ((i+j)%2==0)? 1: -1; 
+            adj.matrix[j][i] = (sign)*(determinant(&temp, n-1)); 
         }
-	}
-    return a.matrix    
+    }
+    return adj; 
+
+}
+// n is the dimension of a.matrix
+Matrix invert(Matrix *a){
+    int n = getDimension(a);
+    int det = determinant(a, n);
+    if (det == 0) 
+    { 
+        fprintf(stderr,"Singular matrix"); 
+        exit(EXIT_FAILURE); 
+    } 
+    Matrix inverse = createMatrix(a->rowSize,a->columnSize);
+    Matrix adj = adjoint(a);
+
+    for (int i=0; i<n; i++) 
+        for (int j=0; j<n; j++) 
+            inverse.matrix[i][j] = adj.matrix[i][j]/ (float) det ; 
+
+    return inverse;
 }
