@@ -1,5 +1,12 @@
 #include "../Solver/Matrix/Utility.h"
 
+typedef struct Matrix {
+    int rowSize;
+    int columnSize;
+    double **matrix;
+    int dimension;
+}Matrix;
+
 START_TEST(test_determinant)
 {
     Matrix tmp = createMatrix(2,2);
