@@ -51,3 +51,6 @@ START_TEST(test_multiply)
     ck_assert(multiplied.matrix[1][1] == 8);
 }
 END_TEST
+
+#endif
+
