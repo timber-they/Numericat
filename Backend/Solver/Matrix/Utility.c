@@ -1,13 +1,7 @@
-#include "Utility."
+#include "Utility.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Matrix {
-    int rowSize;
-    int columnSize;
-    double **matrix;
-    int dimension;
-}Matrix;
 
 double GetRandomNumber(double minimum, double maximum)
 { 

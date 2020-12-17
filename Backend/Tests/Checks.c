@@ -11,23 +11,21 @@ int main(void)
     TCase *parserCase1 = tcase_create("Parser");
     TCase *parserCase2 = tcase_create("Function");
     TCase *solverCase1 = tcase_create("Solver");
-    
+
     SRunner *sr = srunner_create(parserSuite);
-//    srunner_add_suite(sr, solverSuite);
+    srunner_add_suite(sr, solverSuite);
     int nf;
-    TCase *Matrix = tcase_create("Matrix");
 
     suite_add_tcase(parserSuite, parserCase1);
     suite_add_tcase(parserSuite, parserCase2);
-    suite_add_tcase(solverSuite, Matrix);
-//    suite_add_tcase(solverSuite, solverCase1);
+    suite_add_tcase(solverSuite, solverCase1);
 
     tcase_add_test(parserCase1, test_Parse_Functions);
     tcase_add_test(parserCase1, test_Parse_Failing);
     tcase_add_test(parserCase2, test_Evaluate);
-    tcase_add_test(solverSuite, test_determinant);
-    tcase_add_test(solverSuite, test_Inverse);
-    tcase_add_test(solverSuite, test_multiply);
+    tcase_add_test(solverCase1, test_determinant);
+    tcase_add_test(solverCase1, test_Inverse);
+    tcase_add_test(solverCase1, test_multiply);
 
     srunner_run_all(sr, CK_NORMAL);
     nf = srunner_ntests_failed(sr);

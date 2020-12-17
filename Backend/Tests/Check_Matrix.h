@@ -1,4 +1,5 @@
 #include "../Solver/Matrix/Utility.h"
+#include "check.h"
 
 START_TEST(test_determinant)
 {
