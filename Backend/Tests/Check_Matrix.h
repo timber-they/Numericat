@@ -1,12 +1,5 @@
 #include "../Solver/Matrix/Utility.h"
 
-typedef struct Matrix {
-    int rowSize;
-    int columnSize;
-    double **matrix;
-    int dimension;
-}Matrix;
-
 START_TEST(test_determinant)
 {
     Matrix tmp = createMatrix(2,2);
@@ -16,7 +9,7 @@ START_TEST(test_determinant)
     tmp.matrix[1][1] = 2;
     int dimension = getDimension(&tmp);
     int det = determinant(&tmp, dimension);
-    ck_assert(determinant == det);
+    ck_assert(det == 0);
 }
 END_TEST
 
