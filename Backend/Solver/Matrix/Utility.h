@@ -1,5 +1,5 @@
-#ifndef UTILITY
-#define UTILITY
+#ifndef BACKEND_UTILITY_H
+#define BACKEND_UTILITY_H
 
 typedef struct Matrix {
     int rowSize;
@@ -21,4 +21,4 @@ int determinant(Matrix *a, int n);
 Matrix adjoint(Matrix *a);
 Matrix invert(Matrix *a);
 
-#endif
+#endif // BACKEND_UTILITY_H

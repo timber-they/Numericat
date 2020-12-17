@@ -1,7 +1,10 @@
 #include "../Solver/Matrix/Utility.h"
 #include "check.h"
 
-START_TEST(test_determinant)
+#ifndef BACKEND_UTILITY_CHECK_H
+#define BACKEND_UTILITY_CHECK_H
+
+START_TEST(test_det)
 {
     Matrix tmp = createMatrix(2,2);
     tmp.matrix[0][0] = 2;
