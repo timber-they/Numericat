@@ -1,3 +1,4 @@
+#include "Utility."
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6,7 +7,7 @@ typedef struct Matrix {
     int columnSize;
     double **matrix;
     int dimension;
-} Matrix;
+}Matrix;
 
 double GetRandomNumber(double minimum, double maximum)
 { 
@@ -24,6 +25,9 @@ void randomize(Matrix *m){
 
 Matrix createMatrix(int r, int c){
     Matrix temp = {r, c, calloc(r, sizeof(double *))};
+    temp.rowSize = r;
+    temp.columnSize = c;
+    temp.dimension = getDimension(temp);
 
     if (temp.matrix == NULL) {
         fprintf(stderr, "Empty Matrix not allowed\n");
@@ -118,7 +122,7 @@ int getDimension(Matrix *a)
 }
 
 // n is the dimension of a.matrix
-double determinant(Matrix *a, int n)
+int determinant(Matrix *a, int n)
 {
     int Det = 0;
     if (n ==  1)
