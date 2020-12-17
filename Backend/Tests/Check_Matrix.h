@@ -27,7 +27,7 @@ START_TEST(test_Inverse)
     temp.matrix[0][1] = 2;
     temp.matrix[1][0] = 2;
     temp.matrix[1][1] = 3;
-    Matrix Inverse = invert(temp);+
+    Matrix Inverse = invert(&temp);
     ck_assert(Inverse.matrix[0][0] == 0.6);
     ck_assert(Inverse.matrix[1][0] == -0.4);
     ck_assert(Inverse.matrix[0][1] == -0.4);
@@ -47,7 +47,7 @@ START_TEST(test_multiply)
     Matrix_2.matrix[0][1] = 2;
     Matrix_2.matrix[1][0] = 2;
     Matrix_2.matrix[1][1] = 2;
-    Matrix multiplied = multiply(Matrix_1, Matrix_2);
+    Matrix multiplied = multiply(&Matrix_1, &Matrix_2);
     ck_assert(multiplied.matrix[0][0] == 8);
     ck_assert(multiplied.matrix[1][0] == 8);
     ck_assert(multiplied.matrix[0][1] == 8);
