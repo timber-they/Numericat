@@ -18,6 +18,7 @@ START_TEST(test_determinant)
     int det = determinant(&tmp, dimension);
     ck_assert(determinant = det);
 }
+END_TEST
 
 START_TEST(test_Inverse)
 {
@@ -32,6 +33,7 @@ START_TEST(test_Inverse)
     ck_assert(Inverse.matrix[0][1] == -0.4);
     ck_assert(Inverse.matrix[1][1] == 0.6);
 }
+END_TEST
 
 START_TEST(test_multiply)
 {
