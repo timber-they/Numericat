@@ -24,7 +24,7 @@ int main(void)
     tcase_add_test(parserCase1, test_Parse_Failing);
     tcase_add_test(parserCase2, test_Evaluate);
     tcase_add_test(solverCase1, test_det);
-    tcase_add_test(solverCase1, test_Inverse);
+    // tcase_add_test(solverCase1, test_Inverse);
     tcase_add_test(solverCase1, test_multiply);
 
     srunner_run_all(sr, CK_NORMAL);

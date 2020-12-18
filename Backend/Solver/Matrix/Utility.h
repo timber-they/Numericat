@@ -6,7 +6,7 @@ typedef struct Matrix {
     int columnSize;
     double **matrix;
     int dimension;
-}Matrix;
+} Matrix;
 
 double GetRandomNumber(double minimum, double maximum);
 void randomize(Matrix *m);
@@ -16,7 +16,7 @@ void printMatrix(Matrix *m);
 double getElement(const Matrix *m, const int r, const int c);
 Matrix multiply(Matrix *a, Matrix *b);
 void getCofactor(Matrix *a, int p, int q, int n);
-int getDimension(Matrix *a);
+int getDimension(Matrix *   a);
 int determinant(Matrix *a, int n);
 Matrix adjoint(Matrix *a);
 Matrix invert(Matrix *a);

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 double GetRandomNumber(double minimum, double maximum)
 { 
     return (int) drand48() * (maximum - minimum) + minimum;
@@ -21,7 +20,7 @@ Matrix createMatrix(int r, int c){
     Matrix temp = {r, c, calloc(r, sizeof(double *))};
     temp.rowSize = r;
     temp.columnSize = c;
-    temp.dimension = getDimension(temp);
+    temp.dimension = getDimension(&temp);
 
     if (temp.matrix == NULL) {
         fprintf(stderr, "Empty Matrix not allowed\n");
@@ -68,22 +67,15 @@ Matrix multiply(Matrix *a, Matrix *b){
         exit(0);
     }
 
-    double r = a->rowSize;
-    double c = b->columnSize;
-    Matrix result = createMatrix(r,c);
+    int n = a->rowSize;
+    Matrix result = createMatrix(n,n);
 
-    //multiply part
-    int i,j;
-    for(i = 0; i < r ; i++){
-        for(j = 0; j < c; j++){
-            long double sum = 0;
-            int k;
-            for(k = 0; k < a->columnSize; k++){
-                //sum += a[i][k] * b[k][j]
-                sum = sum + (**a->matrix + i * a->rowSize  + k)*(**b->matrix + k * b->rowSize  + j);
-            }
-            // not optimal at the moment
-            sum = getElement(&result, i, j);
+    int i, j, k;
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            result.matrix[i][j] = 0;
+            for (k = 0; k < n; k++)
+                result.matrix[i][j] += a->matrix[i][k] * b->matrix[k][j];
         }
     }
     return result;
