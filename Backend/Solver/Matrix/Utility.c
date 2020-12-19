@@ -1,6 +1,8 @@
 #include "Utility.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
 
 double GetRandomNumber(double minimum, double maximum)
 { 
@@ -80,9 +82,13 @@ Matrix multiply(Matrix *a, Matrix *b){
     }
     return result;
 }
-void getCofactor(Matrix *a, int p, int q, int n)
+
+int getDimension(Matrix *a)
 {
-    double temp[a->rowSize][a->columnSize];
+    return sizeof(a->matrix)/a->rowSize;
+}
+void getCofactor(Matrix *a, Matrix *temp, int p , int q, int n)
+{
     int i = 0, j = 0;
     for (int row = 0; row < n; row++)
     {
@@ -90,7 +96,7 @@ void getCofactor(Matrix *a, int p, int q, int n)
         {
             if (row != p && col != q) 
             {
-                temp[i][j++] = a->matrix[row][col];
+                temp->matrix[i][j++] = a->matrix[row][col];
 
                 if (j == n - 1) 
                 {
@@ -102,64 +108,79 @@ void getCofactor(Matrix *a, int p, int q, int n)
     }
 }
 
-int getDimension(Matrix *a)
-{
-    return sizeof(a->matrix)/a->rowSize;
-}
-
 // n is the dimension of a.matrix
-int determinant(Matrix *a, int n)
+double Determinant(double **a, int n)
 {
-    int Det = 0;
-    if (n ==  1)
-        return a->matrix[0][0];
-    double sign = 1.0;
-    for(int f = 0; f < n; f++)
-    {
-        getCofactor(a, 0, f, n);
-        Det += sign * a->matrix[0][f]
-             * determinant(a, n - 1);
- 
-        sign = -sign;
-    }
-    return Det;
+    int i,j,j1,j2;
+    double det = 0;
+    double **m = NULL;
+
+    if (n < 1) { /* Error */
+        fprintf(stderr, "dimension is < 1");
+        exit(1);
+    } 
+    else if (n == 1) { /* Shouldn't get used */
+        det = a[0][0];
+    } 
+    else if (n == 2) {
+        det = a[0][0] * a[1][1] - a[1][0] * a[0][1];    
+    } 
+    else {
+        det = 0;
+        for (j1 = 0; j1 < n ; j1++) {
+            m = malloc((n-1)*sizeof(double *));
+            for (i=0;i<n-1;i++)
+                m[i] = malloc((n-1)*sizeof(double));
+            for (i=1;i<n;i++) {
+                j2 = 0;
+            for (j=0;j<n;j++) {
+               if (j == j1)
+                  continue;
+               m[i-1][j2] = a[i][j];
+               j2++;
+            }
+            }
+        det += pow(-1.0,1.0+j1+1.0) * a[0][j1] * Determinant(m,n-1);
+        for (i=0;i<n-1;i++)
+        free(m[i]);
+        free(m);
+      }
+   }
+   return(det);
 }
 
-Matrix adjoint(Matrix *a){
+void adjoint(Matrix *a, Matrix *adj){
     int n = getDimension(a);
-    Matrix adj = createMatrix(a->rowSize, a->columnSize);
     Matrix temp = createMatrix(a->rowSize, a->columnSize);
     if (n == 1) 
     { 
-        adj.matrix[0][0] = 1; 
-        return adj; 
+        adj->matrix[0][0] = 1; 
+        return; 
     } 
     int sign = 1;
     for (int i=0; i<n; i++){
         for (int j=0; j<n; j++){
-            getCofactor(a, i, j, n); 
+            getCofactor(a, &temp,  i, j, n); 
             sign = ((i+j)%2==0)? 1: -1; 
-            adj.matrix[j][i] = (sign)*(determinant(&temp, n-1)); 
+            adj->matrix[j][i] = (sign)*(Determinant(temp.matrix, n-1)); 
+        }
+    }   
+}
+
+// N is the dimension of a.matrix
+bool invert(Matrix *a, Matrix *inverse){
+    int N = a->dimension;
+    Matrix adj = createMatrix(a->columnSize, a->rowSize);
+    adjoint(a, &adj);
+    int det = (float) Determinant(a->matrix, N);
+    if(det == 0){
+        printf("determinant is 0");
+        return false;
+    }
+    for (int i=0; i<N; i++){
+        for (int j=0; j<N; j++){
+            inverse->matrix[i][j] = adj.matrix[i][j]/det; 
         }
     }
-    return adj; 
-
-}
-// n is the dimension of a.matrix
-Matrix invert(Matrix *a){
-    int n = getDimension(a);
-    int det = determinant(a, n);
-    if (det == 0) 
-    { 
-        fprintf(stderr,"Singular matrix"); 
-        exit(EXIT_FAILURE); 
-    } 
-    Matrix inverse = createMatrix(a->rowSize,a->columnSize);
-    Matrix adj = adjoint(a);
-
-    for (int i=0; i<n; i++) 
-        for (int j=0; j<n; j++) 
-            inverse.matrix[i][j] = adj.matrix[i][j]/ (float) det ; 
-
-    return inverse;
+    return true;
 }
