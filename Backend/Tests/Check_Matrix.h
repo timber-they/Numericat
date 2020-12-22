@@ -34,7 +34,7 @@ START_TEST(test_det)
     tmp.matrix[1][1] = 2.0;
     tmp.matrix[0][0] = 2.0;
     int dimension = getDimension(&tmp);
-    double det = Determinant(tmp.matrix, dimension);
+    double det = determinant(tmp.matrix, dimension);
     ck_assert(det == 0.0);
 }
 END_TEST

@@ -99,8 +99,9 @@ Matrix multiply(Matrix *a, Matrix *b)
 
 int getDimension(Matrix *a) 
 { 
+    // TODO: This doesn't make sense, as it only returns the size of a pointer
     int res = sizeof(a->matrix) / a->rowSize; 
-    printf("Dimension: %d\n", res);
+    fprintf(stderr, "Dimension is: %d (%ld / %d)\n", res, sizeof(a->matrix), a->rowSize);
     return res;
 }
 
@@ -125,19 +126,21 @@ void getCofactor(Matrix *a, Matrix *temp, int p, int q, int n)
 }
 
 // n is the dimension of a.matrix
-double Determinant(double **a, int n) 
+double determinant(double **a, int n) 
 {
     int i, j, j1, j2;
     double det = 0;
     double **m = NULL;
 
     if (n < 1) 
-    { /* Error */
+    { 
+        // Error
         fprintf(stderr, "dimension is < 1");
         exit(EXIT_FAILURE);
     } 
     else if (n == 1) 
-    { /* Shouldn't get used */
+    { 
+        // Shouldn't get used
         det = a[0][0];
     } 
     else if (n == 2) 
@@ -163,7 +166,7 @@ double Determinant(double **a, int n)
                     j2++;
                 }
             }
-            det += pow(-1.0, 1.0 + j1 + 1.0) * a[0][j1] * Determinant(m, n - 1);
+            det += pow(-1.0, 1.0 + j1 + 1.0) * a[0][j1] * determinant(m, n - 1);
             for (i = 0; i < n - 1; i++)
                 free(m[i]);
             free(m);
@@ -188,7 +191,7 @@ void adjoint(Matrix *a, Matrix *adj)
         {
             getCofactor(a, &temp, i, j, n);
             sign = ((i + j) % 2 == 0) ? 1 : -1;
-            adj->matrix[j][i] = (sign) * (Determinant(temp.matrix, n - 1));
+            adj->matrix[j][i] = (sign) * (determinant(temp.matrix, n - 1));
         }
     }
 }
@@ -199,7 +202,7 @@ bool invert(Matrix *a, Matrix *inverse)
     int N = a->dimension;
     Matrix adj = createMatrix(a->columnSize, a->rowSize);
     adjoint(a, &adj);
-    int det = (float)Determinant(a->matrix, N);
+    int det = (float)determinant(a->matrix, N);
     if (det == 0) 
     {
         fprintf(stderr, "determinant is 0");

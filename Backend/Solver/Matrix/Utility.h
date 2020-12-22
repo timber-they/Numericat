@@ -19,7 +19,7 @@ double getElement(const Matrix *m, const int r, const int c);
 Matrix multiply(Matrix *a, Matrix *b);
 void getCofactor(Matrix *a,Matrix *temp, int p, int q, int n);
 int getDimension(Matrix *a);
-double Determinant(double **a, int n);
+double determinant(double **a, int n);
 void adjoint(Matrix *a,  Matrix *adj);
 bool invert(Matrix *a, Matrix *inverse);
 
