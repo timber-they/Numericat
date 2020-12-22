@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-double GetRandomNumber(double minimum, double maximum) {
+double GetRandomNumber(double minimum, double maximum) 
+{
     return (int)drand48() * (maximum - minimum) + minimum;
 }
 
@@ -73,7 +74,7 @@ double getElement(const Matrix *m, const int r, const int c)
 
 Matrix multiply(Matrix *a, Matrix *b) 
 {
-    // check if multiplication is possible
+    // Check if multiplication is possible
     if (a->columnSize != b->rowSize) 
     {
         fprintf(stderr, "Error: Incompatible sizes");
@@ -98,7 +99,9 @@ Matrix multiply(Matrix *a, Matrix *b)
 
 int getDimension(Matrix *a) 
 { 
-    return sizeof(a->matrix) / a->rowSize; 
+    int res = sizeof(a->matrix) / a->rowSize; 
+    printf("Dimension: %d\n", res);
+    return res;
 }
 
 void getCofactor(Matrix *a, Matrix *temp, int p, int q, int n) 

@@ -1,6 +1,6 @@
 $(info $(SHELL))
 CC=gcc
-CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -pedantic -Wno-gnu-zero-variadic-macro-arguments -fsanitize=address
+CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -pedantic -fsanitize=address
 CLIBS=-lcheck -pthread -lrt -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit
