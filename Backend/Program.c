@@ -3,8 +3,6 @@
 #include "Parser/Function.h"
 #include "Parser/Parser.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 int main(int argc, char *argv[])
 {
     double value;
@@ -35,4 +33,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-#pragma clang diagnostic pop
+

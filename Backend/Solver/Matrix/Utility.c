@@ -1,54 +1,60 @@
 #include "Utility.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-double GetRandomNumber(double minimum, double maximum)
-{ 
-    return (int) drand48() * (maximum - minimum) + minimum;
-}   
+double GetRandomNumber(double minimum, double maximum) 
+{
+    return (int)drand48() * (maximum - minimum) + minimum;
+}
 
-void randomize(Matrix *m){
-    int i,j;
-    for(i = 0; i < m->rowSize ; i++){
-        for(j = 0; j < m->columnSize; j++){
-            m->matrix[i][j] = (double)rand()/(double)(RAND_MAX/10);
+void randomize(Matrix *m) 
+{
+    for (int i = 0; i < m->rowSize; i++) 
+    {
+        for (int j = 0; j < m->columnSize; j++) 
+        {
+            m->matrix[i][j] = (double)rand() / (double)(RAND_MAX / 10);
         }
     }
 }
 
-Matrix createMatrix(int r, int c){
+Matrix createMatrix(int r, int c) {
     Matrix temp = {r, c, calloc(r, sizeof(double *))};
     temp.rowSize = r;
     temp.columnSize = c;
     temp.dimension = r;
 
-    if (temp.matrix == NULL) {
+    if (temp.matrix == NULL) 
+    {
         fprintf(stderr, "Empty Matrix not allowed\n");
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < r; i++) {
+    for (int i = 0; i < r; i++) 
+    {
         temp.matrix[i] = calloc(c, sizeof temp.matrix[i][0]);
 
-        if (temp.matrix[i] == NULL) {
+        if (temp.matrix[i] == NULL) 
+        {
             fprintf(stderr, "Empty Matrix Element not allowed\n");
-        exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
     }
 
     return temp;
 }
 
-Matrix createRandMatrix(int r, int c){
-    Matrix temp = createMatrix(r,c);
+Matrix createRandMatrix(int r, int c) 
+{
+    Matrix temp = createMatrix(r, c);
     randomize(&temp);
     return temp;
 }
 
-void printMatrix(Matrix *m){
-
+void printMatrix(Matrix *m) 
+{
     int i,j;
     for(i = 0; i < m->rowSize ; i++){
         for(j = 0; j < m->columnSize; j++){
@@ -58,7 +64,8 @@ void printMatrix(Matrix *m){
     }
 }
 
-double getElement(const Matrix *m, const int r, const int c){
+double getElement(const Matrix *m, const int r, const int c) 
+{
     return (**m->matrix + r * m->rowSize + c);
 }
 
@@ -71,7 +78,7 @@ Matrix multiply(Matrix *a, Matrix *b){
     }
 
     int n = a->rowSize;
-    Matrix result = createMatrix(n,n);
+    Matrix result = createMatrix(n, n);
 
     int i, j, k;
     for (i = 0; i < n; i++) 
@@ -89,14 +96,14 @@ Matrix multiply(Matrix *a, Matrix *b){
 // n is the dimension of a.matrix
 double determinant(double **a, int n)
 {
-    int i,j,j1,j2;
+    int i, j, j1, j2;
     double det = 0;
     double **m = NULL;
 
     if (n < 1) 
     { /* Error */
         fprintf(stderr, "dimension is < 1");
-        exit(1);
+        exit(EXIT_FAILURE);
     } 
     else if (n == 1)
     { /* Shouldn't get used */
