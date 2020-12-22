@@ -17,10 +17,8 @@ Matrix createRandMatrix(int r, int c);
 void printMatrix(Matrix *m);
 double getElement(const Matrix *m, const int r, const int c);
 Matrix multiply(Matrix *a, Matrix *b);
-void getCofactor(Matrix *a,Matrix *temp, int p, int q, int n);
-int getDimension(Matrix *a);
-double Determinant(double **a, int n);
-void adjoint(Matrix *a,  Matrix *adj);
-bool invert(Matrix *a, Matrix *inverse);
+double determinant(double **a, int n);
+void CoFactor(double **a,int n,double **b);
+Matrix inverse(Matrix *a);
 
 #endif // BACKEND_UTILITY_H
