@@ -3,7 +3,7 @@ CC=gcc
 CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address -fsanitize-recover=address -lm
 CLIBS=-lcheck -pthread -lrt -lm -ldl
 MACCLIBS=-lcheck -pthread -pthread -lm
-UBUNTUFLAGS=-lsubunit
+UBUNTUFLAGS=-lsubunit -pthread -lm -ldl
 ASAN_OPTIONS=halt_on_error=0
 FILE_BASE=Program
 DEPENDENCIES=Parser/Parser.c Parser/Function.c Solver/Matrix/Utility.c
