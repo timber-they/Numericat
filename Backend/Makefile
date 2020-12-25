@@ -1,5 +1,5 @@
 $(info $(SHELL))
-CC=gcc
+CC=clang
 CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address
 CLIBS=-lcheck -pthread -lrt -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
