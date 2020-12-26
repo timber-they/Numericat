@@ -21,7 +21,7 @@ jobs:
     - name: determine OS
       run: grep ^NAME=".*" /etc/os-release
     - name: make Backend
-      run: cd Backend && export CC=clang && make
+      run: (cd Backend && export CC=clang && make)
     - name: make Frontend
       run: (cd Frontend && make)
     - name: executable infos
@@ -36,7 +36,7 @@ jobs:
     - name: install check
       run: brew install check
     - name: make Backend
-      run: cd Backend && make
+      run: (cd Backend && make)
     - name: make Frontend
       run: (cd Frontend && make)
     - name: run tests

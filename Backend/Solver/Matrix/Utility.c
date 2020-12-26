@@ -193,5 +193,6 @@ Matrix inverse(Matrix *a)
             Inverse.matrix[i][j] = (1/det) *  Adj.matrix[i][j];
         }
     }
+    free(Adj.matrix);
     return Inverse;
 }
