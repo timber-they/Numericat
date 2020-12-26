@@ -21,7 +21,7 @@ jobs:
     - name: determine OS
       run: grep ^NAME=".*" /etc/os-release
     - name: set compiler
-      run: CC=clang && export CC
+      run: export CC=clang
     - name: determine compiler
       run: echo ${CC}
     - name: make Backend
