@@ -23,9 +23,7 @@ void randomize(Matrix *m)
 void freeMatrix(Matrix *a)
 {
     for (int i = 0; i < a->dimension; i++)
-    {
         free(a->matrix[i]);
-    }
     free(a->matrix);
 }
 
@@ -202,6 +200,6 @@ Matrix inverse(Matrix *a)
             Inverse.matrix[i][j] = (1/det) *  Adj.matrix[i][j];
         }
     }
-    free(Adj.matrix);
+    freeMatrix(&Adj);
     return Inverse;
 }
