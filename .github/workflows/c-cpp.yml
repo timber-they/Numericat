@@ -20,12 +20,8 @@ jobs:
       run: sudo apt-get install check
     - name: determine OS
       run: grep ^NAME=".*" /etc/os-release
-    - name: set compiler
-      run: export CC=clang
-    - name: determine compiler
-      run: echo ${CC}
     - name: make Backend
-      run: (cd Backend && make)
+      run: (cd Backend && CC=clang && make)
     - name: make Frontend
       run: (cd Frontend && make)
     - name: executable infos
