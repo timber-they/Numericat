@@ -20,6 +20,15 @@ void randomize(Matrix *m)
     }
 }
 
+void freeMatrix(Matrix *a)
+{
+    for (int i = 0; i < a->dimension; i++)
+    {
+        free(a->matrix[i]);
+    }
+    free(a->matrix);
+}
+
 Matrix createMatrix(int r, int c) {
     Matrix temp = {r, c, calloc(r, sizeof(double *))};
     temp.rowSize = r;
