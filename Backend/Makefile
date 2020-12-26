@@ -1,7 +1,7 @@
 $(info $(SHELL))
 CC=gcc
 CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address -fsanitize-recover=address
-CLIBS=-lcheck -pthread -lrt -lm -lrt -lc -ld
+CLIBS=-lcheck -pthread -lrt -lm -lrt -lc
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit
 ASAN_OPTIONS=halt_on_error=0
