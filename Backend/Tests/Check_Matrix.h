@@ -141,6 +141,7 @@ START_TEST(test_multiply_3x3)
     free(Matrix_4.matrix);
     free(multiplied.matrix);
 }
+END_TEST
 
 START_TEST(test_det_3x3)
 {
@@ -164,6 +165,7 @@ START_TEST(test_det_3x3)
     printf("\n");
     free(Matrix_5.matrix);
 }
+END_TEST
 
 
 #endif
