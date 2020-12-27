@@ -10,11 +10,8 @@ typedef struct Matrix {
     int dimension;
 } Matrix;
 
-double GetRandomNumber(double minimum, double maximum);
-void randomize(Matrix *m);
 Matrix createMatrix(int r, int c);
 void freeMatrix(Matrix *a);
-Matrix createRandMatrix(int r, int c);
 void printMatrix(Matrix *m);
 double getElement(const Matrix *m, const int r, const int c);
 Matrix multiply(Matrix *a, Matrix *b);

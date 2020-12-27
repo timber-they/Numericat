@@ -4,22 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-double GetRandomNumber(double minimum, double maximum) 
-{
-    return (int)drand48() * (maximum - minimum) + minimum;
-}
-
-void randomize(Matrix *m) 
-{
-    for (int i = 0; i < m->rowSize; i++) 
-    {
-        for (int j = 0; j < m->columnSize; j++) 
-        {
-            m->matrix[i][j] = (double)rand() / (double)(RAND_MAX / 10);
-        }
-    }
-}
-
 void freeMatrix(Matrix *a)
 {
     for (int i = 0; i < a->dimension; i++)
@@ -30,43 +14,39 @@ void freeMatrix(Matrix *a)
 }
 
 Matrix createMatrix(int r, int c) {
-    Matrix temp = {r, c, calloc(r, sizeof(double *))};
-    temp.rowSize = r;
-    temp.columnSize = c;
-    temp.dimension = r;
+    Matrix result = {r, c, calloc(r, sizeof(double *))};
+    result.rowSize = r;
+    result.columnSize = c;
+    result.dimension = r;
 
-    if (temp.matrix == NULL) 
+    if (result.matrix == NULL) 
     {
+        // In case something goes wrong, I dont know what should go wrong
         fprintf(stderr, "Empty Matrix not allowed\n");
         exit(EXIT_FAILURE);
     }
 
     for (int i = 0; i < r; i++) 
     {
-        temp.matrix[i] = calloc(c, sizeof temp.matrix[i][0]);
+        result.matrix[i] = calloc(c, sizeof result.matrix[i][0]);
 
-        if (temp.matrix[i] == NULL) 
+        if (result.matrix[i] == NULL) 
         {
             fprintf(stderr, "Empty Matrix Element not allowed\n");
             exit(EXIT_FAILURE);
         }
     }
 
-    return temp;
-}
-
-Matrix createRandMatrix(int r, int c) 
-{
-    Matrix temp = createMatrix(r, c);
-    randomize(&temp);
-    return temp;
+    return result;
 }
 
 void printMatrix(Matrix *m) 
 {
     int i,j;
-    for(i = 0; i < m->rowSize ; i++){
-        for(j = 0; j < m->columnSize; j++){
+    for(i = 0; i < m->rowSize ; i++)
+    {
+        for(j = 0; j < m->columnSize; j++)
+        {
             printf("%f  ", m->matrix[i][j]);
         }
         printf("\n");
@@ -75,7 +55,7 @@ void printMatrix(Matrix *m)
 
 double getElement(const Matrix *m, const int r, const int c) 
 {
-    return (**m->matrix + r * m->rowSize + c);
+    return **m->matrix + r * m->rowSize + c;
 }
 
 Matrix multiply(Matrix *a, Matrix *b){
@@ -105,7 +85,7 @@ Matrix multiply(Matrix *a, Matrix *b){
 // n is the dimension of a.matrix
 double determinant(double **a, int n)
 {
-    int i, j, j1, j2;
+    int i, j, x, y;
     double det = 0;
     double **m = NULL;
 
@@ -115,7 +95,7 @@ double determinant(double **a, int n)
         exit(EXIT_FAILURE);
     } 
     else if (n == 1)
-    { /* Shouldn't get used */
+    { /* Shouldn't not get 1x1 Matrix */
         det = a[0][0];
     } 
     else if (n == 2) 
@@ -125,32 +105,38 @@ double determinant(double **a, int n)
     else 
         {
         det = 0;
-        for (j1 = 0; j1 < n ; j1++) {
+        for (x = 0; x < n ; x++) 
+        {
             m = malloc((n-1)*sizeof(double *));
             for (i=0;i<n-1;i++)
+            {
                 m[i] = malloc((n-1)*sizeof(double));
+            }
             for (i=1;i<n;i++) 
             {
-                j2 = 0;
-                for (j=0;j<n;j++) {
-                    if (j == j1)
+                y = 0;
+                for (j=0;j<n;j++) 
+                {
+                    if (j == x)
+                    {
                         continue;
-                m[i-1][j2] = a[i][j];
-                j2++;
+                    }
+                m[i-1][y] = a[i][j];
+                y++;
+                }
             }
-            }
-        det += pow(-1.0,1.0+j1+1.0) * a[0][j1] * determinant(m,n-1);
+        det += pow(-1.0,1.0+x+1.0) * a[0][x] * determinant(m,n-1);
         for (i=0;i<n-1;i++)
-        free(m[i]);
+            free(m[i]);
         free(m);
-      }
+        }
    }
    return(det);
 }
 
 void CoFactor(double **a,int n,double **b)
 {
-   int i,j,ii,jj,i1,j1;
+   int i,j,m,z,y,x;
    double det;
    double **c;
 
@@ -162,18 +148,18 @@ void CoFactor(double **a,int n,double **b)
       for (i=0;i<n;i++) {
 
          /* Form the adjoint a_ij */
-         i1 = 0;
-         for (ii=0;ii<n;ii++) {
-            if (ii == i)
+         y = 0;
+         for (m=0;m<n;m++) {
+            if (m == i)
                continue;
-            j1 = 0;
-            for (jj=0;jj<n;jj++) {
-               if (jj == j)
+            x = 0;
+            for (z=0;z<n;z++) {
+               if (z == j)
                   continue;
-               c[i1][j1] = a[ii][jj];
-               j1++;
+               c[y][x] = a[m][z];
+               x++;
             }
-            i1++;
+            y++;
          }
          det = determinant(c,n-1);
 
@@ -191,17 +177,17 @@ Matrix inverse(Matrix *a)
 {
     int i, j;
     Matrix Inverse = createMatrix(a->rowSize, a->columnSize);
-    Matrix Adj = createMatrix(a->rowSize, a->columnSize);
+    Matrix adj = createMatrix(a->rowSize, a->columnSize);
     double det = determinant(a->matrix, a->rowSize);
-    CoFactor(a->matrix, a->rowSize, Adj.matrix);     
+    CoFactor(a->matrix, a->rowSize, adj.matrix);     
 
     for(i = 0; i < a->rowSize; i++)
     {
         for(j=0; j < a->columnSize; j++)
         {
-            Inverse.matrix[i][j] = (1/det) *  Adj.matrix[i][j];
+            Inverse.matrix[i][j] = (1/det) *  adj.matrix[i][j];
         }
     }
-    free(Adj.matrix);
+    free(adj.matrix);
     return Inverse;
 }
