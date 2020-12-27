@@ -53,7 +53,7 @@ START_TEST(test_det)
     printf("Determinant: %f\n", det);
     ck_assert(det == 0.0);
     printf("\n");
-    free(matrix_6.matrix);
+    freeMatrix(&matrix_6);
 }
 END_TEST
 
@@ -137,9 +137,9 @@ START_TEST(test_multiply_3x3)
     ck_assert(diff < 0.0001);
     diff = multiplied.matrix[2][2] - (48.26);
     ck_assert(diff < 0.0001);
-    free(Matrix_3.matrix);
-    free(Matrix_4.matrix);
-    free(multiplied.matrix);
+    freeMatrix(&Matrix_3);
+    freeMatrix(&Matrix_4);
+    freeMatrix(&multiplied);
 }
 END_TEST
 
@@ -163,7 +163,7 @@ START_TEST(test_det_3x3)
     diff = det -39.12;
     ck_assert(diff < 0.0001);
     printf("\n");
-    free(Matrix_5.matrix);
+    freeMatrix(&Matrix_5);
 }
 END_TEST
 
