@@ -1,5 +1,6 @@
 #include "../Parser/Parser.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "check.h"
 
 #ifndef BACKEND_CHECK_PARSER_H
@@ -44,6 +45,9 @@ START_TEST(test_Parse_Functions)
 
     validateEquality(function1, expected1, actual1);
     validateEquality(function2, expected2, actual2);
+
+    free(actual1);
+    free(actual2);
 }
 END_TEST
 

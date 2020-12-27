@@ -33,9 +33,9 @@ START_TEST(test_multiply)
     ck_assert((multiplied.matrix[0][1] - (8.0)) < 0.0001);
     ck_assert((multiplied.matrix[1][1] - (8.0)) < 0.0001);
     printf("\n");
-    free(Matrix_1.matrix);
-    free(Matrix_2.matrix);
-    free(multiplied.matrix);
+    freeMatrix(&Matrix_1);
+    freeMatrix(&Matrix_2);
+    freeMatrix(&multiplied);
 }
 END_TEST
 
@@ -80,9 +80,9 @@ START_TEST(test_Inverse)
     diff = Inverse.matrix[1][0] - (-0.4);
     ck_assert(diff < 0.0001);
     diff = Inverse.matrix[1][1] - (0.6);
-    ck_assert(diff < 0.0001);
-    free(temp.matrix);
-    free(Inverse.matrix);
+    ck_assert(diff < 0.01);
+    freeMatrix(&temp);
+    freeMatrix(&Inverse);
 }
 END_TEST
 

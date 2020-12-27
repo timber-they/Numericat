@@ -7,9 +7,7 @@
 void freeMatrix(Matrix *a)
 {
     for (int i = 0; i < a->dimension; i++)
-    {
         free(a->matrix[i]);
-    }
     free(a->matrix);
 }
 
@@ -188,6 +186,6 @@ Matrix inverse(Matrix *a)
             Inverse.matrix[i][j] = (1/det) *  adj.matrix[i][j];
         }
     }
-    free(adj.matrix);
+    freeMatrix(&adj);
     return Inverse;
 }
