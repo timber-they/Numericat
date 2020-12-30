@@ -11,7 +11,8 @@ void freeMatrix(Matrix *a)
     free(a->matrix);
 }
 
-Matrix createMatrix(int r, int c) {
+Matrix createMatrix(int r, int c) 
+{
     Matrix result = {r, c, calloc(r, sizeof(double *))};
     result.rowSize = r;
     result.columnSize = c;
@@ -56,7 +57,8 @@ double getElement(const Matrix *m, const int r, const int c)
     return **m->matrix + r * m->rowSize + c;
 }
 
-Matrix multiply(Matrix *a, Matrix *b){
+Matrix multiply(Matrix *a, Matrix *b)
+{
     // check if multiplication is possible 
     if(a->columnSize != b->rowSize )
     {
@@ -101,7 +103,7 @@ double determinant(double **a, int n)
         det = a[0][0] * a[1][1] - a[1][0] * a[0][1];    
     } 
     else 
-        {
+    {
         det = 0;
         for (x = 0; x < n ; x++) 
         {
@@ -119,55 +121,59 @@ double determinant(double **a, int n)
                     {
                         continue;
                     }
-                m[i-1][y] = a[i][j];
-                y++;
+                    m[i-1][y] = a[i][j];
+                    y++;
                 }
             }
-        det += pow(-1.0,1.0+x+1.0) * a[0][x] * determinant(m,n-1);
-        for (i=0;i<n-1;i++)
-            free(m[i]);
-        free(m);
+            det += pow(-1.0,1.0+x+1.0) * a[0][x] * determinant(m,n-1);
+            for (i=0;i<n-1;i++)
+                free(m[i]);
+            free(m);
         }
-   }
-   return(det);
+    }
+    return(det);
 }
 
 void CoFactor(double **a,int n,double **b)
 {
-   int i,j,m,z,y,x;
-   double det;
-   double **c;
+    int i,j,m,z,y,x;
+    double det;
+    double **c;
 
-   c = malloc((n-1)*sizeof(double *));
-   for (i=0;i<n-1;i++)
-     c[i] = malloc((n-1)*sizeof(double));
+    c = malloc((n-1)*sizeof(double *));
+    for (i=0;i<n-1;i++)
+        c[i] = malloc((n-1)*sizeof(double));
 
-   for (j=0;j<n;j++) {
-      for (i=0;i<n;i++) {
+    for (j=0;j<n;j++) 
+    {
+        for (i=0;i<n;i++) 
+        {
 
-         /* Form the adjoint a_ij */
-         y = 0;
-         for (m=0;m<n;m++) {
-            if (m == i)
-               continue;
-            x = 0;
-            for (z=0;z<n;z++) {
-               if (z == j)
-                  continue;
-               c[y][x] = a[m][z];
-               x++;
+            /* Form the adjoint a_ij */
+            y = 0;
+            for (m=0;m<n;m++) 
+            {
+                if (m == i)
+                    continue;
+                x = 0;
+                for (z=0;z<n;z++) 
+                {
+                    if (z == j)
+                        continue;
+                    c[y][x] = a[m][z];
+                    x++;
+                }
+                y++;
             }
-            y++;
-         }
-         det = determinant(c,n-1);
+            det = determinant(c,n-1);
 
-         /* Fill in the elements of the cofactor */
-         b[i][j] = pow(-1.0,i+j+2.0) * det;
-      }
-   }
-   for (i=0;i<n-1;i++)
-      free(c[i]);
-   free(c);
+            /* Fill in the elements of the cofactor */
+            b[i][j] = pow(-1.0,i+j+2.0) * det;
+        }
+    }
+    for (i=0;i<n-1;i++)
+        free(c[i]);
+    free(c);
 }
 
 // only works for n x n at the moment
@@ -189,3 +195,4 @@ Matrix inverse(Matrix *a)
     freeMatrix(&adj);
     return Inverse;
 }
+
