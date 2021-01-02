@@ -77,12 +77,13 @@ Matrix multiply(Matrix *a, Matrix *b)
     return result;
 }
 
-// n is the dimension of a.matrix
-double determinant(double **a, int n)
+// n is the dimension of a->matrix
+double determinant(Matrix *a)
 {
     int i, j, x, y;
     double det = 0;
-    double **m = NULL;
+    Matrix m = createMatrix(a->columnSize-1, a->rowSize-1);
+    int n = a->rowSize;
 
     if (n < 1) 
     { /* Error */
@@ -91,11 +92,11 @@ double determinant(double **a, int n)
     } 
     else if (n == 1)
     {
-        det = a[0][0];
+        det = a->matrix[0][0];
     } 
     else if (n == 2) 
     {
-        det = a[0][0] * a[1][1] - a[1][0] * a[0][1];    
+        det = a->matrix[0][0] * a->matrix[1][1] - a->matrix[1][0] * a->matrix[0][1];    
     } 
     else 
     {
@@ -103,29 +104,22 @@ double determinant(double **a, int n)
         for (x = 0; x < n ; x++) 
         {
             // determinant expansion by minors
-            m = malloc((n-1)*sizeof(double *));
-            for (i=0;i<n-1;i++)
-            {
-                m[i] = malloc((n-1)*sizeof(double));
-            }
-            for (i=1;i<n;i++) 
+            for (i=1; i<n; i++) 
             {
                 y = 0;
-                for (j=0;j<n;j++) 
+                for (j=0; j<n; j++) 
                 {
                     if (j == x)
                     {
                         continue;
                     }
-                    m[i-1][y] = a[i][j];
+                    m.matrix[i-1][y] = a->matrix[i][j];
                     y++;
                 }
             }
-            det += pow(-1.0,1.0+x+1.0) * a[0][x] * determinant(m,n-1);
-            for (i=0;i<n-1;i++)
-                free(m[i]);
-            free(m);
+            det += pow(-1.0,1.0+x+1.0) * a->matrix[0][x] * determinant(&m);
         }
+        freeMatrix(&m);
     }
     return(det);
 }
@@ -134,11 +128,8 @@ void CoFactor(double **a,int n,double **b)
 {
     int i,j,m,z,y,x;
     double det;
-    double **c;
 
-    c = malloc((n-1)*sizeof(double *));
-    for (i=0;i<n-1;i++)
-        c[i] = malloc((n-1)*sizeof(double));
+    Matrix c = createMatrix(n-1,n-1);
 
     for (j=0;j<n;j++) 
     {
@@ -156,20 +147,18 @@ void CoFactor(double **a,int n,double **b)
                 {
                     if (z == j)
                         continue;
-                    c[y][x] = a[m][z];
+                    c.matrix[y][x] = a[m][z];
                     x++;
                 }
                 y++;
             }
-            det = determinant(c,n-1);
+            det = determinant(&c);
 
             /* Fill in the elements of the cofactor */
             b[i][j] = pow(-1.0,i+j+2.0) * det;
         }
     }
-    for (i=0;i<n-1;i++)
-        free(c[i]);
-    free(c);
+    freeMatrix(&c);
 }
 
 Matrix inverse(Matrix *a)
@@ -177,7 +166,7 @@ Matrix inverse(Matrix *a)
     int i, j;
     Matrix result_inverse = createMatrix(a->rowSize, a->columnSize);
     Matrix adj = createMatrix(a->rowSize, a->columnSize);
-    double det = determinant(a->matrix, a->rowSize);
+    double det = determinant(a);
     CoFactor(a->matrix, a->rowSize, adj.matrix);     
 
     if(a->rowSize != a->columnSize)

@@ -15,7 +15,7 @@ void freeMatrix(Matrix *a);
 void printMatrix(Matrix *m);
 double getElement(const Matrix *m, const int r, const int c);
 Matrix multiply(Matrix *a, Matrix *b);
-double determinant(double **a, int n);
+double determinant(Matrix  *a);
 void CoFactor(double **a,int n,double **b);
 Matrix inverse(Matrix *a);
 

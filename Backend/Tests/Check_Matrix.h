@@ -47,7 +47,7 @@ START_TEST(test_det)
     matrix_6.matrix[1][0] = 2.0;
     matrix_6.matrix[1][1] = 2.0;
     matrix_6.matrix[0][0] = 2.0;
-    double det = determinant(matrix_6.matrix, matrix_6.columnSize);
+    double det = determinant(&matrix_6);
     printf("Input Matrix: \n");
     printMatrix(&matrix_6);
     printf("Determinant: %f\n", det);
@@ -145,6 +145,7 @@ END_TEST
 
 START_TEST(test_det_3x3)
 {
+    printf("test_det_3x3: \n");
     double diff;
     Matrix Matrix_5 = createMatrix(3,3);
     Matrix_5.matrix[0][0] = 2.6;
@@ -156,7 +157,7 @@ START_TEST(test_det_3x3)
     Matrix_5.matrix[2][0] = 3.4;
     Matrix_5.matrix[2][1] = 5.6;
     Matrix_5.matrix[2][2] = 4.0;
-    double det = determinant(Matrix_5.matrix, Matrix_5.columnSize);
+    double det = determinant(&Matrix_5);
     printf("Input Matrix: \n");
     printMatrix(&Matrix_5);
     printf("Determinant: %f\n", det);
