@@ -119,8 +119,8 @@ double determinant(Matrix *a)
             }
             det += pow(-1.0,1.0+x+1.0) * a->matrix[0][x] * determinant(&m);
         }
-        freeMatrix(&m);
     }
+    freeMatrix(&m);
     return(det);
 }
 
