@@ -52,17 +52,12 @@ void printMatrix(Matrix *m)
     }
 }
 
-double getElement(const Matrix *m, const int r, const int c) 
-{
-    return **m->matrix + r * m->rowSize + c;
-}
-
 Matrix multiply(Matrix *a, Matrix *b)
 {
     // check if multiplication is possible 
     if(a->columnSize != b->rowSize )
     {
-        fprintf(stderr, "Error: Incompatible sizes");
+        fprintf(stderr, "Error: comlumnSize of Matrix a != rowSize of Matrix b");
         exit(0);
     }
 
@@ -95,7 +90,7 @@ double determinant(double **a, int n)
         exit(EXIT_FAILURE);
     } 
     else if (n == 1)
-    { /* Shouldn't not get 1x1 Matrix */
+    {
         det = a[0][0];
     } 
     else if (n == 2) 
@@ -107,6 +102,7 @@ double determinant(double **a, int n)
         det = 0;
         for (x = 0; x < n ; x++) 
         {
+            // determinant expansion by minors
             m = malloc((n-1)*sizeof(double *));
             for (i=0;i<n-1;i++)
             {
@@ -176,23 +172,34 @@ void CoFactor(double **a,int n,double **b)
     free(c);
 }
 
-// only works for n x n at the moment
 Matrix inverse(Matrix *a)
 {
     int i, j;
-    Matrix Inverse = createMatrix(a->rowSize, a->columnSize);
+    Matrix result_inverse = createMatrix(a->rowSize, a->columnSize);
     Matrix adj = createMatrix(a->rowSize, a->columnSize);
     double det = determinant(a->matrix, a->rowSize);
     CoFactor(a->matrix, a->rowSize, adj.matrix);     
+
+    if(a->rowSize != a->columnSize)
+    {
+        fprintf(stderr, "no nxn Matrix");
+        exit(0);
+    }
+
+    if(det == 0)
+    {
+        fprintf(stderr, "cant devide by 0");
+        exit(0);
+    }
 
     for(i = 0; i < a->rowSize; i++)
     {
         for(j=0; j < a->columnSize; j++)
         {
-            Inverse.matrix[i][j] = (1/det) *  adj.matrix[i][j];
+            result_inverse.matrix[i][j] = (1/det) *  adj.matrix[i][j];
         }
     }
     freeMatrix(&adj);
-    return Inverse;
+    return result_inverse;
 }
 
