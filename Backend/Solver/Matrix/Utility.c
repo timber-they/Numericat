@@ -58,7 +58,7 @@ Matrix multiply(Matrix *a, Matrix *b)
     if(a->columnSize != b->rowSize )
     {
         fprintf(stderr, "Error: comlumnSize of Matrix a != rowSize of Matrix b");
-        exit(0);
+        exit(1);
     }
 
     int n = a->rowSize;
