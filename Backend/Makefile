@@ -1,11 +1,12 @@
 $(info $(SHELL))
-CC=clang
-CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -O3 -pedantic -Wno-gnu-zero-variadic-macro-arguments
-CLIBS=-lcheck -pthread -lrt -lm
+CC?=gcc
+CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address -fsanitize-recover=address
+CLIBS=-lcheck -pthread -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit
+ASAN_OPTIONS=halt_on_error=0
 FILE_BASE=Program
-DEPENDENCIES=Parser/Parser.c Parser/Function.c
+DEPENDENCIES=Parser/Parser.c Parser/Function.c Solver/Matrix/Utility.c
 TEST_FILE_BASE=Tests/Checks
 OS?=$(shell [ -e "/etc/os-release" ] && grep ^NAME=".*" /etc/os-release)
 ifeq ($(OS),)
