@@ -1,7 +1,7 @@
 $(info $(SHELL))
-CC=gcc
-CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address
-CLIBS=-lcheck -pthread -lrt -lm
+CC?=gcc
+CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address -fsanitize-recover=address
+CLIBS=-lcheck -pthread -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit
 FILE_BASE=Program

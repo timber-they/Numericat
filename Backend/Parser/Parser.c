@@ -46,14 +46,20 @@ Function Parse(char *raw)
         {
             int val = raw[i] - '0';
             if (handleNumber(val))
+            {
+                free(func);
                 return NULL;
+            }
             continue;
         }
 
         if (raw[i] == '.')
         {
             if (currentNumberState != 1)
+            {
+                free(func);
                 return NULL;
+            }
             currentNumberState = -1;
             continue;
         }
@@ -62,19 +68,28 @@ Function Parse(char *raw)
         {
             // For now only x - later maybe multiple dimensions
             if (handleVariable(raw[i]))
+            {
+                free(func);
                 return NULL;
+            }
             continue;
         }
 
         finishNumber();
 
         if (handleOperator(raw[i]))
+        {
+            free(func);
             return NULL;
+        }
     }
 
     finishNumber();
     if (validateEnd())
+    {
+        free(func);
         return NULL;
+    }
     func[j] = (Element) {.atomType=end, .atom.value=0};
 
     return func;
@@ -194,3 +209,4 @@ static void initialize()
     currentNumberState = 0;
     j = 0;
 }
+

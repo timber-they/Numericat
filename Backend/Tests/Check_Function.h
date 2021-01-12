@@ -46,6 +46,9 @@ START_TEST(test_Evaluate)
     assertFloatEq(expected11, res11);
     assertFloatEq(expected12, res12);
     assertFloatEq(expected01, res01);
+
+    free(parsed1);
+    free(parsed2);
 }
 END_TEST
 
