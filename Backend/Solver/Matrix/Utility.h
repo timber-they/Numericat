@@ -4,8 +4,8 @@
 #define BACKEND_UTILITY_H
 
 typedef struct Matrix {
-    int rowSize;
-    int columnSize;
+    int rowCount;
+    int columnCount;
     double **matrix;
     int dimension;
 } Matrix;

@@ -14,8 +14,8 @@ void freeMatrix(Matrix *a)
 Matrix createMatrix(int r, int c)
 {
     Matrix result = {r, c, calloc(r, sizeof(double *))};
-    result.rowSize = r;
-    result.columnSize = c;
+    result.rowCount = r;
+    result.columnCount = c;
     result.dimension = r;
 
     if (result.matrix == NULL)
@@ -78,14 +78,90 @@ void printMatrix(Matrix *m)
 
 Matrix multiply(Matrix *a, Matrix *b)
 {
-    // check if multiplication is possible 
-    if(a->columnSize != b->rowSize )
+    int l = a.rowCount;
+    int m = a.columnCount;
+    // check if multiplication is possible
+    if (m != b.rowCount)
     {
-        fprintf(stderr, "Error: comlumnSize of Matrix a != rowSize of Matrix b");
+        fprintf(stderr, "Error: columns of Matrix a = %d != %d = rows of Matrix b\n", a.columnCount, b.rowCount);
         exit(1);
     }
+    int n = b.columnCount;
 
-    int n = a->rowSize;
+    Matrix result = createMatrix(l, n);
+
+    for (int i = 0; i < l; i++)
+        for (int k = 0; k < n; k++)
+        {
+            result.matrix[i][k] = 0;
+            for (int j = 0; j < m; j++)
+                result.matrix[i][k] += a.matrix[i][j] * b.matrix[j][k];
+        }
+    return result;
+}
+
+Matrix sum(Matrix a, Matrix b)
+{
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
+        fprintf(stderr, "Error: comlumns of Matrix a != rows of Matrix b");
+        exit(0);
+    }
+    int r = a.rowCount;
+    int c = a.columnCount;
+    Matrix result = createMatrix(r,c);
+    int i,j;
+    for(i = 0; i < r ; i++){
+        for(j = 0; j < c; j++){
+            result.matrix[i][j] = a.matrix[i][j] + b.matrix[i][j];
+            //result[i][j] = a[i][j]+b[i][j]
+        }
+    }
+
+    return result;
+}
+
+Matrix subtract(Matrix a, Matrix b)
+{
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
+        fprintf(stderr, "Error: columns of Matrix a != rows of Matrix b");
+        exit(0);
+    }
+    int r = a.rowCount;
+    int c = a.columnCount;
+    Matrix result = createMatrix(r,c);
+    int i,j;
+    for(i = 0; i < r ; i++){
+        for(j = 0; j < c; j++){
+            result.matrix[i][j] = a.matrix[i][j] - b.matrix[i][j];
+            //result[i][j] = a[i][j]-b[i][j]
+        }
+    }
+    return result;
+}
+
+Matrix arrayToMatrix(double *array, int n)
+{
+    Matrix result = createMatrix(n, 1);
+    for(int i = 0; i < n; i++)
+    {
+        result.matrix[i][0] = array[i];
+    }
+    return result;
+}
+
+double *matrixToArray(Matrix m)
+{
+    double *result = malloc(m.rowCount * sizeof(*result));
+    for(int i = 0; i < m.rowCount; i++)
+    {
+        result[i] = m.matrix[i][0];
+    }
+    return result;
+}
+
+Matrix factor(Matrix a, double f)
+{
+    int n = a.rowCount;
     Matrix result = createMatrix(n, n);
 
     int i, j, k;

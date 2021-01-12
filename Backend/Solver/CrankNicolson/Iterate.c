@@ -1,5 +1,6 @@
 #include "Iterate.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 #define nx 10//01
 #define dx 0.001
@@ -24,7 +25,7 @@ static Matrix createPotentialMatrix(Matrix potentialValues)
 {
     Matrix res = createMatrix(nx, nx);
     for (int i = 0; i < nx; i++)
-        res.matrix[i][i] = potentialValues.matrix[0][i];
+        res.matrix[i][i] = potentialValues.matrix[i][0];
     return res;
 }
 
@@ -56,13 +57,16 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
 
     for (int i = 0; i < n; i++)
     {
+        printf("i=%d\n", i);
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
         Matrix a = subtract(ident, factor(sum(d2, potentialMatrix), dt/2));
         // b = (I + dt/2 * (D2 + V)) * Psi
         Matrix b = multiply(sum(ident, factor(sum(d2, potentialMatrix), dt/2)), psi);
 
+        printf("Inverting...\n");
         Matrix aInverse = inverse(a);
+        printf("Inverted\n");
         freeMatrix(a);
         Matrix psiN = multiply(aInverse, b);
         freeMatrix(aInverse);

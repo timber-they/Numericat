@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
     Print(potential);
     Print(initial);
 
-    double **res = Iterate1d(potential, initial, 0.1, 20);
-    for (int i = 0; i < 20; i++)
+    double **res = Iterate1d(potential, initial, 0.1, 1);
+    for (int i = 0; i < 1; i++)
     {
         for (int j = 0; j < 10; j++)
             printf("%5f ", res[i][j]);
