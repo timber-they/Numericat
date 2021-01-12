@@ -26,6 +26,7 @@ int main(void)
     tcase_add_test(solverCase1, test_det);
     tcase_add_test(solverCase1, test_Inverse);
     tcase_add_test(solverCase1, test_multiply);
+    tcase_add_test(solverCase1, test_identity);
 
     srunner_run_all(sr, CK_NORMAL);
     nf = srunner_ntests_failed(sr);

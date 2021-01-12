@@ -80,4 +80,32 @@ START_TEST(test_Inverse)
 }
 END_TEST
 
+START_TEST(test_identity)
+{
+    double diff;
+    printf("test_identity \n");
+    Matrix result = identity(2);
+    printf("Output Matrix: \n");
+    printMatrix(&result);
+    diff = Inverse.matrix[0][0] - (1);
+    ck_assert(diff < 0.01);
+    diff = Inverse.matrix[0][1] - (0);
+    ck_assert(diff < 0.01);
+    diff = Inverse.matrix[1][0] - (0);
+    ck_assert(diff < 0.01);
+    diff = Inverse.matrix[1][1] - (1);
+    ck_assert(diff < 0.01);
+}
+END_TEST
+
+START_TEST(test_ones)
+{
+    double diff;
+    printf("test_identity \n");
+    Matrix result = ones(2,2);
+    printf("Output Matrix: \n");
+    printMatrix(&result);
+}
+END_TEST
+
 #endif
