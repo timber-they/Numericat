@@ -53,6 +53,30 @@ Matrix createRandMatrix(int r, int c)
     return temp;
 }
 
+Matrix ones(int r, int c)
+{
+    Matrix m = createMatrix(r, c);
+    for (int i = 0; i < m->rowSize; i++)
+    {
+        for (int j = 0; j < m->columnSize; j++)
+        {
+            m->matrix[i][j] = 1;
+        }
+    }
+
+    return m;
+}
+
+Matrix identity(int n);
+{
+    Matrix result = createMatrix(n,n);
+    for(int i = 0; i < n; i++)
+    {
+        result.matrix[n][n] = 1;
+    }
+    return result
+}
+
 void printMatrix(Matrix *m) 
 {
     int i,j;

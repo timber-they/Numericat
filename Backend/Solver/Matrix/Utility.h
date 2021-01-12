@@ -14,6 +14,8 @@ double GetRandomNumber(double minimum, double maximum);
 void randomize(Matrix *m);
 Matrix createMatrix(int r, int c);
 Matrix createRandMatrix(int r, int c);
+Matrix ones(int r, int c);
+Matrix identity(int n);
 void printMatrix(Matrix *m);
 double getElement(const Matrix *m, const int r, const int c);
 Matrix multiply(Matrix *a, Matrix *b);
