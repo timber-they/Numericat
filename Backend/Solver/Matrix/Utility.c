@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void freeMatrix(Matrix *a)
+void freeMatrix(Matrix a)
 {
-    for (int i = 0; i < a->dimension; i++)
-        free(a->matrix[i]);
-    free(a->matrix);
+    for (int i = 0; i < a.dimension; i++)
+        free(a.matrix[i]);
+    free(a.matrix);
 }
 
 Matrix createMatrix(int r, int c)
@@ -42,18 +42,18 @@ Matrix createMatrix(int r, int c)
 Matrix ones(int r, int c)
 {
     Matrix m = createMatrix(r, c);
-    for (int i = 0; i < m->rowSize; i++)
+    for (int i = 0; i < m.rowCount; i++)
     {
-        for (int j = 0; j < m->columnSize; j++)
+        for (int j = 0; j < m.rowCount; j++)
         {
-            m->matrix[i][j] = 1;
+            m.matrix[i][j] = 1;
         }
     }
 
     return m;
 }
 
-Matrix identity(int n);
+Matrix identity(int n)
 {
     Matrix result = createMatrix(n,n);
     for(int i = 0; i < n; i++)
@@ -63,20 +63,20 @@ Matrix identity(int n);
     return result;
 }
 
-void printMatrix(Matrix *m)
+void printMatrix(Matrix m)
 {
     int i,j;
-    for(i = 0; i < m->rowSize ; i++)
+    for(i = 0; i < m.rowCount ; i++)
     {
-        for(j = 0; j < m->columnSize; j++)
+        for(j = 0; j < m.rowCount; j++)
         {
-            printf("%f  ", m->matrix[i][j]);
+            printf("%f  ", m.matrix[i][j]);
         }
         printf("\n");
     }
 }
 
-Matrix multiply(Matrix *a, Matrix *b)
+Matrix multiply(Matrix a, Matrix b)
 {
     int l = a.rowCount;
     int m = a.columnCount;
@@ -103,7 +103,7 @@ Matrix multiply(Matrix *a, Matrix *b)
 Matrix sum(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
-        fprintf(stderr, "Error: comlumns of Matrix a != rows of Matrix b");
+        fprintf(stderr, "Error: columns of Matrix a != rows of Matrix b");
         exit(0);
     }
     int r = a.rowCount;
@@ -171,19 +171,19 @@ Matrix factor(Matrix a, double f)
         {
             result.matrix[i][j] = 0;
             for (k = 0; k < n; k++)
-                result.matrix[i][j] += a->matrix[i][k] * b->matrix[k][j];
+                result.matrix[i][j] += a.matrix[i][k] * f;
         }
     }
     return result;
 }
 
 // n is the dimension of a->matrix
-double determinant(Matrix *a)
+double determinant(Matrix a)
 {
     int i, j, x, y;
-    double det = 0;
-    Matrix m = createMatrix(a->columnSize-1, a->rowSize-1);
-    int n = a->rowSize;
+    double det;
+    Matrix m = createMatrix(a.rowCount-1, a.rowCount-1);
+    int n = a.rowCount;
 
     if (n < 1)
     { /* Error */
@@ -213,14 +213,14 @@ double determinant(Matrix *a)
                     {
                         continue;
                     }
-                    m.matrix[i-1][y] = a->matrix[i][j];
+                    m.matrix[i-1][y] = a.matrix[i][j];
                     y++;
                 }
             }
-            det += pow(-1.0,1.0+x+1.0) * a->matrix[0][x] * determinant(&m);
+            det += pow(-1.0,1.0+x+1.0) * a.matrix[0][x] * determinant(m);
         }
     }
-    freeMatrix(&m);
+    freeMatrix(m);
     return(det);
 }
 
@@ -236,7 +236,7 @@ void CoFactor(double **a,int n,double **b)
         for (i=0;i<n;i++)
         {
 
-            /* Form the adjoint a_ij */
+            /* Form the adjoin a_ij */
             y = 0;
             for (m=0;m<n;m++)
             {
@@ -252,24 +252,24 @@ void CoFactor(double **a,int n,double **b)
                 }
                 y++;
             }
-            det = determinant(&c);
+            det = determinant(c);
 
             /* Fill in the elements of the cofactor */
             b[i][j] = pow(-1.0,i+j+2.0) * det;
         }
     }
-    freeMatrix(&c);
+    freeMatrix(c);
 }
 
-Matrix inverse(Matrix *a)
+Matrix inverse(Matrix a)
 {
     int i, j;
-    Matrix result_inverse = createMatrix(a->rowSize, a->columnSize);
-    Matrix adj = createMatrix(a->rowSize, a->columnSize);
+    Matrix result_inverse = createMatrix(a.rowCount, a.rowCount);
+    Matrix adj = createMatrix(a.rowCount, a.rowCount);
     double det = determinant(a);
-    CoFactor(a->matrix, a->rowSize, adj.matrix);
+    CoFactor(a.matrix, a.rowCount, adj.matrix);
 
-    if(a->rowSize != a->columnSize)
+    if(a.rowCount != a.columnCount)
     {
         fprintf(stderr, "no nxn Matrix");
         exit(0);
@@ -277,18 +277,18 @@ Matrix inverse(Matrix *a)
 
     if(det == 0)
     {
-        fprintf(stderr, "cant devide by 0");
+        fprintf(stderr, "cant divide by 0");
         exit(0);
     }
 
-    for(i = 0; i < a->rowSize; i++)
+    for(i = 0; i < a.rowCount; i++)
     {
-        for(j=0; j < a->columnSize; j++)
+        for(j=0; j < a.rowCount; j++)
         {
             result_inverse.matrix[i][j] = (1/det) *  adj.matrix[i][j];
         }
     }
-    freeMatrix(&adj);
+    freeMatrix(adj);
     return result_inverse;
 }
 

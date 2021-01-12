@@ -22,7 +22,7 @@ Matrix sum(Matrix a, Matrix b);
 Matrix subtract(Matrix a, Matrix b);
 Matrix arrayToMatrix(double *array, int n);
 double *matrixToArray(Matrix m);
-double determinant(Matrix  a);
+double determinant(Matrix a);
 void CoFactor(double **a,int n,double **b);
 Matrix inverse(Matrix a);
 
