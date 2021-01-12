@@ -25,7 +25,7 @@ Matrix createMatrix(int r, int c)
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < r; i++) 
+    for (int i = 0; i < r; i++)
     {
         result.matrix[i] = calloc(c, sizeof result.matrix[i][0]);
 
@@ -58,9 +58,9 @@ Matrix identity(int n);
     Matrix result = createMatrix(n,n);
     for(int i = 0; i < n; i++)
     {
-        result.matrix[n][n] = 1;
+        result.matrix[i][i] = 1;
     }
-    return result
+    return result;
 }
 
 void printMatrix(Matrix *m)
@@ -109,20 +109,20 @@ double determinant(Matrix *a)
     Matrix m = createMatrix(a->columnSize-1, a->rowSize-1);
     int n = a->rowSize;
 
-    if (n < 1) 
+    if (n < 1)
     { /* Error */
         fprintf(stderr, "dimension is < 1");
         exit(EXIT_FAILURE);
-    } 
+    }
     else if (n == 1)
     {
-        det = a->matrix[0][0];
-    } 
-    else if (n == 2) 
+        det = a.matrix[0][0];
+    }
+    else if (n == 2)
     {
-        det = a->matrix[0][0] * a->matrix[1][1] - a->matrix[1][0] * a->matrix[0][1];
-    } 
-    else 
+        det = a.matrix[0][0] * a.matrix[1][1] - a.matrix[1][0] * a.matrix[0][1];
+    }
+    else
     {
         det = 0;
         for (x = 0; x < n ; x++)

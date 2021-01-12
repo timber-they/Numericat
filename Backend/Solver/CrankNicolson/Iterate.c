@@ -1,10 +1,8 @@
 #include "Iterate.h"
 #include <stdlib.h>
 
-#define nx 1001
+#define nx 10//01
 #define dx 0.001
-// MeV pm
-#define hbar 0.1973
 
 static Matrix createInitialDerivative()
 {
@@ -22,40 +20,63 @@ static Matrix createInitialDerivative()
     return res;
 }
 
-static Matrix createPotentialMatrix(double *potentialValues)
+static Matrix createPotentialMatrix(Matrix potentialValues)
 {
     Matrix res = createMatrix(nx, nx);
     for (int i = 0; i < nx; i++)
-        res.matrix[i][i] = potentialValues[i];
+        res.matrix[i][i] = potentialValues.matrix[0][i];
+    return res;
 }
 
-static double *functionToArray(Function func, double d, int n)
+static Matrix functionToVector(Function func, double d, int n)
 {
     double *res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
         res[i] = Evaluate(func, d * i);
-    return res;
+    Matrix matrix = arrayToMatrix(res, n);
+    free(res);
+    return matrix;
 }
 
 double **Iterate1d(Function potential, Function psi0, double dt, int n)
 {
     double **res = malloc(n * sizeof(*res));
+    // nx * nx
     Matrix d2 = createInitialDerivative();
-    Matrix identity = identity(nx);
+    // nx * nx
+    Matrix ident = identity(nx);
 
-    double *psi = functionToArray(psi0, dx, nx);
-    double *potentialValues = functionToArray(potential, dx, nx);
-    Matrix potential = createPotentialMatrix(potentialValues);
-    free(potentialValues);
+    // 1 * nx
+    Matrix psi = functionToVector(psi0, dx, nx);
+    // 1 * nx
+    Matrix potentialValues = functionToVector(potential, dx, nx);
+    // nx * nx
+    Matrix potentialMatrix = createPotentialMatrix(potentialValues);
+    freeMatrix(potentialValues);
 
     for (int i = 0; i < n; i++)
     {
-        double t = i * dt;
+        res[i] = matrixToArray(psi);
+        // A = (I - dt/2 * (D2 + V))
+        Matrix a = subtract(ident, factor(sum(d2, potentialMatrix), dt/2));
+        // b = (I + dt/2 * (D2 + V)) * Psi
+        Matrix b = multiply(sum(ident, factor(sum(d2, potentialMatrix), dt/2)), psi);
 
+        Matrix aInverse = inverse(a);
+        freeMatrix(a);
+        Matrix psiN = multiply(aInverse, b);
+        freeMatrix(aInverse);
+        freeMatrix(b);
+        freeMatrix(psi);
+        psi = psiN;
     }
+    res[n-1] = matrixToArray(psi);
 
-    free(psi);
+    freeMatrix(psi);
+    freeMatrix(potentialValues);
+    freeMatrix(potentialMatrix);
+    freeMatrix(ident);
+    freeMatrix(d2);
 
-
-    return NULL;
+    return res;
 }
