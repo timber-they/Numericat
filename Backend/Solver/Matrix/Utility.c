@@ -163,14 +163,12 @@ Matrix factor(Matrix a, double f)
     int n = a.rowCount;
     Matrix result = createMatrix(n, n);
 
-    int i, j, k;
+    int i, j;
     for (i = 0; i < n; i++)
     {
         for (j = 0; j < n; j++)
         {
-            result.matrix[i][j] = 0;
-            for (k = 0; k < n; k++)
-                result.matrix[i][j] += a.matrix[i][k] * f;
+            result.matrix[i][j] = a.matrix[i][j] * f;
         }
     }
     return result;
