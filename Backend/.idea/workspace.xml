@@ -14,18 +14,18 @@
   <component name="ChangeListManager">
     <list default="true" id="61956d0f-9c06-4dbe-955e-c7c0f2dd1f40" name="Default Changelist" comment="Might be working, but too slow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
-    <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="">
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Solver/Matrix/Utility.c" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/Matrix/Utility.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Check_Matrix.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Check_Matrix.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Checks.c" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Checks.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Solver/Matrix/Utility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/Matrix/Utility.h" afterDir="false" />
     </list>
+    <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ClangdSettings">
+    <option name="clangTidyViaClangd" value="false" />
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExternalProjectsData">
@@ -36,7 +36,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="animateResults#8" />
+        <entry key="$PROJECT_DIR$/.." value="Crank-Nickelson#3" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -77,6 +77,9 @@
     </option>
   </component>
   <component name="ProjectId" id="1myh8VRROSIak32CeLhWFgyaxoc" />
+  <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -118,7 +121,7 @@
       <updated>1610471582587</updated>
       <workItem from="1610471585146" duration="18000" />
       <workItem from="1610471615209" duration="11517000" />
-      <workItem from="1610794657050" duration="11000" />
+      <workItem from="1610794657050" duration="1698000" />
     </task>
     <task id="LOCAL-00001" summary="Function header">
       <created>1610472424766</created>

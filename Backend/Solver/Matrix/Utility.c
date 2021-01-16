@@ -291,3 +291,56 @@ Matrix inverse(Matrix a)
     return result_inverse;
 }
 
+// Mutable (result will be in d). Parameters are similar to https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm#Method
+static double *thomasHelperSolve(double *a, double *b, double *c, double *d, int n)
+{
+    c[0] = c[0] / b[0];
+    for (int i = 1; i < n-1; i++)
+        c[i] = c[i] / (b[i] - a[i] * c[i-1]);
+
+    d[0] = d[0] / b[0];
+    for (int i = 1; i < n; i++)
+        d[i] = (d[i] - a[i] * d[i-1]) / (b[i] - a[i] * c[i-1]);
+
+    // Back substitution
+    double *x = d;
+    x[n-1] = d[n-1];
+    for (int i = n-2; i >= 0; i--)
+        x[i] = d[i] - c[i] * x[i+1];
+    return x;
+}
+
+Matrix thomasSolve(Matrix m, Matrix r)
+{
+    if (m.columnCount != m.rowCount || m.columnCount != r.rowCount || r.columnCount != 1)
+    {
+        fprintf(stderr, "Invalid dimensions\n");
+        exit(2);
+    }
+
+    int n = m.columnCount;
+    double *a = malloc(n * sizeof(*a));
+    double *b = malloc(n * sizeof(*b));
+    double *c = malloc((n-1) * sizeof(*c));
+    double *d = malloc(n * sizeof(*d));
+
+    for (int i = 1; i < n; i++)
+        a[i] = m.matrix[i][i-1];
+    for (int i = 0; i < n; i++)
+        b[i] = m.matrix[i][i];
+    for (int i = 0; i < n-1; i++)
+        c[i] = m.matrix[i][i+1];
+    for (int i = 0; i < n; i++)
+        d[i]= r.matrix[i][0];
+
+    double *res = thomasHelperSolve(a, b, c, d, n);
+    Matrix mRes = arrayToMatrix(res, n);
+
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
+    return mRes;
+}
+

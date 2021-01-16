@@ -25,5 +25,12 @@ double *matrixToArray(Matrix m);
 double determinant(Matrix a);
 void CoFactor(double **a,int n,double **b);
 Matrix inverse(Matrix a);
+/**
+ * Efficiently solves a linear system mx=b with a three-diagonal matrix
+ * @param m the matrix
+ * @param b the supposed result result
+ * @return x (the solution)
+ */
+Matrix thomasSolve(Matrix m, Matrix b);
 
 #endif // BACKEND_UTILITY_H
