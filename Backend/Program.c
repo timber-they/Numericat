@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     Print(potential);
     Print(initial);
 
-    int n = 2;
+    int n = 100;
     double **res = Iterate1d(potential, initial, 0.1, n);
     for (int i = 0; i < n; i++)
     {

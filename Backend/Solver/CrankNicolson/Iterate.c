@@ -57,7 +57,6 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
     for (int i = 0; i < n-1; i++)
     {
         printf("i=%d\n", i);
-        printf("Calculating...\n");
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
         Matrix s = sum(d2, potentialMatrix);
@@ -69,11 +68,8 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
         freeMatrix(f);
         Matrix b = multiply(s, psi);
         freeMatrix(s);
-        printf("Calculated\n");
 
-        printf("Solving...\n");
         Matrix psiN = thomasSolve(a, b);
-        printf("Solved\n");
         freeMatrix(a);
         freeMatrix(b);
         freeMatrix(psi);
