@@ -4,6 +4,8 @@
 #ifndef BACKEND_ITERATE_H
 #define BACKEND_ITERATE_H
 
+#define nx 1001
+
 /**
  * Iterate via the Crank-Nicolson method
  * @param function the function identifying the potential

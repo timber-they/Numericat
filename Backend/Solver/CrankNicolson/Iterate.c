@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define nx 10//01
 #define dx 0.001
 
 static Matrix createInitialDerivative()
@@ -55,21 +54,23 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
     Matrix potentialMatrix = createPotentialMatrix(potentialValues);
     freeMatrix(potentialValues);
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n-1; i++)
     {
         printf("i=%d\n", i);
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
-        Matrix a = subtract(ident, factor(sum(d2, potentialMatrix), dt/2));
+        Matrix s = sum(d2, potentialMatrix);
+        Matrix f = factor(s, dt/2);
+        freeMatrix(s);
+        Matrix a = subtract(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
-        Matrix b = multiply(sum(ident, factor(sum(d2, potentialMatrix), dt/2)), psi);
+        s = sum(ident, f);
+        freeMatrix(f);
+        Matrix b = multiply(s, psi);
+        freeMatrix(s);
 
-        printf("Inverting...\n");
-        Matrix aInverse = inverse(a);
-        printf("Inverted\n");
+        Matrix psiN = thomasSolve(a, b);
         freeMatrix(a);
-        Matrix psiN = multiply(aInverse, b);
-        freeMatrix(aInverse);
         freeMatrix(b);
         freeMatrix(psi);
         psi = psiN;
@@ -77,7 +78,6 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
     res[n-1] = matrixToArray(psi);
 
     freeMatrix(psi);
-    freeMatrix(potentialValues);
     freeMatrix(potentialMatrix);
     freeMatrix(ident);
     freeMatrix(d2);
