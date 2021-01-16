@@ -64,12 +64,9 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
         // b = (I + dt/2 * (D2 + V)) * Psi
         Matrix b = multiply(sum(ident, factor(sum(d2, potentialMatrix), dt/2)), psi);
 
-        printf("Inverting...\n");
-        Matrix aInverse = inverse(a);
-        printf("Inverted\n");
-        freeMatrix(a);
-        Matrix psiN = multiply(aInverse, b);
-        freeMatrix(aInverse);
+        printf("Solving...\n");
+        Matrix psiN = thomasSolve(a, b);
+        printf("Solved\n");
         freeMatrix(b);
         freeMatrix(psi);
         psi = psiN;
@@ -77,7 +74,6 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
     res[n-1] = matrixToArray(psi);
 
     freeMatrix(psi);
-    freeMatrix(potentialValues);
     freeMatrix(potentialMatrix);
     freeMatrix(ident);
     freeMatrix(d2);
