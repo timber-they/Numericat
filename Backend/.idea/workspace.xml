@@ -14,8 +14,10 @@
   <component name="ChangeListManager">
     <list default="true" id="61956d0f-9c06-4dbe-955e-c7c0f2dd1f40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.c" beforeDir="false" afterPath="$PROJECT_DIR$/Program.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.h" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.h" afterDir="false" />
     </list>
     <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -120,7 +122,7 @@
       <updated>1610471582587</updated>
       <workItem from="1610471585146" duration="18000" />
       <workItem from="1610471615209" duration="11517000" />
-      <workItem from="1610794657050" duration="2843000" />
+      <workItem from="1610794657050" duration="3771000" />
     </task>
     <task id="LOCAL-00001" summary="Function header">
       <created>1610472424766</created>
@@ -164,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610796603866</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fix memory leaks">
+      <created>1610797526964</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1610797526964</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,6 +196,7 @@
     <MESSAGE value="Might be working, but too slow" />
     <MESSAGE value="Implemented Thomas algorithm" />
     <MESSAGE value="Use Thomas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use Thomas" />
+    <MESSAGE value="Fix memory leaks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix memory leaks" />
   </component>
 </project>
