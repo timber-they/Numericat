@@ -283,4 +283,26 @@ START_TEST(test_sum)
 }
 END_TEST
 
+START_TEST(test_arrayToMatrix)
+{
+    double *arr = malloc(sizeof(double) * 3);
+    *arr[0] = 1;
+    *arr[1] = 2;
+    *arr[2] = 3;
+    Matrix result = arrayToMatrix(arr, 3);
+    ck_assert((result.matrix[0][0] - (1.0)) < 0.0001);
+    ck_assert((result.matrix[1][0] - (2.0)) < 0.0001);
+    ck_assert((result.matrix[2][0] - (3.0)) < 0.0001);
+    freeMatrix(result);
+    free(arr);
+}
+END_TEST
+
+START_TEST(test_matrixToArray)
+{
+    Matrix result =
+    double *arr = malloc(sizeof(double) * 3);
+}
+END_TEST
+
 #endif

@@ -29,6 +29,11 @@ int main(void)
     tcase_add_test(solverCase1, test_identity);
     tcase_add_test(solverCase1, test_multiply_3x3);
     tcase_add_test(solverCase1, test_det_3x3);
+    tcase_add_test(solverCase1, test_ones);
+    tcase_add_test(solverCase1, test_sum);
+    tcase_add_test(solverCase1, test_factor);
+    tcase_add_test(solverCase1, test_arrayToMatrix);
+
 
     srunner_run_all(sr, CK_NORMAL);
     nf = srunner_ntests_failed(sr);

@@ -49,7 +49,6 @@ Matrix ones(int r, int c)
             m.matrix[i][j] = 1;
         }
     }
-
     return m;
 }
 
@@ -68,7 +67,7 @@ void printMatrix(Matrix m)
     int i,j;
     for(i = 0; i < m.rowCount ; i++)
     {
-        for(j = 0; j < m.rowCount; j++)
+        for(j = 0; j < m.columnCount; j++)
         {
             printf("%f  ", m.matrix[i][j]);
         }
@@ -165,9 +164,9 @@ Matrix factor(Matrix a, double f)
     Matrix result = createMatrix(n, n);
 
     int i, j, k;
-    for (i = 0; i < n; i++) 
+    for (i = 0; i < n; i++)
     {
-        for (j = 0; j < n; j++) 
+        for (j = 0; j < n; j++)
         {
             result.matrix[i][j] = 0;
             for (k = 0; k < n; k++)
@@ -177,12 +176,12 @@ Matrix factor(Matrix a, double f)
     return result;
 }
 
-// n is the dimension of a->matrix
+// n is the dimension of a.matrix
 double determinant(Matrix a)
 {
     int i, j, x, y;
-    double det;
-    Matrix m = createMatrix(a.rowCount-1, a.rowCount-1);
+    double det = 0;
+    Matrix m = createMatrix(a.columnCount - 1, a.rowCount - 1);
     int n = a.rowCount;
 
     if (n < 1)
@@ -264,8 +263,8 @@ void CoFactor(double **a,int n,double **b)
 Matrix inverse(Matrix a)
 {
     int i, j;
-    Matrix result_inverse = createMatrix(a.rowCount, a.rowCount);
-    Matrix adj = createMatrix(a.rowCount, a.rowCount);
+    Matrix result_inverse = createMatrix(a.rowCount, a.columnCount);
+    Matrix adj = createMatrix(a.rowCount, a.columnCount);
     double det = determinant(a);
     CoFactor(a.matrix, a.rowCount, adj.matrix);
 
@@ -283,7 +282,7 @@ Matrix inverse(Matrix a)
 
     for(i = 0; i < a.rowCount; i++)
     {
-        for(j=0; j < a.rowCount; j++)
+        for(j=0; j < a.columnCount; j++)
         {
             result_inverse.matrix[i][j] = (1/det) *  adj.matrix[i][j];
         }
