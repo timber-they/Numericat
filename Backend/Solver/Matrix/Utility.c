@@ -35,7 +35,6 @@ Matrix createMatrix(int r, int c)
             exit(EXIT_FAILURE);
         }
     }
-
     return result;
 }
 
