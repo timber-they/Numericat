@@ -9,13 +9,13 @@
 START_TEST(test_multiply)
 {
     printf("test_multiply \n");
-    Matrix input_1 = createMatrix(2,2);
-    input_1.matrix[0][0] = 2.0;
-    input_1.matrix[0][1] = 2.0;
-    input_1.matrix[1][0] = 2.0;
-    input_1.matrix[1][1] = 2.0;
+    Matrix input = createMatrix(2,2);
+    input.matrix[0][0] = 2.0;
+    input.matrix[0][1] = 2.0;
+    input.matrix[1][0] = 2.0;
+    input.matrix[1][1] = 2.0;
     printf("Input Matrix 1: \n");
-    printMatrix(input_1);
+    printMatrix(input);
     printf("-------------------\n");
     Matrix input_2 = createMatrix(2,2);
     input_2.matrix[0][0] = 2.0;
@@ -25,7 +25,7 @@ START_TEST(test_multiply)
     printf("Input Matrix 2: \n");
     printMatrix(input_2);
     printf("-------------------\n");
-    Matrix multiplied = multiply(input_1, input_2);
+    Matrix multiplied = multiply(input, input_2);
     printf("multiplied Matrix: \n");
     printMatrix(multiplied);
     ck_assert((multiplied.matrix[0][0] - (8.0)) < 0.0001);
@@ -33,7 +33,7 @@ START_TEST(test_multiply)
     ck_assert((multiplied.matrix[0][1] - (8.0)) < 0.0001);
     ck_assert((multiplied.matrix[1][1] - (8.0)) < 0.0001);
     printf("\n");
-    freeMatrix(input_1);
+    freeMatrix(input);
     freeMatrix(input_2);
     freeMatrix(multiplied);
 }
@@ -287,9 +287,9 @@ START_TEST(test_arrayToMatrix)
 {
     printf("test_arrayToMatrix \n");
     double *arr = malloc(sizeof(double) * 3);
-    *arr[0] = 1;
-    *arr[1] = 2;
-    *arr[2] = 3;
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[2] = 3;
     Matrix result = arrayToMatrix(arr, 3);
     ck_assert((result.matrix[0][0] - (1.0)) < 0.0001);
     ck_assert((result.matrix[1][0] - (2.0)) < 0.0001);
@@ -303,13 +303,13 @@ START_TEST(test_MatrixToArray)
 {
     printf("test_MatrixtoArray \n");
     Matrix result = createMatrix(3,1);
-    result.matrix[0][0] = 1;
-    result.matrix[1][0] = 2;
-    result.matrix[2][0] = 3;
+    result.matrix[0][0] = 1.0;
+    result.matrix[1][0] = 2.0;
+    result.matrix[2][0] = 3.0;
     double *arr = matrixToArray(result);
-    ck_assert((*arr[0] - (1.0)) < 0.0001);
-    ck_assert((*arr[1] - (2.0)) < 0.0001);
-    ck_assert((*arr[2] - (3.0)) < 0.0001);
+    ck_assert((arr[0] - (1.0)) < 0.0001);
+    ck_assert((arr[1] - (2.0)) < 0.0001);
+    ck_assert((arr[2] - (3.0)) < 0.0001);
     free(arr);
 }
 END_TEST
@@ -319,20 +319,20 @@ START_TEST(test_thomas)
     Matrix input_1 = createMatrix(5,5);
     for(int i = 0; i < 5; i++)
     {
-        input_1[i][i] = -2;
+        input_1.matrix[i][i] = -2;
     }
     for(int i = 0; i < 4; i++)
     {
-        input_1[i][i+1] = -2;
+        input_1.matrix[i][i+1] = -2;
     }
     for(int i = 0; i < 4; i++)
     {
-        input_1[i+1][i] = -2;
+        input_1.matrix[i+1][i] = -2;
     }
     Matrix input_2 = createMatrix(5,1);
     for(int i = 0; i < 5; i++)
     {
-        input_1[i][0] = -1;
+        input_1.matrix[i][0] = -1;
     }
     Matrix thomasMatrix = thomasSolve(input_1, input_2);
     printMatrix(thomasMatrix);
@@ -342,7 +342,8 @@ START_TEST(test_thomas)
     printf("x_3 = 9/2 \n");
     printf("x_4 = 4 \n");
     printf("x_5 = 5/2 \n");
-
+    freeMatrix(thomasMatrix);
+    freeMatrix(input_1);
 }
 END_TEST
 
