@@ -285,6 +285,7 @@ END_TEST
 
 START_TEST(test_arrayToMatrix)
 {
+    printf("test_arrayToMatrix \n");
     double *arr = malloc(sizeof(double) * 3);
     *arr[0] = 1;
     *arr[1] = 2;
@@ -300,6 +301,7 @@ END_TEST
 
 START_TEST(test_MatrixToArray)
 {
+    printf("test_MatrixtoArray \n");
     Matrix result = createMatrix(3,1);
     result.matrix[0][0] = 1;
     result.matrix[1][0] = 2;
@@ -308,7 +310,24 @@ START_TEST(test_MatrixToArray)
     ck_assert((*arr[0] - (1.0)) < 0.0001);
     ck_assert((*arr[1] - (2.0)) < 0.0001);
     ck_assert((*arr[2] - (3.0)) < 0.0001);
+    free(arr);
+}
+END_TEST
 
+START_TEST(test_thomas)
+{
+    Matrix input_1 = createMatrix(2,2);
+    input_1.matrix[0][0] = 3.5;
+    input_1.matrix[0][1] = 4.0;
+    input_1.matrix[1][0] = 2.2;
+    input_1.matrix[1][1] = 2.2;
+    Matrix input_2 = createMatrix(2,2);
+    input_2.matrix[0][0] = 2.4;
+    input_2.matrix[0][1] = 2.5;
+    input_2.matrix[1][0] = 5.6;
+    input_2.matrix[1][1] = 4.5;
+    Matrix thomasMatrix = thomasSolve(input_1, input_2);
+    printMatrix(thomasMatrix);
 }
 END_TEST
 
