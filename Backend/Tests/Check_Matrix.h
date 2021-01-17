@@ -316,18 +316,33 @@ END_TEST
 
 START_TEST(test_thomas)
 {
-    Matrix input_1 = createMatrix(2,2);
-    input_1.matrix[0][0] = 3.5;
-    input_1.matrix[0][1] = 4.0;
-    input_1.matrix[1][0] = 2.2;
-    input_1.matrix[1][1] = 2.2;
-    Matrix input_2 = createMatrix(2,2);
-    input_2.matrix[0][0] = 2.4;
-    input_2.matrix[0][1] = 2.5;
-    input_2.matrix[1][0] = 5.6;
-    input_2.matrix[1][1] = 4.5;
+    Matrix input_1 = createMatrix(5,5);
+    for(int i = 0; i < 5; i++)
+    {
+        input_1[i][i] = -2;
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        input_1[i][i+1] = -2;
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        input_1[i+1][i] = -2;
+    }
+    Matrix input_2 = createMatrix(5,1);
+    for(int i = 0; i < 5; i++)
+    {
+        input_1[i][0] = -1;
+    }
     Matrix thomasMatrix = thomasSolve(input_1, input_2);
     printMatrix(thomasMatrix);
+    printf("results should: \n");
+    printf("x_1 = 5/2 \n");
+    printf("x_2 = 4 \n");
+    printf("x_3 = 9/2 \n");
+    printf("x_4 = 4 \n");
+    printf("x_5 = 5/2 \n");
+
 }
 END_TEST
 
