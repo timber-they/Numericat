@@ -298,10 +298,17 @@ START_TEST(test_arrayToMatrix)
 }
 END_TEST
 
-START_TEST(test_matrixToArray)
+START_TEST(test_MatrixToArray)
 {
-    Matrix result =
-    double *arr = malloc(sizeof(double) * 3);
+    Matrix result = createMatrix(3,1);
+    result.matrix[0][0] = 1;
+    result.matrix[1][0] = 2;
+    result.matrix[2][0] = 3;
+    double *arr = matrixToArray(result);
+    ck_assert((*arr[0] - (1.0)) < 0.0001);
+    ck_assert((*arr[1] - (2.0)) < 0.0001);
+    ck_assert((*arr[2] - (3.0)) < 0.0001);
+
 }
 END_TEST
 
