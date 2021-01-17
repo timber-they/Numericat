@@ -206,37 +206,9 @@ START_TEST(test_ones)
 }
 END_TEST
 
-START_TEST(test_sum)
-{
-    printf("test_sum \n");
-    Matrix input_1 = createMatrix(2, 2);
-    input_1.matrix[0][0] = 2.0;
-    input_1.matrix[0][1] = 2.0;
-    input_1.matrix[1][0] = 2.0;
-    input_1.matrix[1][1] = 2.0;
-    printf("Input Matrix 1: \n");
-    printMatrix(input_1);
-    printf("-------------------\n");
-    Matrix input_2 = createMatrix(2, 2);
-    input_2.matrix[0][0] = 2.0;
-    input_2.matrix[0][1] = 2.0;
-    input_2.matrix[1][0] = 2.0;
-    input_2.matrix[1][1] = 2.0;
-    printf("Input Matrix 2: \n");
-    printMatrix(input_1);
-    Matrix result = sum(input_1, input_2);
-    ck_assert((result.matrix[0][0] - (4.0)) < 0.0001);
-    ck_assert((result.matrix[1][1] - (4.0)) < 0.0001);
-    ck_assert((result.matrix[0][1] - (4.0)) < 0.0001);
-    ck_assert((result.matrix[1][1] - (4.0)) < 0.0001);
-    freeMatrix(input_1);
-    freeMatrix(input_2);
-    freeMatrix(result);
-}
-END_TEST
-
 START_TEST(test_factor)
 {
+    printf("\n");
     printf("test_factor \n");
     Matrix input = createMatrix(2, 2);
     input.matrix[0][0] = 2.0;
@@ -256,6 +228,7 @@ END_TEST
 
 START_TEST(test_sum)
 {
+    printf("\n");
     printf("test_sum \n");
     Matrix input_1 = createMatrix(2, 2);
     input_1.matrix[0][0] = 4.0;
@@ -273,10 +246,11 @@ START_TEST(test_sum)
     printf("Input Matrix 2: \n");
     printMatrix(input_1);
     Matrix result = sum(input_1, input_2);
-    ck_assert((result.matrix[0][0] - (2.0)) < 0.0001);
-    ck_assert((result.matrix[1][1] - (2.0)) < 0.0001);
-    ck_assert((result.matrix[0][1] - (2.0)) < 0.0001);
-    ck_assert((result.matrix[1][1] - (2.0)) < 0.0001);
+    printMatrix(result);
+    ck_assert((result.matrix[0][0] - (6.0)) < 0.0001);
+    ck_assert((result.matrix[1][1] - (6.0)) < 0.0001);
+    ck_assert((result.matrix[0][1] - (6.0)) < 0.0001);
+    ck_assert((result.matrix[1][1] - (6.0)) < 0.0001);
     freeMatrix(input_1);
     freeMatrix(input_2);
     freeMatrix(result);
