@@ -223,6 +223,8 @@ START_TEST(test_factor)
     ck_assert((result.matrix[1][1] - (10.0)) < 0.0001);
     ck_assert((result.matrix[0][1] - (10.0)) < 0.0001);
     ck_assert((result.matrix[1][1] - (10.0)) < 0.0001);
+    freeMatrix(result);
+    freeMatrix(input);
 }
 END_TEST
 
@@ -283,6 +285,7 @@ START_TEST(test_MatrixToArray)
     ck_assert((arr[1] - (2.0)) < 0.0001);
     ck_assert((arr[2] - (3.0)) < 0.0001);
     free(arr);
+    freeMatrix(result);
 }
 END_TEST
 
