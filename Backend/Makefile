@@ -1,6 +1,6 @@
 $(info $(SHELL))
 CC?=gcc
-CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address -fsanitize-recover=address
+CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -fsanitize=address -fsanitize-recover=address
 CLIBS=-lcheck -pthread -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit
@@ -12,9 +12,10 @@ ifeq ($(OS),)
 	OS=$(shell uname -s)
 endif
 
+program:${FILE_BASE}.x	
 all:${FILE_BASE}.x ${TEST_FILE_BASE}.x
 test:${TEST_FILE_BASE}.x
-
+			
 # TODO: Unresolved prerequisites
 %.x:%.c ${DEPENDENCIES}
 ifneq (,$(findstring Ubuntu,${OS}))

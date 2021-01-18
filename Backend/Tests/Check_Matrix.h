@@ -309,7 +309,7 @@ START_TEST(test_thomas)
     Matrix input_2 = createMatrix(5,1);
     for(int i = 0; i < 5; i++)
     {
-        input_1.matrix[i][0] = -1;
+        input_2.matrix[i][0] = -1;
     }
     Matrix thomasMatrix = thomasSolve(input_1, input_2);
     printMatrix(thomasMatrix);
@@ -321,6 +321,7 @@ START_TEST(test_thomas)
     printf("x_5 = 5/2 \n");
     freeMatrix(thomasMatrix);
     freeMatrix(input_1);
+    freeMatrix(input_2);
 }
 END_TEST
 
