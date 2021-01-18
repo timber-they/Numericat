@@ -300,17 +300,21 @@ START_TEST(test_thomas)
     }
     for(int i = 0; i < 4; i++)
     {
-        input_1.matrix[i][i+1] = -2;
+        input_1.matrix[i][i+1] = -1;
     }
     for(int i = 0; i < 4; i++)
     {
-        input_1.matrix[i+1][i] = -2;
+        input_1.matrix[i+1][i] = -1;
     }
+    printf("Matrix 1: \n");
+    printMatrix(input_1);
     Matrix input_2 = createMatrix(5,1);
     for(int i = 0; i < 5; i++)
     {
         input_2.matrix[i][0] = -1;
     }
+    printf("Matrix 2: \n");
+    printMatrix(input_2);
     Matrix thomasMatrix = thomasSolve(input_1, input_2);
     printMatrix(thomasMatrix);
     printf("results should: \n");
