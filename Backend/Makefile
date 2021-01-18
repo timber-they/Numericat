@@ -12,7 +12,6 @@ ifeq ($(OS),)
 	OS=$(shell uname -s)
 endif
 
-program:${FILE_BASE}.x	
 all:${FILE_BASE}.x ${TEST_FILE_BASE}.x
 test:${TEST_FILE_BASE}.x
 			
