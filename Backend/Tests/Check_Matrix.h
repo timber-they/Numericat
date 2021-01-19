@@ -28,10 +28,10 @@ START_TEST(test_multiply)
     Matrix multiplied = multiply(input, input_2);
     printf("multiplied Matrix: \n");
     printMatrix(multiplied);
-    ck_assert((multiplied.matrix[0][0] - (3.0)) < 0.0001);
-    ck_assert((multiplied.matrix[1][1] - (2.0)) < 0.0001);
-    ck_assert((multiplied.matrix[0][1] - (15.0)) < 0.0001);
-    ck_assert((multiplied.matrix[1][1] - (8.0)) < 0.0001);
+    ck_assert((multiplied.matrix[0][0] - (6.0)) < 0.0001);
+    ck_assert((multiplied.matrix[1][1] - (18.0)) < 0.0001);
+    ck_assert((multiplied.matrix[0][1] - (10.0)) < 0.0001);
+    ck_assert((multiplied.matrix[1][0] - (11.0)) < 0.0001);
     printf("\n");
     freeMatrix(input);
     freeMatrix(input_2);
@@ -219,10 +219,12 @@ START_TEST(test_factor)
     printMatrix(input);
     double f = 5;
     Matrix result = factor(input, f);
+    printf("result: \n");
+    printMatrix(result);
     ck_assert((result.matrix[0][0] - (5.0)) < 0.0001);
-    ck_assert((result.matrix[1][1] - (10.0)) < 0.0001);
-    ck_assert((result.matrix[0][1] - (15.0)) < 0.0001);
     ck_assert((result.matrix[1][1] - (20.0)) < 0.0001);
+    ck_assert((result.matrix[0][1] - (10.0)) < 0.0001);
+    ck_assert((result.matrix[1][0] - (15.0)) < 0.0001);
     freeMatrix(result);
     freeMatrix(input);
 }
