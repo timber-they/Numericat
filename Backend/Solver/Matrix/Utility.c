@@ -101,8 +101,8 @@ Matrix multiply(Matrix a, Matrix b)
 Matrix sum(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
-        fprintf(stderr, "Error: columns of Matrix a != rows of Matrix b");
-        exit(0);
+        fprintf(stderr, "Error: a and b have different dimensions");
+        exit(2);
     }
     int r = a.rowCount;
     int c = a.columnCount;
@@ -111,7 +111,6 @@ Matrix sum(Matrix a, Matrix b)
     for(i = 0; i < r ; i++){
         for(j = 0; j < c; j++){
             result.matrix[i][j] = a.matrix[i][j] + b.matrix[i][j];
-            //result[i][j] = a[i][j]+b[i][j]
         }
     }
 
@@ -122,7 +121,7 @@ Matrix subtract(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
         fprintf(stderr, "Error: columns of Matrix a != rows of Matrix b");
-        exit(0);
+        exit(2);
     }
     int r = a.rowCount;
     int c = a.columnCount;
@@ -131,7 +130,7 @@ Matrix subtract(Matrix a, Matrix b)
     for(i = 0; i < r ; i++){
         for(j = 0; j < c; j++){
             result.matrix[i][j] = a.matrix[i][j] - b.matrix[i][j];
-            //result[i][j] = a[i][j]-b[i][j]
+
         }
     }
     return result;
@@ -173,7 +172,6 @@ Matrix factor(Matrix a, double f)
     return result;
 }
 
-// n is the dimension of a.matrix
 double determinant(Matrix a)
 {
     int i, j, x, y;
