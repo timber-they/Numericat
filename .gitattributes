@@ -1,2 +1,7 @@
 *.c linguist-language=C
 *.h linguist-language=C
+
+# End of line convention
+*.c 	text 	eol=lf
+*.yml 	text 	eol=lf
+
