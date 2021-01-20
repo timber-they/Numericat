@@ -4,9 +4,8 @@ CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=a
 CLIBS=-lcheck -pthread -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit
-ASAN_OPTIONS=halt_on_error=0
 FILE_BASE=Program
-DEPENDENCIES=Parser/Parser.c Parser/Function.c Solver/Matrix/Utility.c
+DEPENDENCIES=Parser/Parser.c Parser/Function.c Solver/Matrix/Utility.c Solver/CrankNicolson/Iterate.c
 TEST_FILE_BASE=Tests/Checks
 OS?=$(shell [ -e "/etc/os-release" ] && grep ^NAME=".*" /etc/os-release)
 ifeq ($(OS),)
@@ -15,7 +14,7 @@ endif
 
 all:${FILE_BASE}.x ${TEST_FILE_BASE}.x
 test:${TEST_FILE_BASE}.x
-
+			
 # TODO: Unresolved prerequisites
 %.x:%.c ${DEPENDENCIES}
 ifneq (,$(findstring Ubuntu,${OS}))
