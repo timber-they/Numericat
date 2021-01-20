@@ -5,6 +5,7 @@
 #define BACKEND_ITERATE_H
 
 #define nx 1001
+#define dx 0.001
 
 /**
  * Iterate via the Crank-Nicolson method

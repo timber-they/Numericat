@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define dx 0.001
-
 static Matrix createInitialDerivative()
 {
     Matrix res = createMatrix(nx, nx);
