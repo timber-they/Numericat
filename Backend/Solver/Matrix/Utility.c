@@ -120,7 +120,8 @@ Matrix sum(Matrix a, Matrix b)
 Matrix subtract(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
-        fprintf(stderr, "Error: columns of Matrix a != rows of Matrix b");
+        fprintf(stderr, "Error: = matrices are not compatible for subtraction: a.rowCount != b.rowCount or "
+                        "a.columnCount != b.columnCount");
         exit(2);
     }
     int r = a.rowCount;
