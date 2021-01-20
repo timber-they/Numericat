@@ -18,9 +18,8 @@
     <list default="true" id="61956d0f-9c06-4dbe-955e-c7c0f2dd1f40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.c" beforeDir="false" afterPath="$PROJECT_DIR$/Program.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.h" beforeDir="false" afterPath="$PROJECT_DIR$/Program.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.h" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/de/numericat/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/de/numericat/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/de/numericat/Numericanvas.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/de/numericat/Numericanvas.java" afterDir="false" />
     </list>
     <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -92,6 +91,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
@@ -200,7 +200,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610798498721</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Output results">
+      <created>1611162988298</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1611162988298</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -225,6 +232,7 @@
     <MESSAGE value="Use Thomas" />
     <MESSAGE value="Fix memory leaks" />
     <MESSAGE value="Cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanup" />
+    <MESSAGE value="Output results" />
+    <option name="LAST_COMMIT_MESSAGE" value="Output results" />
   </component>
 </project>

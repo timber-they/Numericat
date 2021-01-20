@@ -61,8 +61,8 @@ void writeResults(double **data, Function potential, int n)
     }
     fprintf(fp, "\n");
 
-    for (int i = 0; i < n; i++)
-        fprintf(fp, "%5f ", Evaluate(potential, dx * i));
+    for (int i = 0; i < nx; i++)
+        fprintf(fp, "%5f ", 1000 * Evaluate(potential, dx * i));
 
     fclose(fp);
 }

@@ -28,14 +28,14 @@ public class Main {
         createWindow();
 
         ActionListener action = e -> {
-            List<Coordinate> data = getData();
+            List<List<Coordinate>> data = getData();
             if (data == null)
             {
                 if (timer != null)
                     timer.stop();
                 return;
             }
-            canvas.drawData(data);
+            canvas.drawMultipleData(data);
         };
         timer = new Timer(10, action);
         timer.start();
@@ -58,9 +58,10 @@ public class Main {
     }
 
     private static int currentLine = 0;
-    private static List<Coordinate> getData()
+    private static List<List<Coordinate>> getData()
     {
         String line = null;
+        String lastLine = null;
         FileInputStream fis;
         try
         {
@@ -77,6 +78,15 @@ public class Main {
                 System.err.println("Reached end of file");
                 return null;
             }
+            while (sc.hasNextLine())
+            {
+                lastLine = sc.nextLine();
+                if (Objects.equals(line, "") && sc.hasNextLine())
+                {
+                    lastLine = sc.nextLine();
+                    break;
+                }
+            }
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
@@ -89,15 +99,30 @@ public class Main {
         }
 
         currentLine++;
+        List<List<Coordinate>> res = new ArrayList<>(2);
+        res.add(lineToCoordinates(line));
+        if (lastLine == null)
+        {
+            System.err.println("Didn't find potential line");
+            return res;
+        }
+        res.add(lineToCoordinates(lastLine));
+        System.out.println(line + "\n" + lastLine);
+        return res;
+    }
+
+    private static List<Coordinate> lineToCoordinates(String line)
+    {
         String[] split = line.split(" ");
         System.out.println("Got " + split.length + " data points");
-        List<Coordinate> res = new ArrayList<>(split.length);
+        List<Coordinate> calculated = new ArrayList<>(split.length);
         for (int i = 0; i < split.length; i++)
         {
             double el = Double.parseDouble(split[i]);
-            res.add(new Coordinate(i + 1, el));
+            calculated.add(new Coordinate(i + 1, el));
         }
-        return res;
+
+        return calculated;
     }
 
     // Just for demonstrational purposes - will later be removed
