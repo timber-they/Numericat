@@ -23,12 +23,9 @@ int main(void)
     tcase_add_test(parserCase1, test_Parse_Functions);
     tcase_add_test(parserCase1, test_Parse_Failing);
     tcase_add_test(parserCase2, test_Evaluate);
-    tcase_add_test(solverCase1, test_det);
-    tcase_add_test(solverCase1, test_Inverse);
     tcase_add_test(solverCase1, test_multiply);
     tcase_add_test(solverCase1, test_identity);
     tcase_add_test(solverCase1, test_multiply_3x3);
-    tcase_add_test(solverCase1, test_det_3x3);
     tcase_add_test(solverCase1, test_ones);
     tcase_add_test(solverCase1, test_sum);
     tcase_add_test(solverCase1, test_factor);
