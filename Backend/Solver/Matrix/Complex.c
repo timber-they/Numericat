@@ -20,6 +20,10 @@ Complex divideComplex(Complex a, Complex b)
     return (Complex) {.real = (a.real * b.real + a.imaginary * b.imaginary) / division,
                       .imaginary = (a.imaginary * b.real - a.real * b.imaginary) / division};
 }
+double absSquareComplex(Complex c)
+{
+    return c.real * c.real + c.imaginary * c.imaginary;
+}
 void printComplex(Complex c)
 {
     printf("%lf %lfi", c.real, c.imaginary);

@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     Print(initial);
 
     int n = 10;
-    double **res = Iterate1d(potential, initial, 0.1, n);
+    Complex **res = Iterate1d(potential, initial, 0.1, n);
     writeResults(res, potential, n);
 //    for (int i = 0; i < n; i++)
 //    {
@@ -50,16 +50,17 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void writeResults(double **data, Function potential, int n)
+void writeResults(Complex **data, Function potential, int n)
 {
     FILE *fp = fopen(FILE_NAME, "w");
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < nx; j++)
         {
-            if (data[i][j] < 0)
-                data[i][j] = - data[i][j];
-            fprintf(fp, "%5f ", data[i][j]);
+            double el = absSquareComplex(data[i][j]);
+            if (el < 0)
+                el = -el;
+            fprintf(fp, "%5f ", el);
         }
         fprintf(fp, "\n");
     }

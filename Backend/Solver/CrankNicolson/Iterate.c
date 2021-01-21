@@ -4,16 +4,16 @@
 
 static Matrix createInitialDerivative()
 {
-    // TODO: Constants aren't applied yet
+    // TODO: Complex constants aren't applied yet
     Matrix res = createMatrix(nx, nx);
     // Main diagonal
     for (int i = 0; i < nx; i++)
-        res.matrix[i][i] = -2;
+        res.matrix[i][i] = (Complex) {.real = -2, .imaginary = 0};
     // Secondary diagonals
     for (int i = 0; i < nx - 1; i++)
     {
-        res.matrix[i + 1][i] = 1;
-        res.matrix[i][i+1] = 1;
+        res.matrix[i + 1][i] = (Complex) {.real = 1, .imaginary = 0};
+        res.matrix[i][i+1] = (Complex) {.real = 1, .imaginary = 0};
     }
 
     return res;
@@ -30,17 +30,17 @@ static Matrix createPotentialMatrix(Matrix potentialValues)
 static Matrix functionToVector(Function func, double d, int n)
 {
     printf("n=%d, d=%lf\n", n, d);
-    double *res = malloc(n * sizeof(*res));
+    Complex *res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
-        res[i] = Evaluate(func, d * i);
+        res[i] = (Complex) {.real = Evaluate(func, d * i), .imaginary = 0};
     Matrix matrix = arrayToMatrix(res, n);
     free(res);
     return matrix;
 }
 
-double **Iterate1d(Function potential, Function psi0, double dt, int n)
+Complex **Iterate1d(Function potential, Function psi0, double dt, int n)
 {
-    double **res = malloc(n * sizeof(*res));
+    Complex **res = malloc(n * sizeof(*res));
     // nx * nx
     Matrix d2 = createInitialDerivative();
     // nx * nx
@@ -68,7 +68,7 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
         Matrix s = sum(d2, potentialMatrix);
 //        printf("D2+V\n");
 //        printMatrix(s);
-        Matrix f = factor(s, dt/2);
+        Matrix f = factor(s, (Complex) {.real = dt/2, .imaginary = 0});
 //        printf("dt/2 (%lf) * (D2+V)\n", dt/2);
 //        printMatrix(f);
         freeMatrix(s);
@@ -93,7 +93,7 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
         Matrix tB = multiply(a, psiN);
         for (int j = 0; j < tB.rowCount; j++)
         {
-            double diff = b.matrix[j][0] - tB.matrix[j][0];
+            double diff = absSquareComplex(subtractComplex(b.matrix[j][0], tB.matrix[j][0]));
             if (diff < 0)
                 diff = -diff;
             if (diff > 0.00001)
