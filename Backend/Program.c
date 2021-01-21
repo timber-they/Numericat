@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     Print(potential);
     Print(initial);
 
-    int n = 100;
+    int n = 10;
     double **res = Iterate1d(potential, initial, 0.1, n);
     writeResults(res, potential, n);
 //    for (int i = 0; i < n; i++)
@@ -56,13 +56,17 @@ void writeResults(double **data, Function potential, int n)
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < nx; j++)
+        {
+            if (data[i][j] < 0)
+                data[i][j] = - data[i][j];
             fprintf(fp, "%5f ", data[i][j]);
+        }
         fprintf(fp, "\n");
     }
     fprintf(fp, "\n");
 
     for (int i = 0; i < nx; i++)
-        fprintf(fp, "%5f ", 1000 * Evaluate(potential, dx * i));
+        fprintf(fp, "%5f ", 100+1000 * Evaluate(potential, dx * i));
 
     fclose(fp);
 }

@@ -4,6 +4,7 @@
 
 static Matrix createInitialDerivative()
 {
+    // TODO: Constants aren't applied yet
     Matrix res = createMatrix(nx, nx);
     // Main diagonal
     for (int i = 0; i < nx; i++)
@@ -28,6 +29,7 @@ static Matrix createPotentialMatrix(Matrix potentialValues)
 
 static Matrix functionToVector(Function func, double d, int n)
 {
+    printf("n=%d, d=%lf\n", n, d);
     double *res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
         res[i] = Evaluate(func, d * i);
@@ -50,24 +52,54 @@ double **Iterate1d(Function potential, Function psi0, double dt, int n)
     Matrix potentialValues = functionToVector(potential, dx, nx);
     // nx * nx
     Matrix potentialMatrix = createPotentialMatrix(potentialValues);
+    printf("V:\n");
+    printMatrix(potentialValues);
     freeMatrix(potentialValues);
 
     for (int i = 0; i < n-1; i++)
     {
+        printf("Psi:\n");
+        printMatrix(psi);
+//        printf("D2:\n");
+//        printMatrix(d2);
         printf("i=%d\n", i);
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
         Matrix s = sum(d2, potentialMatrix);
+//        printf("D2+V\n");
+//        printMatrix(s);
         Matrix f = factor(s, dt/2);
+//        printf("dt/2 (%lf) * (D2+V)\n", dt/2);
+//        printMatrix(f);
         freeMatrix(s);
         Matrix a = subtract(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
         s = sum(ident, f);
+//        printf("I + dt/2 * (D2 + V)\n");
+//        printMatrix(s);
         freeMatrix(f);
         Matrix b = multiply(s, psi);
         freeMatrix(s);
 
+//        printf("A:\n");
+//        printMatrix(a);
+//        printf("b:\n");
+//        printMatrix(b);
+
         Matrix psiN = thomasSolve(a, b);
+//        printf("PsiN:\n");
+//        printMatrix(psiN);
+        // Validate
+        Matrix tB = multiply(a, psiN);
+        for (int j = 0; j < tB.rowCount; j++)
+        {
+            double diff = b.matrix[j][0] - tB.matrix[j][0];
+            if (diff < 0)
+                diff = -diff;
+            if (diff > 0.00001)
+                fprintf(stderr, "Diff is %lf\n", diff);
+        }
+        freeMatrix(tB);
         freeMatrix(a);
         freeMatrix(b);
         freeMatrix(psi);
