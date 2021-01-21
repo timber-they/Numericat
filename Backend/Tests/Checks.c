@@ -32,6 +32,7 @@ int main(void)
     tcase_add_test(solverCase1, test_arrayToMatrix);
     tcase_add_test(solverCase1, test_MatrixToArray);
     tcase_add_test(solverCase1, test_thomas);
+    tcase_add_test(solverCase1, test_sumComplex);
 
 
     srunner_run_all(sr, CK_NORMAL);

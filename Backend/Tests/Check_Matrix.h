@@ -279,4 +279,37 @@ START_TEST(test_thomas)
 }
 END_TEST
 
+START_TEST(test_sumComplex)
+{
+    printf("\n");
+    printf("test_sumComplex: \n");
+    Matrix input_1 = createMatrix(2,2);
+    input_1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    input_1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 3.3};
+    input_1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 2.2};
+    input_1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    printf("Complexe Matrix 1: \n");
+    printMatrix(input_1);
+    Matrix input_2 = createMatrix(2,2);
+    input_1.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    input_1.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 2.2};
+    input_1.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 3.3};
+    input_1.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    printf("Complexe Matrix 2: \n");
+    printMatrix(input_1);
+    Matrix result = sum(input_1, input_2);
+    printf("result: \n");
+    printMatrix(result);
+    printf("%f, %f",result.matrix[0][0].real, result.matrix[0][0].imaginary);
+    ck_assert((result.matrix[0][0].real - (5.5)) < 0.0001 && (result.matrix[0][0].imaginary - (5.5)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (5.5)) < 0.0001 && (result.matrix[1][1].imaginary - (5.5)) > -0.0001);
+    ck_assert((result.matrix[0][1].real - (5.5)) < 0.0001 && (result.matrix[0][1].imaginary - (5.5)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (5.5)) < 0.0001 && (result.matrix[1][1].imaginary - (5.5)) > -0.0001);
+    freeMatrix(input_1);
+    freeMatrix(input_2);
+    freeMatrix(result);
+    printf("\n");
+}
+END_TEST
+
 #endif
