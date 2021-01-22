@@ -114,11 +114,12 @@ public class Main {
     private static List<Coordinate> lineToCoordinates(String line)
     {
         String[] split = line.split(" ");
-        System.out.println("Got " + split.length + " data points");
+//        System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
         for (int i = 0; i < split.length; i++)
         {
-            double el = Double.parseDouble(split[i]);
+            // TODO: Scale automatically
+            double el = 500 * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
 
