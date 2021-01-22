@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     Print(potential);
     Print(initial);
 
-    int n = 10;
+    int n = 100;
     Complex **res = Iterate1d(potential, initial, 0.1, n);
     writeResults(res, potential, n);
 //    for (int i = 0; i < n; i++)
@@ -67,7 +67,7 @@ void writeResults(Complex **data, Function potential, int n)
     fprintf(fp, "\n");
 
     for (int i = 0; i < nx; i++)
-        fprintf(fp, "%5f ", 100+1000 * Evaluate(potential, dx * i));
+        fprintf(fp, "%5f ", Evaluate(potential, dx * i));
 
     fclose(fp);
 }

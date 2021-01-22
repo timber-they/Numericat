@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// Rest energy for a proton in MeV
+#define E0p 938.27
+// In MeV pm
+#define hBarc 0.1973
+// Speed of light in pm/as
+#define c 302
+
 static Matrix createInitialDerivative()
 {
     // TODO: Complex constants aren't applied yet
@@ -16,7 +23,11 @@ static Matrix createInitialDerivative()
         res.matrix[i][i+1] = (Complex) {.real = 1, .imaginary = 0};
     }
 
-    return res;
+    Complex f = (Complex) {.real = 0, .imaginary = -hBarc * c / (2 * E0p) / (dx * dx)};
+    Matrix scaled = factor(res, f);
+    freeMatrix(res);
+
+    return scaled;
 }
 
 static Matrix createPotentialMatrix(Matrix potentialValues)
@@ -24,7 +35,12 @@ static Matrix createPotentialMatrix(Matrix potentialValues)
     Matrix res = createMatrix(nx, nx);
     for (int i = 0; i < nx; i++)
         res.matrix[i][i] = potentialValues.matrix[i][0];
-    return res;
+
+    Complex f = (Complex) {.real = 0, .imaginary = c / hBarc};
+    Matrix scaled = factor(res, f);
+    freeMatrix(res);
+
+    return scaled;
 }
 
 static Matrix functionToVector(Function func, double d, int n)
@@ -33,6 +49,7 @@ static Matrix functionToVector(Function func, double d, int n)
     Complex *res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
         res[i] = (Complex) {.real = Evaluate(func, d * i), .imaginary = 0};
+
     Matrix matrix = arrayToMatrix(res, n);
     free(res);
     return matrix;
@@ -52,14 +69,14 @@ Complex **Iterate1d(Function potential, Function psi0, double dt, int n)
     Matrix potentialValues = functionToVector(potential, dx, nx);
     // nx * nx
     Matrix potentialMatrix = createPotentialMatrix(potentialValues);
-    printf("V:\n");
-    printMatrix(potentialValues);
+//    printf("V:\n");
+//    printMatrix(potentialValues);
     freeMatrix(potentialValues);
 
     for (int i = 0; i < n-1; i++)
     {
-        printf("Psi:\n");
-        printMatrix(psi);
+//        printf("Psi:\n");
+//        printMatrix(psi);
 //        printf("D2:\n");
 //        printMatrix(d2);
         printf("i=%d\n", i);

@@ -5,7 +5,7 @@
 #ifndef BACKEND_ITERATE_H
 #define BACKEND_ITERATE_H
 
-#define nx 10
+#define nx 1001
 #define dx 0.001
 
 /**
