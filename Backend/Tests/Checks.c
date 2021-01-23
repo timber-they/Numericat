@@ -31,12 +31,15 @@ int main(void)
     tcase_add_test(solverCase1, test_multiply_3x3);
     tcase_add_test(solverCase1, test_ones);
     tcase_add_test(solverCase1, test_sum);
+    tcase_add_test(solverCase1, test_Matrixsubtract);
     tcase_add_test(solverCase1, test_factor);
     tcase_add_test(solverCase1, test_arrayToMatrix);
     tcase_add_test(solverCase1, test_MatrixToArray);
     tcase_add_test(solverCase1, test_thomas);
     tcase_add_test(solverCase1, test_sumComplexMatrix);
     tcase_add_test(solverCase1, test_ComplexmultiplyMatrix);
+    tcase_add_test(solverCase1, test_ComplexMatrixsubtract);
+    tcase_add_test(solverCase1, test_ComplexFactor);
     tcase_add_test(complexCase1, test_sumComplex);
     tcase_add_test(complexCase1, test_subtractComplex);
     tcase_add_test(complexCase1, test_multiplyComplex);

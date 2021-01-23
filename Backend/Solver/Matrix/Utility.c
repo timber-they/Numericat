@@ -68,7 +68,6 @@ void printMatrix(Matrix m)
         for(j = 0; j < m.columnCount; j++)
         {
             printComplex(m.matrix[i][j]);
-            printf("  ");
         }
         printf("\n");
     }

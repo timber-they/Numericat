@@ -1,4 +1,5 @@
 #include "../Solver/Matrix/Utility.h"
+#include "../Solver/Matrix/Complex.h"
 #include "check.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,10 +7,9 @@
 #ifndef BACKEND_UTILITY_CHECK_H
 #define BACKEND_UTILITY_CHECK_H
 
-// TODO: Complex tests
-
 START_TEST(test_multiply)
 {
+    printf("----------------------------------------\n");
     printf("test_multiply \n");
     Matrix input = createMatrix(2,2);
     input.matrix[0][0] = (Complex) {.real = 3.0, .imaginary = 0};
@@ -18,7 +18,6 @@ START_TEST(test_multiply)
     input.matrix[1][1] = (Complex) {.real = 2.0, .imaginary = 0};
     printf("Input Matrix 1: \n");
     printMatrix(input);
-    printf("-------------------\n");
     Matrix input_2 = createMatrix(2,2);
     input_2.matrix[0][0] = (Complex) {.real = 1.0, .imaginary = 0};
     input_2.matrix[0][1] = (Complex) {.real = 2.0, .imaginary = 0};
@@ -26,7 +25,6 @@ START_TEST(test_multiply)
     input_2.matrix[1][1] = (Complex) {.real = 4.0, .imaginary = 0};
     printf("Input Matrix 2: \n");
     printMatrix(input_2);
-    printf("-------------------\n");
     Matrix multiplied = multiply(input, input_2);
     printf("multiplied Matrix: \n");
     printMatrix(multiplied);
@@ -38,6 +36,7 @@ START_TEST(test_multiply)
     freeMatrix(input);
     freeMatrix(input_2);
     freeMatrix(multiplied);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
@@ -57,7 +56,6 @@ START_TEST(test_multiply_3x3)
     matrix_3.matrix[2][2] = (Complex) {.real = 4.0, .imaginary = 0};
     printf("Input Matrix 1: \n");
     printMatrix(matrix_3);
-    printf("-------------------\n");
     Matrix matrix_4 = createMatrix(3, 3);
     matrix_4.matrix[0][0] = (Complex) {.real = 4, .imaginary = 0};
     matrix_4.matrix[0][1] = (Complex) {.real = 3, .imaginary = 0};
@@ -70,7 +68,6 @@ START_TEST(test_multiply_3x3)
     matrix_4.matrix[2][2] = (Complex) {.real = 6.7, .imaginary = 0};
     printf("Input Matrix 2: \n");
     printMatrix(matrix_4);
-    printf("-------------------\n");
     Matrix multiplied = multiply(matrix_3, matrix_4);
     printf("multiplied Matrix: \n");
     printMatrix(multiplied);
@@ -104,11 +101,13 @@ START_TEST(test_multiply_3x3)
     freeMatrix(matrix_3);
     freeMatrix(matrix_4);
     freeMatrix(multiplied);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
 START_TEST(test_identity)
 {
+    printf("\n");
     double diff;
     printf("test_identity \n");
     Matrix result = identity(2);
@@ -127,13 +126,15 @@ START_TEST(test_identity)
     if (diff < 0) diff = -diff;
     ck_assert(diff < 0.01);
     freeMatrix(result);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
 START_TEST(test_ones)
 {
+    printf("\n");
     double diff;
-    printf("test_identity \n");
+    printf("test_ones \n");
     Matrix result = ones(2,2);
     printf("Output Matrix: \n");
     printMatrix(result);
@@ -150,6 +151,7 @@ START_TEST(test_ones)
     if (diff < 0) diff = -diff;
     ck_assert(diff < 0.01);
     freeMatrix(result);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
@@ -169,11 +171,16 @@ START_TEST(test_factor)
     printf("result: \n");
     printMatrix(result);
     ck_assert((result.matrix[0][0].real - (5.0)) < 0.0001 && (result.matrix[0][0].real - (5.0)) > -0.0001);
+    ck_assert((result.matrix[0][0].real - (5.0)) > -0.0001 && (result.matrix[0][0].real - (5.0)) < 0.0001);
     ck_assert((result.matrix[1][1].real - (20.0)) < 0.0001 && (result.matrix[1][1].real - (20.0)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (20.0)) > -0.0001 && (result.matrix[1][1].real - (20.0)) < 0.0001);
     ck_assert((result.matrix[0][1].real - (10.0)) < 0.0001 && (result.matrix[0][1].real - (10.0)) > -0.0001);
+    ck_assert((result.matrix[0][1].real - (10.0)) > -0.0001 && (result.matrix[0][1].real - (10.0)) < 0.0001);
     ck_assert((result.matrix[1][0].real - (15.0)) < 0.0001 && (result.matrix[1][0].real - (15.0)) > -0.0001);
+    ck_assert((result.matrix[1][0].real - (15.0)) > -0.0001 && (result.matrix[1][0].real - (15.0)) < 0.0001);
     freeMatrix(result);
     freeMatrix(input);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
@@ -188,7 +195,6 @@ START_TEST(test_sum)
     input_1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
     printf("Input Matrix 1: \n");
     printMatrix(input_1);
-    printf("-------------------\n");
     Matrix input_2 = createMatrix(2, 2);
     input_2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
     input_2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 0};
@@ -196,45 +202,99 @@ START_TEST(test_sum)
     input_2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
     printf("Input Matrix 2: \n");
     printMatrix(input_1);
+    printf("result:\n");
     Matrix result = sum(input_1, input_2);
     printMatrix(result);
     ck_assert((result.matrix[0][0].real - (5.5)) < 0.0001 && (result.matrix[0][0].real - (5.5)) > -0.0001);
+    ck_assert((result.matrix[0][0].real - (5.5)) > -0.0001 && (result.matrix[0][0].real - (5.5)) < 0.0001);
     ck_assert((result.matrix[1][1].real - (5.5)) < 0.0001 && (result.matrix[1][1].real - (5.5)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (5.5)) > -0.0001 && (result.matrix[1][1].real - (5.5)) < 0.0001);
     ck_assert((result.matrix[0][1].real - (5.5)) < 0.0001 && (result.matrix[0][1].real - (5.5)) > -0.0001);
-    ck_assert((result.matrix[1][1].real - (5.5)) < 0.0001 && (result.matrix[1][1].real - (5.5)) > -0.0001);
+    ck_assert((result.matrix[0][1].real - (5.5)) > -0.0001 && (result.matrix[0][1].real - (5.5)) < 0.0001);
+    ck_assert((result.matrix[1][0].real - (5.5)) < 0.0001 && (result.matrix[1][1].real - (5.5)) > -0.0001);
+    ck_assert((result.matrix[1][0].real - (5.5)) > -0.0001 && (result.matrix[1][1].real - (5.5)) < 0.0001);
     freeMatrix(input_1);
     freeMatrix(input_2);
     freeMatrix(result);
+    printf("----------------------------------------\n");
+}
+END_TEST
+
+START_TEST(test_Matrixsubtract)
+{
+    printf("\n");
+    printf("test_Matrixsubtract \n");
+    Matrix input_1 = createMatrix(2, 2);
+    input_1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 0};
+    input_1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 0};
+    input_1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 0};
+    input_1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
+    printf("Input Matrix 1: \n");
+    printMatrix(input_1);
+    Matrix input_2 = createMatrix(2, 2);
+    input_2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
+    input_2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 0};
+    input_2.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 0};
+    input_2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
+    printf("Input Matrix 2: \n");
+    printMatrix(input_1);
+    Matrix result = subtract(input_1, input_2);
+    printf("result:\n");
+    printMatrix(result);
+    ck_assert((result.matrix[0][0].real + (3.30)) < 0.0001 && (result.matrix[0][0].imaginary - (0.0)) < 0.0001);
+    ck_assert((result.matrix[0][0].real + (3.30)) > -0.0001 && (result.matrix[0][0].imaginary - (0.0)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (3.30)) < 0.0001 && (result.matrix[1][1].imaginary - (0.0)) < 0.0001);
+    ck_assert((result.matrix[1][1].real - (3.30)) > -0.0001 && (result.matrix[1][1].imaginary - (0.0)) > -0.0001);
+    ck_assert((result.matrix[0][1].real + (1.10)) < 0.0001 && (result.matrix[0][1].imaginary - (0.0)) < 0.0001);
+    ck_assert((result.matrix[0][1].real + (1.10)) > -0.0001 && (result.matrix[0][1].imaginary - (0.0)) > -0.0001);
+    ck_assert((result.matrix[1][0].real - (1.10)) < 0.0001 && (result.matrix[1][1].imaginary - (0.0)) < 0.0001);
+    ck_assert((result.matrix[1][0].real - (1.10)) > -0.0001 && (result.matrix[1][1].imaginary - (0.0)) > -0.0001);
+    freeMatrix(input_1);
+    freeMatrix(input_2);
+    freeMatrix(result);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
 START_TEST(test_arrayToMatrix)
 {
+    printf("\n");
     Complex *arr = malloc(3 * sizeof(* arr));
     arr[0] = (Complex) {.real= 1.0, .imaginary = 0};
     arr[1] = (Complex) {.real= 2.0, .imaginary = 0};
     arr[2] = (Complex) {.real= 3.0, .imaginary = 0};
     Matrix result = arrayToMatrix(arr, 3);
     ck_assert((result.matrix[0][0].real - (1.0)) < 0.0001 && (result.matrix[0][0].real - (1.0)) > -0.0001);
+    ck_assert((result.matrix[0][0].real - (1.0)) > -0.0001 && (result.matrix[0][0].real - (1.0)) < 0.0001);
     ck_assert((result.matrix[1][0].real - (2.0)) < 0.0001 && (result.matrix[1][0].real - (2.0)) > -0.0001);
+    ck_assert((result.matrix[1][0].real - (2.0)) > -0.0001 && (result.matrix[1][0].real - (2.0)) < 0.0001);
     ck_assert((result.matrix[2][0].real - (3.0)) < 0.0001 && (result.matrix[2][0].real - (3.0)) > -0.0001);
+    ck_assert((result.matrix[2][0].real - (3.0)) > -0.0001 && (result.matrix[2][0].real - (3.0)) < 0.0001);
+    printf("Conversion from Array to Matrix was successful\n");
     freeMatrix(result);
     free(arr);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
 START_TEST(test_MatrixToArray)
 {
+    printf("\n");
     Matrix result = createMatrix(3,1);
     result.matrix[0][0] = (Complex) {.real = 1.0, .imaginary = 0};
     result.matrix[1][0] = (Complex) {.real = 2.0, .imaginary = 0};
     result.matrix[2][0] = (Complex) {.real = 3.0, .imaginary = 0};
     Complex *arr = matrixToArray(result);
     ck_assert((arr[0].real - (1.0)) < 0.0001 && (arr[0].real - (1.0)) > -0.0001);
+    ck_assert((arr[0].real - (1.0)) > -0.0001 && (arr[0].real - (1.0)) < 0.0001);
     ck_assert((arr[1].real - (2.0)) < 0.0001 && (arr[1].real - (2.0)) > -0.0001);
+    ck_assert((arr[1].real - (2.0)) > -0.0001 && (arr[1].real - (2.0)) < 0.0001);
     ck_assert((arr[2].real - (3.0)) < 0.0001 && (arr[2].real - (3.0)) > -0.0001);
+    ck_assert((arr[2].real - (3.0)) > -0.0001 && (arr[2].real - (3.0)) < 0.0001);
+    printf("Conversion from Matrix to Array was successful\n");
     free(arr);
     freeMatrix(result);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
@@ -268,13 +328,19 @@ START_TEST(test_thomas)
     printf("results: \n");
     printMatrix(thomasMatrix);
     ck_assert((thomasMatrix.matrix[0][0].real - (0.5)) < 0.0001 && (thomasMatrix.matrix[0][0].real - (0.5)) > -0.0001);
+    ck_assert((thomasMatrix.matrix[0][0].real - (0.5)) > -0.0001 && (thomasMatrix.matrix[0][0].real - (0.5)) < 0.0001);
     ck_assert((thomasMatrix.matrix[1][0].real - (0.0)) < 0.0001 && (thomasMatrix.matrix[1][0].real - (0.0)) > -0.0001);
+    ck_assert((thomasMatrix.matrix[1][0].real - (0.0)) > -0.0001 && (thomasMatrix.matrix[1][0].real - (0.0)) < 0.0001);
     ck_assert((thomasMatrix.matrix[2][0].real - (0.5)) < 0.0001 && (thomasMatrix.matrix[2][0].real - (0.5)) > -0.0001);
+    ck_assert((thomasMatrix.matrix[2][0].real - (0.5)) > -0.0001 && (thomasMatrix.matrix[2][0].real - (0.5)) < 0.0001);
     ck_assert((thomasMatrix.matrix[3][0].real - (0.0)) < 0.0001 && (thomasMatrix.matrix[3][0].real - (0.0)) > -0.0001);
+    ck_assert((thomasMatrix.matrix[3][0].real - (0.0)) > -0.0001 && (thomasMatrix.matrix[3][0].real - (0.0)) < 0.0001);
     ck_assert((thomasMatrix.matrix[4][0].real - (0.5)) < 0.0001 && (thomasMatrix.matrix[4][0].real - (0.5)) > -0.0001);
+    ck_assert((thomasMatrix.matrix[4][0].real - (0.5)) > -0.0001 && (thomasMatrix.matrix[4][0].real - (0.5)) < 0.0001);
     freeMatrix(thomasMatrix);
     freeMatrix(input_1);
     freeMatrix(input_2);
+    printf("----------------------------------------\n");
 }
 END_TEST
 
@@ -301,13 +367,18 @@ START_TEST(test_sumComplexMatrix)
     printMatrix(result);
     printf("%f, %f",result.matrix[0][0].real, result.matrix[0][0].imaginary);
     ck_assert((result.matrix[0][0].real - (5.5)) < 0.0001 && (result.matrix[0][0].imaginary - (5.5)) > -0.0001);
+    ck_assert((result.matrix[0][0].real - (5.5)) > -0.0001 && (result.matrix[0][0].imaginary - (5.5)) < 0.0001);
     ck_assert((result.matrix[1][1].real - (5.5)) < 0.0001 && (result.matrix[1][1].imaginary - (5.5)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (5.5)) > -0.0001 && (result.matrix[1][1].imaginary - (5.5)) < 0.0001);
     ck_assert((result.matrix[0][1].real - (5.5)) < 0.0001 && (result.matrix[0][1].imaginary - (5.5)) > -0.0001);
-    ck_assert((result.matrix[1][1].real - (5.5)) < 0.0001 && (result.matrix[1][1].imaginary - (5.5)) > -0.0001);
+    ck_assert((result.matrix[0][1].real - (5.5)) > -0.0001 && (result.matrix[0][1].imaginary - (5.5)) < 0.0001);
+    ck_assert((result.matrix[0][1].real - (5.5)) < 0.0001 && (result.matrix[0][1].imaginary - (5.5)) > -0.0001);
+    ck_assert((result.matrix[0][1].real - (5.5)) > -0.0001 && (result.matrix[0][1].imaginary - (5.5)) < 0.0001);
     freeMatrix(input_1);
     freeMatrix(input_2);
     freeMatrix(result);
     printf("\n");
+    printf("----------------------------------------\n");
 }
 END_TEST
 
@@ -329,18 +400,88 @@ START_TEST(test_ComplexmultiplyMatrix)
     input_2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 4.4};
     printf("Complexe Matrix 2: \n");
     printMatrix(input_2);
-    printf("-------------------\n");
     Matrix multiplied = multiply(input_1, input_2);
     printf("multiplied Matrix: \n");
     printMatrix(multiplied);
-    ck_assert((multiplied.matrix[0][0].real - (20.25)) < 0.0001 && (multiplied.matrix[0][0].real - (1.0)) > -0.0001);
-    ck_assert((multiplied.matrix[1][1].real - (20.25)) < 0.0001 && (multiplied.matrix[1][1].real - (1.0)) > -0.0001);
-    ck_assert((multiplied.matrix[0][1].real - (20.25)) < 0.0001 && (multiplied.matrix[0][1].real - (1.0)) > -0.0001);
-    ck_assert((multiplied.matrix[1][0].real - (20.25)) < 0.0001 && (multiplied.matrix[1][0].real - (1.0)) > -0.0001);
-    printf("\n");
+    ck_assert((multiplied.matrix[0][0].real + (5.05)) < 0.0001 && (multiplied.matrix[0][0].imaginary - (35.09)) > -0.0001);
+    ck_assert((multiplied.matrix[0][0].real + (5.05))  - 0.0001 && (multiplied.matrix[0][0].imaginary - (35.09)) < 0.0001);
+    ck_assert((multiplied.matrix[1][1].real - (6.05)) < 0.0001 && (multiplied.matrix[1][1].imaginary - (35.09)) > -0.0001);
+    ck_assert((multiplied.matrix[1][1].real - (6.05)) > -0.0001 && (multiplied.matrix[1][1].imaginary - (35.09)) < 0.0001);
+    ck_assert((multiplied.matrix[0][1].real + (18.15)) < 0.0001 && (multiplied.matrix[0][1].imaginary - (30.25)) > -0.0001);
+    ck_assert((multiplied.matrix[0][1].real + (18.15)) > -0.0001 && (multiplied.matrix[0][1].imaginary - (30.25)) < 0.0001);
+    ck_assert((multiplied.matrix[1][0].real - (18.15)) < 0.0001 && (multiplied.matrix[1][0].imaginary - (30.25)) > -0.0001);
+    ck_assert((multiplied.matrix[1][0].real - (18.15)) > -0.0001 && (multiplied.matrix[1][0].imaginary - (30.25)) < 0.0001);
+    printf("----------------------------------------\n");
     freeMatrix(input_1);
     freeMatrix(input_2);
     freeMatrix(multiplied);
 }
+
+START_TEST(test_ComplexMatrixsubtract)
+{
+    printf("\n");
+    printf("test_Complexsubtract \n");
+    Matrix input_1 = createMatrix(2,2);
+    input_1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    input_1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 3.3};
+    input_1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 2.2};
+    input_1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    printf("Complexe Matrix 1: \n");
+    printMatrix(input_1);
+    Matrix input_2 = createMatrix(2,2);
+    input_2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    input_2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 2.2};
+    input_2.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 3.3};
+    input_2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    printf("Complexe Matrix 2: \n");
+    printMatrix(input_2);
+    Matrix result = subtract(input_1, input_2);
+    printf("result Matrix: \n");
+    printMatrix(result);
+    ck_assert((result.matrix[0][0].real + (3.30)) < 0.0001 && (result.matrix[0][0].imaginary - (3.30)) > -0.0001);
+    ck_assert((result.matrix[0][0].real + (3.30)) > -0.0001 && (result.matrix[0][0].imaginary - (3.30)) < 0.0001);
+    ck_assert((result.matrix[1][1].real - (3.30)) < 0.0001 && (result.matrix[1][1].imaginary + (3.30)) < 0.0001);
+    ck_assert((result.matrix[1][1].real - (3.30)) > -0.0001 && (result.matrix[1][1].imaginary + (3.30)) > -0.0001);
+    ck_assert((result.matrix[0][1].real + (1.10)) < 0.0001 && (result.matrix[0][1].imaginary - (1.10)) < 0.0001);
+    ck_assert((result.matrix[0][1].real + (1.10)) > -0.0001 && (result.matrix[0][1].imaginary - (1.10)) > -0.0001);
+    ck_assert((result.matrix[1][0].real - (1.10)) < 0.0001 && (result.matrix[1][0].imaginary + (1.10)) < 0.0001);
+    ck_assert((result.matrix[1][0].real - (1.10)) > -0.0001 && (result.matrix[1][0].imaginary + (1.10)) > -0.0001);
+    printf("----------------------------------------\n");
+    freeMatrix(input_1);
+    freeMatrix(input_2);
+    freeMatrix(result);
+}
+
+START_TEST(test_ComplexFactor)
+{
+    printf("\n");
+    printf("test_ComplexFactor \n");
+    Matrix input = createMatrix(2, 2);
+    input.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    input.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 3.3};
+    input.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 2.2};
+    input.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    printf("Input Matrix 1: \n");
+    printMatrix(input);
+    printf("Factor is: \n");
+    Complex f = {.real = 5.5, .imaginary = 5.5};
+    printComplex(f);
+printf("\n");
+    Matrix result = factor(input, f);
+    printf("result: \n");
+    printMatrix(result);
+    ck_assert((result.matrix[0][0].real + (18.15)) < 0.0001&& (result.matrix[0][0].imaginary - (30.25)) > -0.0001);
+    ck_assert((result.matrix[0][0].real + (18.15)) > -0.0001&& (result.matrix[0][0].imaginary - (30.25)) < 0.0001);
+    ck_assert((result.matrix[1][1].real - (18.15)) < 0.0001 && (result.matrix[1][1].imaginary - (30.25)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (18.15)) > -0.0001 && (result.matrix[1][1].imaginary - (30.25)) < 0.0001);
+    ck_assert((result.matrix[0][1].real + (6.05)) < 0.0001 && (result.matrix[0][1].imaginary - (30.25)) > -0.0001);
+    ck_assert((result.matrix[0][1].real + (6.05)) > -0.0001 && (result.matrix[0][1].imaginary - (30.25)) < 0.0001);
+    ck_assert((result.matrix[1][0].real - (6.05)) < 0.0001 && (result.matrix[1][0].imaginary - (30.25)) > -0.0001);
+    ck_assert((result.matrix[1][0].real - (6.05)) > -0.0001 && (result.matrix[1][0].imaginary - (30.25)) < 0.0001);
+    freeMatrix(result);
+    freeMatrix(input);
+    printf("----------------------------------------\n");
+}
+END_TEST
 
 #endif
