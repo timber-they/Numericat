@@ -416,6 +416,7 @@ START_TEST(test_ComplexmultiplyMatrix)
     freeMatrix(input_2);
     freeMatrix(multiplied);
 }
+END_TEST
 
 START_TEST(test_ComplexMatrixsubtract)
 {
@@ -451,6 +452,7 @@ START_TEST(test_ComplexMatrixsubtract)
     freeMatrix(input_2);
     freeMatrix(result);
 }
+END_TEST
 
 START_TEST(test_ComplexFactor)
 {
