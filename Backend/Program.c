@@ -1,9 +1,10 @@
 #include "Program.h"
 #include <stdio.h>
-#include "Parser/Function.h"
 #include "Parser/Parser.h"
 #include "Solver/CrankNicolson/Iterate.h"
 #include <stdlib.h>
+
+#define FILE_NAME "output"
 
 int main(int argc, char *argv[])
 {
@@ -31,13 +32,14 @@ int main(int argc, char *argv[])
     Print(initial);
 
     int n = 100;
-    double **res = Iterate1d(potential, initial, 0.1, n);
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < nx; j++)
-            printf("%5f ", res[i][j]);
-        printf("\n");
-    }
+    Complex **res = Iterate1d(potential, initial, 0.1, n);
+    writeResults(res, potential, n);
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < nx; j++)
+//            printf("%5f ", res[i][j]);
+//        printf("\n");
+//    }
 
     for (int i = 0; i < n; i++)
         free(res[i]);
@@ -46,5 +48,27 @@ int main(int argc, char *argv[])
     free(initial);
 
     return 0;
+}
+
+void writeResults(Complex **data, Function potential, int n)
+{
+    FILE *fp = fopen(FILE_NAME, "w");
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < nx; j++)
+        {
+            double el = absSquareComplex(data[i][j]);
+            if (el < 0)
+                el = -el;
+            fprintf(fp, "%5f ", el);
+        }
+        fprintf(fp, "\n");
+    }
+    fprintf(fp, "\n");
+
+    for (int i = 0; i < nx; i++)
+        fprintf(fp, "%5f ", Evaluate(potential, dx * i));
+
+    fclose(fp);
 }
 

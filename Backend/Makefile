@@ -5,7 +5,7 @@ CLIBS=-lcheck -pthread -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit
 FILE_BASE=Program
-DEPENDENCIES=Parser/Parser.c Parser/Function.c Solver/Matrix/Utility.c Solver/CrankNicolson/Iterate.c
+DEPENDENCIES=Parser/Parser.c Parser/Function.c Solver/Matrix/Utility.c Solver/Matrix/Complex.c Solver/CrankNicolson/Iterate.c
 TEST_FILE_BASE=Tests/Checks
 OS?=$(shell [ -e "/etc/os-release" ] && grep ^NAME=".*" /etc/os-release)
 ifeq ($(OS),)
