@@ -48,7 +48,7 @@ static Matrix functionToVector(Function func, double d, int n)
     printf("n=%d, d=%lf\n", n, d);
     Complex *res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
-        res[i] = (Complex) {.real = Evaluate(func, d * i), .imaginary = 0};
+        res[i] = (Complex) {.real = evaluate(func, d * i), .imaginary = 0};
 
     Matrix matrix = arrayToMatrix(res, n);
     free(res);

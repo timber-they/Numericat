@@ -20,6 +20,10 @@
       <change beforePath="$PROJECT_DIR$/Parser/Function.c" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Function.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Parser/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Function.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Parser/Parser.c" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Parser.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.c" beforeDir="false" afterPath="$PROJECT_DIR$/Program.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/Check_Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Check_Function.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tests/Check_Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Check_Parser.h" afterDir="false" />
     </list>
     <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="" />
@@ -231,7 +235,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611226275196</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Power">
+      <created>1611587417564</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1611587417564</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,6 +271,7 @@
     <MESSAGE value="Complex numbers &amp; matrices" />
     <MESSAGE value="Compile backend (Tests still fail)" />
     <MESSAGE value="Succeeding tests (complex tests still missing)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Succeeding tests (complex tests still missing)" />
+    <MESSAGE value="Power" />
+    <option name="LAST_COMMIT_MESSAGE" value="Power" />
   </component>
 </project>

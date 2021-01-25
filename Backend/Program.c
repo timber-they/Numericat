@@ -16,20 +16,20 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    potential = Parse(argv[1]);
+    potential = parseFunction(argv[1]);
     if (potential == NULL)
     {
         fprintf(stderr, "Couldn't parse '%s'\n", argv[1]);
         return 1;
     }
-    initial = Parse(argv[2]);
+    initial = parseFunction(argv[2]);
     if (initial == NULL)
     {
         fprintf(stderr, "Couldn't parse '%s'\n", argv[2]);
         return 1;
     }
-    Print(potential);
-    Print(initial);
+    printFunction(potential);
+    printFunction(initial);
 
     int n = 100;
     Complex **res = Iterate1d(potential, initial, 0.1, n);
@@ -67,7 +67,7 @@ void writeResults(Complex **data, Function potential, int n)
     fprintf(fp, "\n");
 
     for (int i = 0; i < nx; i++)
-        fprintf(fp, "%5f ", Evaluate(potential, dx * i));
+        fprintf(fp, "%5f ", evaluate(potential, dx * i));
 
     fclose(fp);
 }

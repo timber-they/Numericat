@@ -41,8 +41,8 @@ START_TEST(test_Parse_Functions)
         (Element) {.atomType = end, .atom.value=0},
     };
 
-    Function actual1 = Parse(function1);
-    Function actual2 = Parse(function2);
+    Function actual1 = parseFunction(function1);
+    Function actual2 = parseFunction(function2);
 
     validateEquality(function1, expected1, actual1);
     validateEquality(function2, expected2, actual2);
@@ -63,14 +63,14 @@ START_TEST(test_Parse_Failing)
     char *doubleVariable = "x x";
     char *tailingOperator = "2+";
 
-    Function emptyRes = Parse(empty);
-    Function nullRes = Parse(null);
-    Function doubleOperatorRes = Parse(doubleOperator);
-    Function doubleValueRes = Parse(doubleValue);
-    Function valueVariableRes = Parse(valueVariable);
-    Function variableValueRes = Parse(variableValue);
-    Function doubleVariableRes = Parse(doubleVariable);
-    Function tailingOperatorRes = Parse(tailingOperator);
+    Function emptyRes = parseFunction(empty);
+    Function nullRes = parseFunction(null);
+    Function doubleOperatorRes = parseFunction(doubleOperator);
+    Function doubleValueRes = parseFunction(doubleValue);
+    Function valueVariableRes = parseFunction(valueVariable);
+    Function variableValueRes = parseFunction(variableValue);
+    Function doubleVariableRes = parseFunction(doubleVariable);
+    Function tailingOperatorRes = parseFunction(tailingOperator);
 
     ck_assert(emptyRes == NULL);
     ck_assert(nullRes == NULL);
@@ -87,9 +87,9 @@ static void validateEquality(char *function, Function expected, Function actual)
 {
     printf(">>> %s\n", function);
     printf("=== ");
-    Print(expected);
+    printFunction(expected);
     printf("<<< ");
-    Print(actual);
+    printFunction(actual);
 
     for (int i = 0;; i++)
     {

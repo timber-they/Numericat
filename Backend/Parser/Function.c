@@ -4,7 +4,7 @@
 
 static double applyOperator(double current, double operand, Operator operator);
 
-double Evaluate(Function func, double in)
+double evaluate(Function func, double in)
 {
     double operand;
     double current = 0;
@@ -64,7 +64,7 @@ static double applyOperator(double current, double operand, Operator operator)
     }
 }
 
-void Print(Function func)
+void printFunction(Function func)
 {
     while (1)
     {

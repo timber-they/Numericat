@@ -15,8 +15,8 @@ START_TEST(test_Evaluate)
     char *function1 = " 8861/7+x*6";
     char *function2 = "1/29+x*9-88/x";
 
-    Function parsed1 = Parse(function1);
-    Function parsed2 = Parse(function2);
+    Function parsed1 = parseFunction(function1);
+    Function parsed2 = parseFunction(function2);
 
     double inNormal = 42;
     double inNegative = -42;
@@ -31,13 +31,13 @@ START_TEST(test_Evaluate)
     double expected12 = -78.68965517;
     double expected01 = 7595.142857;
 
-    double resNormal1 = Evaluate(parsed1, inNormal);
-    double resNormal2 = Evaluate(parsed2, inNormal);
-    double resNegative1 = Evaluate(parsed1, inNegative);
-    double resNegative2 = Evaluate(parsed2, inNegative);
-    double res11 = Evaluate(parsed1, in1);
-    double res12 = Evaluate(parsed2, in1);
-    double res01 = Evaluate(parsed1, in0);
+    double resNormal1 = evaluate(parsed1, inNormal);
+    double resNormal2 = evaluate(parsed2, inNormal);
+    double resNegative1 = evaluate(parsed1, inNegative);
+    double resNegative2 = evaluate(parsed2, inNegative);
+    double res11 = evaluate(parsed1, in1);
+    double res12 = evaluate(parsed2, in1);
+    double res01 = evaluate(parsed1, in0);
 
     assertFloatEq(expectedNormal1, resNormal1);
     assertFloatEq(expectedNormal2, resNormal2);

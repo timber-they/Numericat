@@ -25,7 +25,7 @@ static int validateEnd();
 
 static void initialize();
 
-Function Parse(char *raw)
+Function parseFunction(char *raw)
 {
     if (raw == NULL)
         return NULL;
@@ -93,6 +93,23 @@ Function Parse(char *raw)
     func[j] = (Element) {.atomType=end, .atom.value=0};
 
     return func;
+}
+
+
+int validateDyk(char *in)
+{
+    int depth = 0;
+    for (char *it = in; *it != '\0'; it++)
+    {
+        if (*it == '(')
+            depth++;
+        if (*it == ')')
+            depth--;
+        if (depth < 0)
+            return depth;
+    }
+
+    return depth;
 }
 
 static int validateEnd()
