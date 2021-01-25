@@ -1,5 +1,6 @@
 #include "Function.h"
 #include <stdio.h>
+#include <math.h>
 
 static double applyOperator(double current, double operand, Operator operator);
 
@@ -55,6 +56,8 @@ static double applyOperator(double current, double operand, Operator operator)
             return current * operand;
         case divide:
             return current / operand;
+        case power:
+            return pow(current, operand);
         default:
             fprintf(stderr, "Unexpected operator %d\n", operator);
             return -1;
@@ -84,6 +87,9 @@ void Print(Function func)
                         break;
                     case divide:
                         printf("/");
+                        break;
+                    case power:
+                        printf("^");
                         break;
                 }
                 break;

@@ -167,6 +167,9 @@ static int handleOperator(char val)
         case '/':
             func[j++] = (Element) {.atomType=operator, .atom.op=divide};
             break;
+        case '^':
+            func[j++] = (Element) {.atomType=operator, .atom.op=power};
+            break;
         default:
             fprintf(stderr, "Unexpected operator: %c\n", val);
             return 1;

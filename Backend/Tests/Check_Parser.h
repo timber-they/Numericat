@@ -8,6 +8,7 @@
 
 static void validateEquality(char *function, Function expected, Function actual);
 
+// TODO: Power
 START_TEST(test_Parse_Functions)
 {
     char *function1 = " 8861/7+x*6";

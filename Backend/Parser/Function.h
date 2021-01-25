@@ -8,6 +8,7 @@ typedef enum Operator{
     minus,      // -
     times,      // *
     divide,     // /
+    power       // ^
 } Operator;
 
 typedef enum AtomType{
