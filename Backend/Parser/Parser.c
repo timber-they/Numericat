@@ -21,6 +21,8 @@ static void finishNumber();
 
 static int handleVariable(char val);
 
+static int handleParanthesis(char val);
+
 static int validateEnd();
 
 static void initialize();
@@ -29,6 +31,12 @@ Function parseFunction(char *raw)
 {
     if (raw == NULL)
         return NULL;
+
+    if (validateDyck(raw))
+    {
+        fprintf(stderr, "Not a valid Dyck language\n");
+        return NULL;
+    }
 
     initialize();
 
@@ -77,6 +85,16 @@ Function parseFunction(char *raw)
 
         finishNumber();
 
+        if (raw[i] == '(' || raw[i] == ')')
+        {
+            if (handleParanthesis(raw[i]))
+            {
+                free(func);
+                return NULL;
+            }
+            continue;
+        }
+
         if (handleOperator(raw[i]))
         {
             free(func);
@@ -96,7 +114,7 @@ Function parseFunction(char *raw)
 }
 
 
-int validateDyk(char *in)
+int validateDyck(char *in)
 {
     int depth = 0;
     for (char *it = in; *it != '\0'; it++)
@@ -110,6 +128,22 @@ int validateDyk(char *in)
     }
 
     return depth;
+}
+
+static int handleParanthesis(char val)
+{
+    switch(val)
+    {
+        case '(':
+            func[j++] = (Element) {.atomType=paranthesis, .atom.paranthesis = open};
+            return 0;
+        case ')':
+            func[j++] = (Element) {.atomType=paranthesis, .atom.paranthesis = close};
+            return 0;
+        default:
+            fprintf(stderr, "Unexpected paranthesis character: %c\n", val);
+            return 1;
+    }
 }
 
 static int validateEnd()

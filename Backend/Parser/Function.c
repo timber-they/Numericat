@@ -38,6 +38,9 @@ double evaluate(Function func, double in)
                 current = applyOperator(current, operand, func->atom.op);
                 func += 2;
                 break;
+            case paranthesis:
+                fprintf(stderr, "Paranthesis not yet implemented\n");
+                break;
             case end:
                 return current;
         }
@@ -90,6 +93,17 @@ void printFunction(Function func)
                         break;
                     case power:
                         printf("^");
+                        break;
+                }
+                break;
+            case paranthesis:
+                switch(func->atom.paranthesis)
+                {
+                    case open:
+                        printf("(");
+                        break;
+                    case close:
+                        printf(")");
                         break;
                 }
                 break;

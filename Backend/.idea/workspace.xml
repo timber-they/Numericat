@@ -21,10 +21,6 @@
       <change beforePath="$PROJECT_DIR$/Parser/Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Function.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Parser/Parser.c" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Parser.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Parser/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.c" beforeDir="false" afterPath="$PROJECT_DIR$/Program.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Check_Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Check_Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Check_Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Check_Parser.h" afterDir="false" />
     </list>
     <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -122,11 +118,6 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -150,6 +141,7 @@
       <workItem from="1610794657050" duration="4037000" />
       <workItem from="1611223460986" duration="3442000" />
       <workItem from="1611350468289" duration="1773000" />
+      <workItem from="1611659793226" duration="555000" />
     </task>
     <task id="LOCAL-00001" summary="Function header">
       <created>1610472424766</created>
@@ -242,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611587417564</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Dyk validation">
+      <created>1611593979335</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1611593979335</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,6 +271,7 @@
     <MESSAGE value="Compile backend (Tests still fail)" />
     <MESSAGE value="Succeeding tests (complex tests still missing)" />
     <MESSAGE value="Power" />
-    <option name="LAST_COMMIT_MESSAGE" value="Power" />
+    <MESSAGE value="Dyk validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dyk validation" />
   </component>
 </project>

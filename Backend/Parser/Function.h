@@ -11,16 +11,23 @@ typedef enum Operator{
     power       // ^
 } Operator;
 
+typedef enum Paranthesis{
+    open,       // (
+    close       // )
+} Paranthesis;
+
 typedef enum AtomType{
     value,
     operator,
     variable,
+    paranthesis,
     end
 } AtomType;
 
 typedef union Atom{
     double value;
     Operator op;
+    Paranthesis paranthesis;
 } Atom;
 
 typedef struct Element {

@@ -7,6 +7,6 @@
 /// Remember to free the result of this method, if not NULL
 /// raw should be a null terminated string
 Function parseFunction(char *raw);
-int validateDyk(char *in);
+int validateDyck(char *in);
 
 #endif //BACKEND_PARSER_H
