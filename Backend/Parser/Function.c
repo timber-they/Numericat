@@ -4,47 +4,148 @@
 
 static double applyOperator(double current, double operand, Operator operator);
 
-double evaluate(Function func, double in)
+static Function findClosingParanthesis(Function start);
+
+static Function findOperator(Operator op, Function func);
+
+static double evaluateAtomic(Function func, double in);
+
+// TODO: This function is too long
+double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
 {
-    double operand;
-    double current = 0;
-    while (1)
+    printf("Evaluating ");
+    printFunction(func);
+    double lhs, rhs;
+    Operator op;
+    AtomType prevType;
+
+    if (func->atomType == paranthesis)
     {
-        switch (func->atomType)
+        printf("Paranthesis...\n");
+        // Must be opening
+        Function closing = findClosingParanthesis(func);
+        if (closing == NULL)
+            return -1;
+        prevType = closing->atomType;
+        closing->atomType = end;
+        lhs = evaluate(func+1, in);
+        closing->atomType = prevType;
+
+        if (closing[1].atomType == end)
         {
-            case value:
-                // Must be the start
-                current = func->atom.value;
-                func++;
-                break;
-            case variable:
-                // Must be the start
-                current = in;
-                func++;
-                break;
-            case operator:
-                switch ((func+1)->atomType)
-                {
-                    case value:
-                        operand = (func+1)->atom.value;
-                        break;
-                    case variable:
-                        operand = in;
-                        break;
-                    default:
-                        fprintf(stderr, "Unexpected operand\n");
-                        return -1;
-                }
-                current = applyOperator(current, operand, func->atom.op);
-                func += 2;
-                break;
-            case paranthesis:
-                fprintf(stderr, "Paranthesis not yet implemented\n");
-                break;
-            case end:
-                return current;
+            printf("Nothing after paranthesis...\n");
+            return lhs;
         }
+
+        rhs = evaluate(closing+2, in);
+        if (closing[1].atomType != operator)
+        {
+            fprintf(stderr, "Expected operator after closing paranthesis\n");
+            return -1;
+        }
+        op = closing[1].atom.op;
     }
+    else
+    {
+        Function ptr = NULL;
+        Function plusPtr = findOperator(plus, func);
+        Function minusPtr = findOperator(minus, func);
+        Function timesPtr = findOperator(times, func);
+        Function dividePtr = findOperator(divide, func);
+        Function powerPtr = findOperator(power, func);
+
+        if (plusPtr != NULL && (minusPtr == NULL || plusPtr < minusPtr))
+        {
+            printf("Plus...\n");
+            ptr = plusPtr;
+            op = plus;
+        } else if (minusPtr != NULL)
+        {
+            printf("Minus...\n");
+            ptr = minusPtr;
+            op = minus;
+        }
+        else if (timesPtr != NULL && (dividePtr == NULL || timesPtr < dividePtr))
+        {
+            printf("Times...\n");
+            ptr = timesPtr;
+            op = times;
+        } else if (dividePtr != NULL)
+        {
+            printf("Divide...\n");
+            ptr = dividePtr;
+            op = divide;
+        }
+        else if (powerPtr != NULL)
+        {
+            printf("Power...\n");
+            ptr = powerPtr;
+            op = power;
+        }
+
+        if (ptr == NULL)
+        {
+            printf("Atomic...\n");
+            // Length must be 1
+            return evaluateAtomic(func, in);
+        }
+
+        printf("Operator: %d\n", op);
+        prevType = ptr->atomType;
+        ptr->atomType = end;
+        lhs = evaluate(func, in);
+        rhs = evaluate(ptr + 1, in);
+        ptr->atomType = prevType;
+    }
+
+    return applyOperator(lhs, rhs, op);
+}
+
+static Function findClosingParanthesis(Function start)
+{
+    printf("Finding closing for ");
+    printFunction(start);
+    int depth = 1;
+    Function iter;
+    for (iter = start+1; iter->atomType != end; iter++)
+    {
+        if (iter->atomType != paranthesis)
+            continue;
+        if (iter->atom.paranthesis == open)
+            depth++;
+        if (iter->atom.paranthesis == close)
+            depth--;
+        if (depth == 0)
+            break;
+    }
+
+    if (depth != 0)
+    {
+        fprintf(stderr, "Couldn't find closing paranthesis\n");
+        return NULL;
+    }
+    if (iter->atomType != paranthesis)
+        fprintf(stderr, "Hang on what?\n");
+
+    return iter;
+}
+
+static Function findOperator(Operator op, Function func)
+{
+    Function iter;
+    for (iter = func; iter->atomType != end && iter->atomType != paranthesis &&
+                      (iter->atomType != operator || iter->atom.op != op); iter++);
+    return iter->atomType == operator && iter->atom.op == op ? iter : NULL;
+}
+
+static double evaluateAtomic(Function func, double in)
+{
+    if (func->atomType == value)
+        return func->atom.value;
+    if (func->atomType == variable)
+        return in;
+    fprintf(stderr, "Expected atomic\n");
+    return -1;
 }
 
 static double applyOperator(double current, double operand, Operator operator)

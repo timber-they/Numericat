@@ -11,7 +11,6 @@
 
 static Matrix createInitialDerivative()
 {
-    // TODO: Complex constants aren't applied yet
     Matrix res = createMatrix(nx, nx);
     // Main diagonal
     for (int i = 0; i < nx; i++)
