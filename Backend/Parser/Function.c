@@ -13,45 +13,38 @@ static double evaluateAtomic(Function func, double in);
 // TODO: This function is too long
 double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
 {
-    printf("Evaluating ");
-    printFunction(func);
     double lhs, rhs;
     Operator op;
     AtomType prevType;
 
     Function ptr = NULL;
-    Function plusPtr = findOperator(plus, func);
-    Function minusPtr = findOperator(minus, func);
-    Function timesPtr = findOperator(times, func);
-    Function dividePtr = findOperator(divide, func);
-    Function powerPtr = findOperator(power, func);
+    Function plusPtr = findOperator(plus, func),
+             minusPtr = findOperator(minus, func),
+             timesPtr = findOperator(times, func),
+             dividePtr = findOperator(divide, func),
+             powerPtr = findOperator(power, func);
 
     if (plusPtr != NULL && (minusPtr == NULL || plusPtr < minusPtr)) {
-        printf("Plus...\n");
         ptr = plusPtr;
         op = plus;
     } else if (minusPtr != NULL) {
-        printf("Minus...\n");
         ptr = minusPtr;
         op = minus;
     } else if (timesPtr != NULL && (dividePtr == NULL || timesPtr < dividePtr)) {
-        printf("Times...\n");
         ptr = timesPtr;
         op = times;
     } else if (dividePtr != NULL) {
-        printf("Divide...\n");
         ptr = dividePtr;
         op = divide;
     } else if (powerPtr != NULL) {
-        printf("Power...\n");
         ptr = powerPtr;
         op = power;
     }
 
-    if (ptr == NULL) {
+    if (ptr == NULL)
+    {
         if (func->atomType == paranthesis)
         {
-            printf("Paranthesis...\n");
             // Must be opening
             Function closing = findClosingParanthesis(func);
             if (closing == NULL)
@@ -66,11 +59,8 @@ double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
             }
         }
         else
-        {
-            printf("Atomic...\n");
             // Length must be 1
             return evaluateAtomic(func, in);
-        }
     }
 
     prevType = ptr->atomType;
@@ -79,9 +69,7 @@ double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
     rhs = evaluate(ptr + 1, in);
     ptr->atomType = prevType;
 
-    double res = applyOperator(lhs, rhs, op);
-    printf("\t = %lf\n", res);
-    return res;
+    return applyOperator(lhs, rhs, op);
 }
 
 static Function findClosingParanthesis(Function start)
