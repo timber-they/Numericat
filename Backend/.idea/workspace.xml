@@ -15,14 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="61956d0f-9c06-4dbe-955e-c7c0f2dd1f40" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Parser/Function.c" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Function.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Parser/Parser.c" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Parser.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Check_Function.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Check_Function.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Check_Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Check_Parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Checks.c" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Checks.c" afterDir="false" />
-    </list>
+    <list default="true" id="61956d0f-9c06-4dbe-955e-c7c0f2dd1f40" name="Default Changelist" comment="" />
     <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +136,7 @@
       <workItem from="1611223460986" duration="3442000" />
       <workItem from="1611350468289" duration="1773000" />
       <workItem from="1611659793226" duration="5287000" />
-      <workItem from="1611741126771" duration="3379000" />
+      <workItem from="1611741126771" duration="3418000" />
     </task>
     <task id="LOCAL-00001" summary="Function header">
       <created>1610472424766</created>
@@ -257,7 +250,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611663259578</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Tests &amp; bugfix">
+      <created>1611744538890</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1611744538890</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,6 +290,7 @@
     <MESSAGE value="Dyk validation" />
     <MESSAGE value="Paranthesis parsing" />
     <MESSAGE value="Apparently functional advanced parsing (#6).&#10;Tests &amp; refactoring still missing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Apparently functional advanced parsing (#6).&#10;Tests &amp; refactoring still missing." />
+    <MESSAGE value="Tests &amp; bugfix" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tests &amp; bugfix" />
   </component>
 </project>
