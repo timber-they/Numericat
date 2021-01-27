@@ -19,92 +19,73 @@ double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
     Operator op;
     AtomType prevType;
 
-    if (func->atomType == paranthesis)
-    {
-        printf("Paranthesis...\n");
-        // Must be opening
-        Function closing = findClosingParanthesis(func);
-        if (closing == NULL)
-            return -1;
-        prevType = closing->atomType;
-        closing->atomType = end;
-        lhs = evaluate(func+1, in);
-        closing->atomType = prevType;
+    Function ptr = NULL;
+    Function plusPtr = findOperator(plus, func);
+    Function minusPtr = findOperator(minus, func);
+    Function timesPtr = findOperator(times, func);
+    Function dividePtr = findOperator(divide, func);
+    Function powerPtr = findOperator(power, func);
 
-        if (closing[1].atomType == end)
-        {
-            printf("Nothing after paranthesis...\n");
-            return lhs;
-        }
-
-        rhs = evaluate(closing+2, in);
-        if (closing[1].atomType != operator)
-        {
-            fprintf(stderr, "Expected operator after closing paranthesis\n");
-            return -1;
-        }
-        op = closing[1].atom.op;
+    if (plusPtr != NULL && (minusPtr == NULL || plusPtr < minusPtr)) {
+        printf("Plus...\n");
+        ptr = plusPtr;
+        op = plus;
+    } else if (minusPtr != NULL) {
+        printf("Minus...\n");
+        ptr = minusPtr;
+        op = minus;
+    } else if (timesPtr != NULL && (dividePtr == NULL || timesPtr < dividePtr)) {
+        printf("Times...\n");
+        ptr = timesPtr;
+        op = times;
+    } else if (dividePtr != NULL) {
+        printf("Divide...\n");
+        ptr = dividePtr;
+        op = divide;
+    } else if (powerPtr != NULL) {
+        printf("Power...\n");
+        ptr = powerPtr;
+        op = power;
     }
-    else
-    {
-        Function ptr = NULL;
-        Function plusPtr = findOperator(plus, func);
-        Function minusPtr = findOperator(minus, func);
-        Function timesPtr = findOperator(times, func);
-        Function dividePtr = findOperator(divide, func);
-        Function powerPtr = findOperator(power, func);
 
-        if (plusPtr != NULL && (minusPtr == NULL || plusPtr < minusPtr))
+    if (ptr == NULL) {
+        if (func->atomType == paranthesis)
         {
-            printf("Plus...\n");
-            ptr = plusPtr;
-            op = plus;
-        } else if (minusPtr != NULL)
-        {
-            printf("Minus...\n");
-            ptr = minusPtr;
-            op = minus;
-        }
-        else if (timesPtr != NULL && (dividePtr == NULL || timesPtr < dividePtr))
-        {
-            printf("Times...\n");
-            ptr = timesPtr;
-            op = times;
-        } else if (dividePtr != NULL)
-        {
-            printf("Divide...\n");
-            ptr = dividePtr;
-            op = divide;
-        }
-        else if (powerPtr != NULL)
-        {
-            printf("Power...\n");
-            ptr = powerPtr;
-            op = power;
-        }
+            printf("Paranthesis...\n");
+            // Must be opening
+            Function closing = findClosingParanthesis(func);
+            if (closing == NULL)
+                return -1;
+            prevType = closing->atomType;
+            closing->atomType = end;
+            lhs = evaluate(func + 1, in);
+            closing->atomType = prevType;
 
-        if (ptr == NULL)
+            if (closing[1].atomType == end) {
+                return lhs;
+            }
+        }
+        else
         {
             printf("Atomic...\n");
             // Length must be 1
             return evaluateAtomic(func, in);
         }
-
-        printf("Operator: %d\n", op);
-        prevType = ptr->atomType;
-        ptr->atomType = end;
-        lhs = evaluate(func, in);
-        rhs = evaluate(ptr + 1, in);
-        ptr->atomType = prevType;
     }
 
-    return applyOperator(lhs, rhs, op);
+    prevType = ptr->atomType;
+    ptr->atomType = end;
+    lhs = evaluate(func, in);
+    rhs = evaluate(ptr + 1, in);
+    ptr->atomType = prevType;
+
+    double res = applyOperator(lhs, rhs, op);
+    printf("\t = %lf\n", res);
+    return res;
 }
 
 static Function findClosingParanthesis(Function start)
 {
-    printf("Finding closing for ");
-    printFunction(start);
     int depth = 1;
     Function iter;
     for (iter = start+1; iter->atomType != end; iter++)
@@ -132,9 +113,18 @@ static Function findClosingParanthesis(Function start)
 
 static Function findOperator(Operator op, Function func)
 {
+    int depth = 0;
     Function iter;
-    for (iter = func; iter->atomType != end && iter->atomType != paranthesis &&
-                      (iter->atomType != operator || iter->atom.op != op); iter++);
+    for (iter = func; iter->atomType != end &&
+                      (depth != 0 || iter->atomType != operator || iter->atom.op != op); iter++)
+    {
+        if (iter->atomType != paranthesis)
+            continue;
+        if (iter->atom.paranthesis == open)
+            depth++;
+        if (iter->atom.paranthesis == close)
+            depth--;
+    }
     return iter->atomType == operator && iter->atom.op == op ? iter : NULL;
 }
 

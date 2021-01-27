@@ -135,6 +135,11 @@ static int handleParanthesis(char val)
     switch(val)
     {
         case '(':
+            if (j > 0 && func[j-1].atomType != operator)
+            {
+                fprintf(stderr, "Missing operator\n");
+                return 2;
+            }
             func[j++] = (Element) {.atomType=paranthesis, .atom.paranthesis = open};
             return 0;
         case ')':
