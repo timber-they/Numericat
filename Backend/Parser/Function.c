@@ -6,7 +6,10 @@ static double applyOperator(double current, double operand, Operator operator);
 
 static Function findClosingParanthesis(Function start);
 
+// Note that this finds the _last_ operator in order to preserve precedence
 static Function findOperator(Operator op, Function func);
+
+static Function findEnd(Function func);
 
 static double evaluateAtomic(Function func, Input in);
 
@@ -103,17 +106,23 @@ static Function findOperator(Operator op, Function func)
 {
     int depth = 0;
     Function iter;
-    for (iter = func; iter->atomType != end &&
-                      (depth != 0 || iter->atomType != operator || iter->atom.op != op); iter++)
+    for (iter = findEnd(func); iter > func && (depth != 0 || iter->atomType != operator || iter->atom.op != op); iter--)
     {
         if (iter->atomType != paranthesis)
             continue;
         if (iter->atom.paranthesis == open)
-            depth++;
-        if (iter->atom.paranthesis == close)
             depth--;
+        if (iter->atom.paranthesis == close)
+            depth++;
     }
     return iter->atomType == operator && iter->atom.op == op ? iter : NULL;
+}
+
+static Function findEnd(Function func)
+{
+    Function iter;
+    for (iter = func; iter->atomType != end; iter++);
+    return iter;
 }
 
 static double evaluateAtomic(Function func, Input in)
