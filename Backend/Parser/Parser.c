@@ -27,6 +27,7 @@ static int validateEnd();
 
 static void initialize();
 
+// TODO: This function is too long
 Function parseFunction(char *raw)
 {
     if (raw == NULL)
@@ -72,9 +73,9 @@ Function parseFunction(char *raw)
             continue;
         }
 
-        if (raw[i] == 'x')
+        if (raw[i] == 'x' || raw[i] == 't')
         {
-            // For now only x - later maybe multiple dimensions
+            // For now only x and t - later maybe multiple dimensions
             if (handleVariable(raw[i]))
             {
                 free(func);
@@ -245,7 +246,7 @@ static void finishNumber()
     currentNumber = -1;
 }
 
-static int handleVariable(__attribute__((unused)) char val)
+static int handleVariable(char val)
 {
     if (currentNumberState != 0 || (j > 0 && func[j-1].atomType == value))
     {
@@ -258,8 +259,18 @@ static int handleVariable(__attribute__((unused)) char val)
         return 2;
     }
 
-    func[j++] = (Element) {.atomType=variable, .atom.value=-1};
-    return 0;
+    switch(val)
+    {
+        case 'x':
+            func[j++] = (Element) {.atomType=variable, .atom.variable=variableX};
+            return 0;
+        case 't':
+            func[j++] = (Element) {.atomType=variable, .atom.variable=variableT};
+            return 0;
+        default:
+            fprintf(stderr, "Unexpected variable: %c\n", val);
+            return 3;
+    }
 }
 
 static void initialize()

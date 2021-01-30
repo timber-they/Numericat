@@ -24,26 +24,26 @@ START_TEST(test_Evaluate)
     Function parsed3 = parseFunction(function3);
     Function parsed4 = parseFunction(function4);
 
-    double inNormal = 42;
-    double inNegative = -42;
-    double in1 = 1;
-    double in0 = 0;
+    Input inNormal = {.x = 42};
+    Input inNegative = {.x = -42};
+    Input in1 = {.x = 1};
+    Input in0 = {.x = 0};
 
-    double expectedNormal1 = 8861.0/7.0+inNormal*6.0;
-    double expectedNormal2 = 1.0/29.0+inNormal*9.0-88.0/inNormal;
-    double expectedNormal3 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(inNormal,2)/pow(3,2)));
-    double expectedNormal4 = pow(2,inNormal)+1;
-    double expectedNegative1 = 8861.0/7.0+inNegative*6;
-    double expectedNegative2 = 1.0/29.0+inNegative*9.0-88.0/inNegative;
-    double expectedNegative3 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(inNegative,2)/pow(3,2)));
-    double expectedNegative4 = pow(2,inNegative)+1;
-    double expected11 = 8861.0/7.0+in1*6;
-    double expected12 = 1.0/29.0+in1*9.0-88.0/in1;
-    double expected13 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(in1,2)/pow(3,2)));
-    double expected14 = pow(2,in1)+1;
-    double expected01 = 8861.0/7.0+in0*6;
-    double expected03 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(in0,2)/pow(3,2)));
-    double expected04 = pow(2,in0)+1;
+    double expectedNormal1 = 8861.0/7.0+inNormal.x*6.0;
+    double expectedNormal2 = 1.0/29.0+inNormal.x*9.0-88.0/inNormal.x;
+    double expectedNormal3 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(inNormal.x,2)/pow(3,2)));
+    double expectedNormal4 = pow(2,inNormal.x)+1;
+    double expectedNegative1 = 8861.0/7.0+inNegative.x*6;
+    double expectedNegative2 = 1.0/29.0+inNegative.x*9.0-88.0/inNegative.x;
+    double expectedNegative3 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(inNegative.x,2)/pow(3,2)));
+    double expectedNegative4 = pow(2,inNegative.x)+1;
+    double expected11 = 8861.0/7.0+in1.x*6;
+    double expected12 = 1.0/29.0+in1.x*9.0-88.0/in1.x;
+    double expected13 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(in1.x,2)/pow(3,2)));
+    double expected14 = pow(2,in1.x)+1;
+    double expected01 = 8861.0/7.0+in0.x*6;
+    double expected03 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(in0.x,2)/pow(3,2)));
+    double expected04 = pow(2,in0.x)+1;
 
     double resNormal1 = evaluate(parsed1, inNormal);
     double resNormal2 = evaluate(parsed2, inNormal);

@@ -67,7 +67,7 @@ void writeResults(Complex **data, Function potential, int n)
     fprintf(fp, "\n");
 
     for (int i = 0; i < nx; i++)
-        fprintf(fp, "%5f ", evaluate(potential, dx * i));
+        fprintf(fp, "%5f ", evaluate(potential, (Input) {.x = dx * i}));
 
     fclose(fp);
 }

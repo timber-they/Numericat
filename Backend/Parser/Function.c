@@ -8,10 +8,10 @@ static Function findClosingParanthesis(Function start);
 
 static Function findOperator(Operator op, Function func);
 
-static double evaluateAtomic(Function func, double in);
+static double evaluateAtomic(Function func, Input in);
 
 // TODO: This function is too long
-double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
+double evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
 {
     double lhs, rhs;
     Operator op;
@@ -116,14 +116,28 @@ static Function findOperator(Operator op, Function func)
     return iter->atomType == operator && iter->atom.op == op ? iter : NULL;
 }
 
-static double evaluateAtomic(Function func, double in)
+static double evaluateAtomic(Function func, Input in)
 {
-    if (func->atomType == value)
-        return func->atom.value;
-    if (func->atomType == variable)
-        return in;
-    fprintf(stderr, "Expected atomic\n");
-    return -1;
+    switch(func->atomType)
+    {
+        case value:
+            return func->atom.value;
+        case variable:
+            switch(func->atom.variable)
+            {
+                case variableX:
+                    return in.x;
+                case variableT:
+                    return in.t;
+                default:
+                    fprintf(stderr, "Unexpected variable: %d\n", func->atom.variable);
+                    return -1;
+            }
+            break;
+        default:
+            fprintf(stderr, "Unexpected atomic: %d\n", func->atomType);
+            return -1;
+    }
 }
 
 static double applyOperator(double current, double operand, Operator operator)
