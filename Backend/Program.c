@@ -66,6 +66,7 @@ void writeResults(Complex **data, Function potential, int n)
         {
             fprintf(fp, "%5f ", evaluate(potential, (Input) {.x = dx * j, .t = dt * i}));
         }
+        fprintf(fp, "\n");
     }
 
     fclose(fp);

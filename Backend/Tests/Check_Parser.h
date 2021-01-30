@@ -11,7 +11,7 @@ static void validateEquality(char *function, Function expected, Function actual)
 START_TEST(test_Parse_Functions)
 {
     char *function1 = " 8861/7+x*6";
-    char *function2 = "(1/29+x*9-88/t^(x-1))";
+    char *function2 = "(1/29+x*9-88/t^((x-1)))";
 
     Element expected1[] =
     {
@@ -40,9 +40,11 @@ START_TEST(test_Parse_Functions)
         (Element) {.atomType = variable, .atom.variable=variableT},
         (Element) {.atomType = operator, .atom.op=power},
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
         (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = operator, .atom.op=minus},
         (Element) {.atomType = value, .atom.value=1},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = end, .atom.value=0},
