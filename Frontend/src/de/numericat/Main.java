@@ -1,5 +1,3 @@
-package de.numericat;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -51,6 +49,7 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setPreferredSize(new Dimension(1000, 700));
         frame.pack();
+        frame.setLayout(new BorderLayout());
         frame.setVisible(true);
     }
 
