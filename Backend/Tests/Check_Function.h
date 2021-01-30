@@ -18,11 +18,13 @@ START_TEST(test_Evaluate)
     // Gaussian wave packet, ignoring the phase
     char *function3 = "(2/(3.14159265358979323*3^2))^(1/4)*2.718281828^(0-x^2/3^2)";
     char *function4 = "(2)^x+1";
+    char *function5 = "3-2-1";
 
     Function parsed1 = parseFunction(function1);
     Function parsed2 = parseFunction(function2);
     Function parsed3 = parseFunction(function3);
     Function parsed4 = parseFunction(function4);
+    Function parsed5 = parseFunction(function5);
 
     Input inNormal = {.x = 42, .t = 25};
     Input inNegative = {.x = -42, .t = -25};
@@ -33,6 +35,7 @@ START_TEST(test_Evaluate)
     double expectedNormal2 = 1.0/29.0+inNormal.x*9.0-88.0/inNormal.t;
     double expectedNormal3 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(inNormal.x,2)/pow(3,2)));
     double expectedNormal4 = pow(2,inNormal.x)+1;
+    double expectedNormal5 = 3-2-1;
     double expectedNegative1 = 8861.0/7.0+inNegative.x*6;
     double expectedNegative2 = 1.0/29.0+inNegative.x*9.0-88.0/inNegative.t;
     double expectedNegative3 = pow((2/(3.14159265358979323*pow(3,2))),(1.0/4))*pow(2.718281828,(-pow(inNegative.x,2)/pow(3,2)));
@@ -50,6 +53,7 @@ START_TEST(test_Evaluate)
     double resNormal2 = evaluate(parsed2, inNormal);
     double resNormal3 = evaluate(parsed3, inNormal);
     double resNormal4 = evaluate(parsed4, inNormal);
+    double resNormal5 = evaluate(parsed5, inNormal);
     double resNegative1 = evaluate(parsed1, inNegative);
     double resNegative2 = evaluate(parsed2, inNegative);
     double resNegative3 = evaluate(parsed3, inNegative);
@@ -67,6 +71,7 @@ START_TEST(test_Evaluate)
     assertFloatEq(expectedNormal2, resNormal2);
     assertFloatEq(expectedNormal3, resNormal3);
     assertFloatEq(expectedNormal4, resNormal4);
+    assertFloatEq(expectedNormal5, resNormal5);
     assertFloatEq(expectedNegative1, resNegative1);
     assertFloatEq(expectedNegative2, resNegative2);
     assertFloatEq(expectedNegative3, resNegative3);
@@ -84,6 +89,7 @@ START_TEST(test_Evaluate)
     free(parsed2);
     free(parsed3);
     free(parsed4);
+    free(parsed5);
 }
 END_TEST
 
