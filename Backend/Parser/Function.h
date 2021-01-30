@@ -16,6 +16,12 @@ typedef enum Paranthesis{
     close       // )
 } Paranthesis;
 
+typedef enum Variable{
+    variableX,
+    // variableY,
+    variableT
+} Variable;
+
 typedef enum AtomType{
     value,
     operator,
@@ -28,6 +34,7 @@ typedef union Atom{
     double value;
     Operator op;
     Paranthesis paranthesis;
+    Variable variable;
 } Atom;
 
 typedef struct Element {
@@ -37,7 +44,13 @@ typedef struct Element {
 
 typedef Element *Function;
 
-double evaluate(Function func, double in);
+typedef struct Input{
+    double x;
+    // double y;
+    double t;
+} Input;
+
+double evaluate(Function func, Input in);
 // Note that it's not really possible to test printing to the console
 void printFunction(Function func);
 

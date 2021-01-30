@@ -11,7 +11,7 @@ static void validateEquality(char *function, Function expected, Function actual)
 START_TEST(test_Parse_Functions)
 {
     char *function1 = " 8861/7+x*6";
-    char *function2 = "(1/29+x*9-88/x^(x-1))";
+    char *function2 = "(1/29+x*9-88/t^((x-1)))";
 
     Element expected1[] =
     {
@@ -31,18 +31,20 @@ START_TEST(test_Parse_Functions)
         (Element) {.atomType = operator, .atom.op=divide},
         (Element) {.atomType = value, .atom.value=29},
         (Element) {.atomType = operator, .atom.op=plus},
-        (Element) {.atomType = variable, .atom.value=0},
+        (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = operator, .atom.op=times},
         (Element) {.atomType = value, .atom.value=9},
         (Element) {.atomType = operator, .atom.op=minus},
         (Element) {.atomType = value, .atom.value=88},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = variable, .atom.value=0},
+        (Element) {.atomType = variable, .atom.variable=variableT},
         (Element) {.atomType = operator, .atom.op=power},
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
-        (Element) {.atomType = variable, .atom.value=0},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = operator, .atom.op=minus},
         (Element) {.atomType = value, .atom.value=1},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = end, .atom.value=0},
@@ -67,7 +69,7 @@ START_TEST(test_Parse_Failing)
     char *doubleValue = "1 1";
     char *valueVariable = "1 x";
     char *variableValue = "x 1";
-    char *doubleVariable = "x x";
+    char *doubleVariable = "x t";
     char *tailingOperator = "2+";
     char *missingOperator = "(2+x)(3)";
 
