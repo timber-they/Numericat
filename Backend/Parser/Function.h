@@ -8,18 +8,26 @@ typedef enum Operator{
     minus,      // -
     times,      // *
     divide,     // /
+    power       // ^
 } Operator;
+
+typedef enum Paranthesis{
+    open,       // (
+    close       // )
+} Paranthesis;
 
 typedef enum AtomType{
     value,
     operator,
     variable,
+    paranthesis,
     end
 } AtomType;
 
 typedef union Atom{
     double value;
     Operator op;
+    Paranthesis paranthesis;
 } Atom;
 
 typedef struct Element {
@@ -29,8 +37,8 @@ typedef struct Element {
 
 typedef Element *Function;
 
-double Evaluate(Function func, double in);
+double evaluate(Function func, double in);
 // Note that it's not really possible to test printing to the console
-void Print(Function func);
+void printFunction(Function func);
 
 #endif //BACKEND_FUNCTION_H

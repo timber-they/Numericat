@@ -21,14 +21,22 @@ static void finishNumber();
 
 static int handleVariable(char val);
 
+static int handleParanthesis(char val);
+
 static int validateEnd();
 
 static void initialize();
 
-Function Parse(char *raw)
+Function parseFunction(char *raw)
 {
     if (raw == NULL)
         return NULL;
+
+    if (validateDyck(raw))
+    {
+        fprintf(stderr, "Not a valid Dyck language\n");
+        return NULL;
+    }
 
     initialize();
 
@@ -77,6 +85,16 @@ Function Parse(char *raw)
 
         finishNumber();
 
+        if (raw[i] == '(' || raw[i] == ')')
+        {
+            if (handleParanthesis(raw[i]))
+            {
+                free(func);
+                return NULL;
+            }
+            continue;
+        }
+
         if (handleOperator(raw[i]))
         {
             free(func);
@@ -93,6 +111,44 @@ Function Parse(char *raw)
     func[j] = (Element) {.atomType=end, .atom.value=0};
 
     return func;
+}
+
+
+int validateDyck(char *in)
+{
+    int depth = 0;
+    for (char *it = in; *it != '\0'; it++)
+    {
+        if (*it == '(')
+            depth++;
+        if (*it == ')')
+            depth--;
+        if (depth < 0)
+            return depth;
+    }
+
+    return depth;
+}
+
+static int handleParanthesis(char val)
+{
+    switch(val)
+    {
+        case '(':
+            if (j > 0 && func[j-1].atomType != operator)
+            {
+                fprintf(stderr, "Missing operator\n");
+                return 2;
+            }
+            func[j++] = (Element) {.atomType=paranthesis, .atom.paranthesis = open};
+            return 0;
+        case ')':
+            func[j++] = (Element) {.atomType=paranthesis, .atom.paranthesis = close};
+            return 0;
+        default:
+            fprintf(stderr, "Unexpected paranthesis character: %c\n", val);
+            return 1;
+    }
 }
 
 static int validateEnd()
@@ -166,6 +222,9 @@ static int handleOperator(char val)
             break;
         case '/':
             func[j++] = (Element) {.atomType=operator, .atom.op=divide};
+            break;
+        case '^':
+            func[j++] = (Element) {.atomType=operator, .atom.op=power};
             break;
         default:
             fprintf(stderr, "Unexpected operator: %c\n", val);

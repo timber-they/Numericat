@@ -17,9 +17,7 @@
   <component name="ChangeListManager">
     <list default="true" id="61956d0f-9c06-4dbe-955e-c7c0f2dd1f40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.c" beforeDir="false" afterPath="$PROJECT_DIR$/Program.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.h" beforeDir="false" afterPath="$PROJECT_DIR$/Solver/CrankNicolson/Iterate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Parser/Function.c" beforeDir="false" afterPath="$PROJECT_DIR$/Parser/Function.c" afterDir="false" />
     </list>
     <list id="99db69e6-c08c-4aa7-bd4c-3ef63bd8270b" name="Changes by tom" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,7 +37,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="Data_IO_#4_#7" />
+        <entry key="$PROJECT_DIR$/.." value="Develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -107,11 +105,6 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Makefile Application.all">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="all" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Backend" TARGET_NAME="all" CONFIG_NAME="all" version="1">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
@@ -145,6 +138,8 @@
       <workItem from="1610794657050" duration="4037000" />
       <workItem from="1611223460986" duration="3442000" />
       <workItem from="1611350468289" duration="1773000" />
+      <workItem from="1611659793226" duration="5287000" />
+      <workItem from="1611741126771" duration="3823000" />
     </task>
     <task id="LOCAL-00001" summary="Function header">
       <created>1610472424766</created>
@@ -230,7 +225,49 @@
       <option name="project" value="LOCAL" />
       <updated>1611226275196</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Power">
+      <created>1611587417564</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1611587417564</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Dyk validation">
+      <created>1611593979335</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1611593979335</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Paranthesis parsing">
+      <created>1611660366035</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1611660366035</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Apparently functional advanced parsing (#6).&#10;Tests &amp; refactoring still missing.">
+      <created>1611663259578</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1611663259578</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Tests &amp; bugfix">
+      <created>1611744538890</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1611744538890</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Remove todo">
+      <created>1611744555255</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1611744555255</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,6 +296,12 @@
     <MESSAGE value="Complex numbers &amp; matrices" />
     <MESSAGE value="Compile backend (Tests still fail)" />
     <MESSAGE value="Succeeding tests (complex tests still missing)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Succeeding tests (complex tests still missing)" />
+    <MESSAGE value="Power" />
+    <MESSAGE value="Dyk validation" />
+    <MESSAGE value="Paranthesis parsing" />
+    <MESSAGE value="Apparently functional advanced parsing (#6).&#10;Tests &amp; refactoring still missing." />
+    <MESSAGE value="Tests &amp; bugfix" />
+    <MESSAGE value="Remove todo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove todo" />
   </component>
 </project>
