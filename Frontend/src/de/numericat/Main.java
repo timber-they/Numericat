@@ -117,8 +117,8 @@ public class Main {
 //        System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
         for (int i = 0; i < split.length; i++) {
-            // TODO: Scale automaticaly
-            double el = 500 * Double.parseDouble(split[i]);
+            // TODO: Scale automatically
+            double el = (700 / canvas.getHeight()) * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
 
