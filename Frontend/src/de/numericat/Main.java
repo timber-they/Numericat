@@ -1,3 +1,5 @@
+package de.numericat;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -7,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.awt.BorderLayout;
+
 
 public class Main {
 
@@ -49,7 +53,7 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setPreferredSize(new Dimension(1000, 700));
         frame.pack();
-        frame.setLayout(new BorderLayout());
+        frame.setLayout(new BorderLayout(10,10));
         frame.setVisible(true);
     }
 
@@ -113,7 +117,7 @@ public class Main {
 //        System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
         for (int i = 0; i < split.length; i++) {
-            // TODO: Scale automatically
+            // TODO: Scale automaticaly
             double el = 500 * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }

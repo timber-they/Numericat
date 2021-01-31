@@ -1,3 +1,5 @@
+package de.numericat;
+
 public class Coordinate
 {
     private final double x;
