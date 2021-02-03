@@ -43,7 +43,8 @@ public class Main {
     private static void createWindow() {
 
         //Create and set up the window
-        JFrame frame = new JFrame("Visualisation");
+        JFrame frame;
+        frame = new JFrame("Visualisation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         canvas = new Numericanvas();
@@ -53,8 +54,11 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setPreferredSize(new Dimension(1000, 700));
         frame.pack();
-        frame.setLayout(new BorderLayout(10,10));
+        frame.setLayout(new GridLayout(1, 1));
         frame.setVisible(true);
+        frame.setMinimumSize(frame.getSize());
+
+
     }
 
     private static boolean skipLines(Scanner scanner, int lines) {
@@ -117,7 +121,7 @@ public class Main {
 //        System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
         for (int i = 0; i < split.length; i++) {
-            double el = (700 / canvas.getHeight()) * Double.parseDouble(split[i]);
+            double el = (800 / canvas.getHeight()) * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
