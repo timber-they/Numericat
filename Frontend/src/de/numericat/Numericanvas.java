@@ -23,6 +23,7 @@ public class Numericanvas extends JPanel
                 g.drawLine(coordinates.get(i - 1).roundX(), getSize().height - coordinates.get(i - 1).roundY(),
                         coordinates.get(i).roundX(), getSize().height - coordinates.get(i).roundY());
         }
+
     }
 
     public void drawData(List<Coordinate> coordinates) {
