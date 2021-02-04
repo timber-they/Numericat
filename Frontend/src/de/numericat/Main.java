@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 
 public class Main {
@@ -116,12 +119,40 @@ public class Main {
         return res;
     }
 
+    private static double getScalingFactor(String outputPath) {
+        double ScalingFactor = 0;
+        int counter = 0;
+        int count_potention = 0;
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    outputPath));
+            String line = reader.readLine();
+            while (line.length() != 0) {
+                count_potention++;
+                System.out.println(line);
+                String[] splitString = line.split(" ");
+                for(int i = 0; i < splitString.length; i++) {
+                    ScalingFactor += Double.parseDouble(splitString[i]);
+                    counter++;
+                }
+                // read next line
+                line = reader.readLine();
+            }
+            ScalingFactor /= counter;
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ScalingFactor;
+    }
+
     private static List<Coordinate> lineToCoordinates(String line) {
         String[] split = line.split(" ");
 //        System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
         for (int i = 0; i < split.length; i++) {
-            double el = (672 / canvas.getAlignmentY()) * Double.parseDouble(split[i]);
+            double el = getScalingFactor(outputPath) * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
