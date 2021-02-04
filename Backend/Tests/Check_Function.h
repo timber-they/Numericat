@@ -112,7 +112,9 @@ static void assertFloatEq(double expected, double actual)
     double diff = expected - actual;
     if (diff < 0)
         diff = -diff;
-    ck_assert(diff < 0.001);
+    if (expected < 0)
+        expected = -expected;
+    ck_assert(diff < expected / 1000000000000);
 }
 
 #endif //BACKEND_CHECK_FUNCTION_H
