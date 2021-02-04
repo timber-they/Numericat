@@ -78,3 +78,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# idea
+*/.idea/*
+Backend/.idea/*
+Frontend/.idea/*
