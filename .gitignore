@@ -80,6 +80,6 @@ Mkfile.old
 dkms.conf
 
 # idea
-*/.idea/*
-Backend/.idea/*
-Frontend/.idea/*
+#*/.idea/*
+#Backend/.idea/*
+#Frontend/.idea/*
