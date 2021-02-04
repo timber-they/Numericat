@@ -23,15 +23,15 @@ Complex divideComplex(Complex a, Complex b)
 }
 Complex powerComplex(Complex a, Complex b)
 {
-    double a_arg = atan2(a.imaginary, b.real);
+    double a_arg = atan2(a.imaginary, a.real);
     double a_r = sqrt(a.real * a.real + a.imaginary * a.imaginary);
     return expComplex(sumComplex(multiplyComplex((Complex) {.real = log(a_r), .imaginary = 0}, b),
                                  multiplyComplex((Complex) {.real = 0, .imaginary = a_arg}, b)));
 }
 Complex expComplex(Complex b)
 {
-    multiplyComplex((Complex) {.real = exp(b.real), .imaginary = 0},
-                    (Complex) {.real = cos(b.imaginary), .imaginary = sin(b.imaginary)});
+    return multiplyComplex((Complex) {.real = exp(b.real), .imaginary = 0},
+                           (Complex) {.real = cos(b.imaginary), .imaginary = sin(b.imaginary)});
 }
 double absSquareComplex(Complex c)
 {

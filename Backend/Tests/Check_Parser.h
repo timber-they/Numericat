@@ -15,37 +15,37 @@ START_TEST(test_Parse_Functions)
 
     Element expected1[] =
     {
-        (Element) {.atomType = value, .atom.value=8861},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 8861, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = value, .atom.value=7},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 7, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=plus},
-        (Element) {.atomType = variable, .atom.value=0},
+        (Element) {.atomType = variable, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=times},
-        (Element) {.atomType = value, .atom.value=6},
-        (Element) {.atomType = end, .atom.value=0}
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 6, .imaginary = 0}},
+        (Element) {.atomType = end, .atom.value=(Complex) {.real = 0, .imaginary = 0}}
     };
     Element expected2[] =
     {
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
-        (Element) {.atomType = value, .atom.value=1},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 1, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = value, .atom.value=29},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 29, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=plus},
-        (Element) {.atomType = variable, .atom.value=0},
+        (Element) {.atomType = variable, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=times},
-        (Element) {.atomType = value, .atom.value=9},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 9, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=88},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 88, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = variable, .atom.value=0},
+        (Element) {.atomType = variable, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=power},
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
-        (Element) {.atomType = variable, .atom.value=0},
+        (Element) {.atomType = variable, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=1},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 1, .imaginary = 0}},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
-        (Element) {.atomType = end, .atom.value=0},
+        (Element) {.atomType = end, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
     };
 
     Function actual1 = parseFunction(function1);
@@ -148,7 +148,8 @@ static void validateEquality(char *function, Function expected, Function actual)
         switch(actual[i].atomType)
         {
             case value:
-                ck_assert(actual[i].atom.value == expected[i].atom.value);
+                ck_assert(actual[i].atom.value.real == expected[i].atom.value.real);
+                ck_assert(actual[i].atom.value.imaginary == expected[i].atom.value.imaginary);
                 break;
             case operator:
                 ck_assert(actual[i].atom.op == expected[i].atom.op);

@@ -2,18 +2,18 @@
 #include <stdio.h>
 #include <math.h>
 
-static double applyOperator(double current, double operand, Operator operator);
+static Complex applyOperator(Complex current, Complex operand, Operator operator);
 
 static Function findClosingParanthesis(Function start);
 
 static Function findOperator(Operator op, Function func);
 
-static double evaluateAtomic(Function func, double in);
+static Complex evaluateAtomic(Function func, Complex in);
 
 // TODO: This function is too long
-double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
+Complex evaluate(Function func, Complex in) // NOLINT(misc-no-recursion)
 {
-    double lhs, rhs;
+    Complex lhs, rhs;
     Operator op;
     AtomType prevType;
 
@@ -48,7 +48,7 @@ double evaluate(Function func, double in) // NOLINT(misc-no-recursion)
             // Must be opening
             Function closing = findClosingParanthesis(func);
             if (closing == NULL)
-                return -1;
+                return (Complex) {.real = -1, .imaginary = 0};
             prevType = closing->atomType;
             closing->atomType = end;
             lhs = evaluate(func + 1, in);
@@ -116,33 +116,33 @@ static Function findOperator(Operator op, Function func)
     return iter->atomType == operator && iter->atom.op == op ? iter : NULL;
 }
 
-static double evaluateAtomic(Function func, double in)
+static Complex evaluateAtomic(Function func, Complex in)
 {
     if (func->atomType == value)
         return func->atom.value;
     if (func->atomType == variable)
         return in;
     fprintf(stderr, "Expected atomic\n");
-    return -1;
+    return (Complex) {.real = -1, .imaginary = 0};
 }
 
-static double applyOperator(double current, double operand, Operator operator)
+static Complex applyOperator(Complex current, Complex operand, Operator operator)
 {
     switch (operator)
     {
         case plus:
-            return current + operand;
+            return sumComplex(current, operand);
         case minus:
-            return current - operand;
+            return subtractComplex(current, operand);
         case times:
-            return current * operand;
+            return multiplyComplex(current, operand);
         case divide:
-            return current / operand;
+            return divideComplex(current, operand);
         case power:
-            return pow(current, operand);
+            return powerComplex(current, operand);
         default:
             fprintf(stderr, "Unexpected operator %d\n", operator);
-            return -1;
+            return (Complex) {.real = -1, .imaginary = 0};
     }
 }
 
@@ -153,7 +153,7 @@ void printFunction(Function func)
         switch (func->atomType)
         {
             case value:
-                printf("%f", func->atom.value);
+                printComplex(func->atom.value);
                 break;
             case operator:
                 switch (func->atom.op)

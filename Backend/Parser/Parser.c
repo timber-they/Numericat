@@ -108,7 +108,7 @@ Function parseFunction(char *raw)
         free(func);
         return NULL;
     }
-    func[j] = (Element) {.atomType=end, .atom.value=0};
+    func[j] = (Element) {.atomType=end, .atom.value={0}};
 
     return func;
 }
@@ -240,7 +240,8 @@ static void finishNumber()
         // No number to finish
         return;
     // Number is finished
-    func[j++] = (Element) {.atomType=value, .atom.value=currentNumber};
+    // TODO: Complex
+    func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = currentNumber, .imaginary = 0}};
     currentNumberState = 0;
     currentNumber = -1;
 }
@@ -258,7 +259,7 @@ static int handleVariable(__attribute__((unused)) char val)
         return 2;
     }
 
-    func[j++] = (Element) {.atomType=variable, .atom.value=-1};
+    func[j++] = (Element) {.atomType=variable, .atom.value={.real = -1, .imaginary = 0}};
     return 0;
 }
 
