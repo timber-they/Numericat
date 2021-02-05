@@ -28,9 +28,10 @@ public class Main {
         ActionListener action = e -> {
             List<List<Coordinate>> data = getData();
             if (data == null) {
-                if (timer != null)
-                    timer.stop();
-                return;
+                currentLine = 0;
+//                if (timer != null)
+//                    timer.stop();
+//                return;
             }
             canvas.drawMultipleData(data);
         };
@@ -115,7 +116,7 @@ public class Main {
         List<Coordinate> calculated = new ArrayList<>(split.length);
         for (int i = 0; i < split.length; i++) {
             // TODO: Scale automatically
-            double el = 500 * Double.parseDouble(split[i]);
+            double el = 20 * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
 

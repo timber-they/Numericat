@@ -23,7 +23,7 @@ Complex divideComplex(Complex a, Complex b)
 }
 Complex powerComplex(Complex a, Complex b)
 {
-    if (absSquareComplex(a) < 0.00001)
+    if (absSquareComplex(a) < 0.0000000001)
         // 0^x=0
         return (Complex){0};
     double a_arg = atan2(a.imaginary, a.real);

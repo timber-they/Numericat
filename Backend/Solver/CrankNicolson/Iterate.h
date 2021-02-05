@@ -7,7 +7,7 @@
 
 #define nx 1001
 #define dx 0.001
-#define dt 0.1
+#define dt 0.0001
 
 /**
  * Iterate via the Crank-Nicolson method
