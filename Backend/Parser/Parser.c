@@ -15,7 +15,7 @@ static int currentNumberState;
 static int j;
 static Function func;
 
-static int handleNumber(int val);
+static int handleNumber(char val);
 
 static int handleOperator(char val);
 
@@ -56,8 +56,7 @@ Function parseFunction(char *raw)
         }
         if (isDigit(raw[i]))
         {
-            int val = raw[i] - '0';
-            if (handleNumber(val))
+            if (handleNumber(raw[i]))
             {
                 free(func);
                 return NULL;
@@ -160,14 +159,14 @@ static int validateEnd()
     return 0;
 }
 
-static int handleNumber(int val)
+static int handleNumber(char val)
 {
-    if (currentNumberState != 2 && val == 'i' - '0')
+    if (currentNumberState != 2 && val == 'i')
     {
         currentNumberState = 2;
         return 0;
     }
-    if (val == '.' - '0')
+    if (val == '.')
     {
         if (currentNumberState != 1)
         {
@@ -176,6 +175,8 @@ static int handleNumber(int val)
         currentNumberState = -1;
         return 0;
     }
+
+    int number = val - '0';
 
     switch (currentNumberState)
     {
@@ -191,10 +192,10 @@ static int handleNumber(int val)
                 return 3;
             }
             currentNumberState = 1;
-            currentNumber = val;
+            currentNumber = number;
             break;
         case 1:
-            currentNumber = currentNumber * 10 + val;
+            currentNumber = currentNumber * 10 + number;
             break;
         case 2:
             fprintf(stderr, "Imaginary unit can't be inside a number (it has to be at the end)\n");
@@ -205,7 +206,7 @@ static int handleNumber(int val)
                 fprintf(stderr, "Unexpected number state: %d\n", currentNumberState);
                 return 1;
             }
-            currentNumber += pow(10.0, currentNumberState) * val;
+            currentNumber += pow(10.0, currentNumberState) * number;
             currentNumberState--;
             break;
     }
@@ -217,7 +218,7 @@ static int handleOperator(char val)
 {
     if (j > 0 && func[j - 1].atomType == operator)
     {
-        fprintf(stderr, "Two operators in a row\n");
+        fprintf(stderr, "Two operators in a row (parsing %c)\n", val);
         return 2;
     }
     switch (val)
