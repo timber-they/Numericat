@@ -27,13 +27,13 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
              dividePtr = findOperator(divide, func),
              powerPtr = findOperator(power, func);
 
-    if (plusPtr != NULL && (minusPtr == NULL || plusPtr < minusPtr)) {
+    if (plusPtr != NULL && (minusPtr == NULL || plusPtr > minusPtr)) {
         ptr = plusPtr;
         op = plus;
     } else if (minusPtr != NULL) {
         ptr = minusPtr;
         op = minus;
-    } else if (timesPtr != NULL && (dividePtr == NULL || timesPtr < dividePtr)) {
+    } else if (timesPtr != NULL && (dividePtr == NULL || timesPtr > dividePtr)) {
         ptr = timesPtr;
         op = times;
     } else if (dividePtr != NULL) {

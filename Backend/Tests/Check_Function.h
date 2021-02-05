@@ -13,13 +13,13 @@ static void assertFloatEq(double expected, double actual);
 // Note that these tests depends on Parser to work properly
 START_TEST(test_Evaluate)
 {
-    char *function0 = "1/(2*3*1/1000)^(1/2)*2.7^(0-1^2*1000/2)";
+    char *function0 = "1/1*0";
     char *function1 = " 8861/7+x*6";
     char *function2 = "1/29+x*9-88/t";
     // Gaussian wave packet
     char *function3 = "(2/(3.14159265358979323*3^2))^(1/4)*2.718281828^(0-x^2/3^2)*2.718281828^(i*x)";
-    char *function4 = "(2)^x+1";
-    char *function5 = "3-2-1";
+    char *function4 = "(2)^x+1+1/(2*3*1/1000)^(1/2)*0";
+    char *function5 = "3-2-1+1/1*0";
     char *function6 = "1/(2*3*1/1000)^(1/2)*2.718281828^(0-x^2*1000/2)";
 
     Function parsed0 = parseFunction(function0);
