@@ -5,6 +5,7 @@
 #include <string.h>
 #include <math.h>
 
+// If no current number is known, this is 1, so that a lonely i means 1 negative unit
 static double currentNumber;
 // 0    -> No current number
 // 1    -> Current number, no decimal point yet
@@ -27,6 +28,8 @@ static int handleParanthesis(char val);
 static int validateEnd();
 
 static void initialize();
+
+static int isDigit(char c);
 
 Function parseFunction(char *raw)
 {
@@ -51,7 +54,7 @@ Function parseFunction(char *raw)
             finishNumber();
             continue;
         }
-        if ((raw[i] >= '0' && raw[i] <= '9') || raw[i] == 'i')
+        if (isDigit(raw[i]))
         {
             int val = raw[i] - '0';
             if (handleNumber(val))
@@ -59,17 +62,6 @@ Function parseFunction(char *raw)
                 free(func);
                 return NULL;
             }
-            continue;
-        }
-
-        if (raw[i] == '.')
-        {
-            if (currentNumberState != 1)
-            {
-                free(func);
-                return NULL;
-            }
-            currentNumberState = -1;
             continue;
         }
 
@@ -170,6 +162,21 @@ static int validateEnd()
 
 static int handleNumber(int val)
 {
+    if (currentNumberState != 2 && val == 'i' - '0')
+    {
+        currentNumberState = 2;
+        return 0;
+    }
+    if (val == '.' - '0')
+    {
+        if (currentNumberState != 1)
+        {
+            return 5;
+        }
+        currentNumberState = -1;
+        return 0;
+    }
+
     switch (currentNumberState)
     {
         case 0:
@@ -198,20 +205,8 @@ static int handleNumber(int val)
                 fprintf(stderr, "Unexpected number state: %d\n", currentNumberState);
                 return 1;
             }
-            if (val >= 0 && val <= 9)
-            {
-                currentNumber += pow(10.0, currentNumberState) * val;
-                currentNumberState--;
-                break;
-            }
-
-            // Must be i
-            if (val != 'i' - '0')
-            {
-                fprintf(stderr, "Expected imaginary unit (i)\n");
-                return 5;
-            }
-            currentNumberState = 2;
+            currentNumber += pow(10.0, currentNumberState) * val;
+            currentNumberState--;
             break;
     }
 
@@ -262,7 +257,7 @@ static void finishNumber()
     else
         func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = currentNumber, .imaginary = 0}};
     currentNumberState = 0;
-    currentNumber = -1;
+    currentNumber = 1;
 }
 
 static int handleVariable(__attribute__((unused)) char val)
@@ -284,8 +279,13 @@ static int handleVariable(__attribute__((unused)) char val)
 
 static void initialize()
 {
-    currentNumber = -1;
+    currentNumber = 1;
     currentNumberState = 0;
     j = 0;
+}
+
+static int isDigit(char c)
+{
+    return (c >= '0' && c <= '9') || c == 'i' || c == '.';
 }
 

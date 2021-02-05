@@ -39,5 +39,5 @@ double absSquareComplex(Complex c)
 }
 void printComplex(Complex c)
 {
-    printf("%lf %lfi  ", c.real, c.imaginary);
+    printf("(%lf;%lfi)", c.real, c.imaginary);
 }

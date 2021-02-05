@@ -10,19 +10,19 @@ static void validateEquality(char *function, Function expected, Function actual)
 
 START_TEST(test_Parse_Functions)
 {
-    char *function1 = " 8861/7+x*6";
-    char *function2 = "(1/29+x*9-88/x^(x-1))";
+    char *function1 = " 8861/7i+x*6";
+    char *function2 = "(1/29+x*9-88/x^(x-1))-i";
 
     Element expected1[] =
     {
         (Element) {.atomType = value, .atom.value=(Complex) {.real = 8861, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 7, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 0, .imaginary = 7}},
         (Element) {.atomType = operator, .atom.op=plus},
         (Element) {.atomType = variable, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
         (Element) {.atomType = operator, .atom.op=times},
         (Element) {.atomType = value, .atom.value=(Complex) {.real = 6, .imaginary = 0}},
-        (Element) {.atomType = end, .atom.value=(Complex) {.real = 0, .imaginary = 0}}
+        (Element) {.atomType = end, .atom.value={0}}
     };
     Element expected2[] =
     {
@@ -45,7 +45,9 @@ START_TEST(test_Parse_Functions)
         (Element) {.atomType = value, .atom.value=(Complex) {.real = 1, .imaginary = 0}},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
-        (Element) {.atomType = end, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
+        (Element) {.atomType = operator, .atom.op=minus},
+        (Element) {.atomType = value, .atom.value=(Complex) {.real = 0, .imaginary = 1}},
+        (Element) {.atomType = end, .atom.value={0}}
     };
 
     Function actual1 = parseFunction(function1);
@@ -70,6 +72,7 @@ START_TEST(test_Parse_Failing)
     char *doubleVariable = "x x";
     char *tailingOperator = "2+";
     char *missingOperator = "(2+x)(3)";
+    char *complexInNumber = "1i2";
 
     Function emptyRes = parseFunction(empty);
     Function nullRes = parseFunction(null);
@@ -80,6 +83,7 @@ START_TEST(test_Parse_Failing)
     Function doubleVariableRes = parseFunction(doubleVariable);
     Function tailingOperatorRes = parseFunction(tailingOperator);
     Function missingOperatorRes = parseFunction(missingOperator);
+    Function complexInNumberRes = parseFunction(complexInNumber);
 
     ck_assert(emptyRes == NULL);
     ck_assert(nullRes == NULL);
@@ -90,6 +94,7 @@ START_TEST(test_Parse_Failing)
     ck_assert(doubleVariableRes == NULL);
     ck_assert(tailingOperatorRes == NULL);
     ck_assert(missingOperatorRes == NULL);
+    ck_assert(complexInNumberRes == NULL);
 }
 END_TEST
 
