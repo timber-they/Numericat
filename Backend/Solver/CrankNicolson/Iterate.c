@@ -42,19 +42,18 @@ static Matrix createPotentialMatrix(Matrix potentialValues)
     return scaled;
 }
 
-static Matrix functionToVector(Function func, double d, int n)
+static Matrix functionToVector(Function func, double d, int n, double t)
 {
-    printf("n=%d, d=%lf\n", n, d);
     Complex *res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
-        res[i] = evaluate(func, (Complex) {.real = d * i, .imaginary = 0});
+        res[i] = evaluate(func, (Input) {.x = d * i, .t = t});
 
     Matrix matrix = arrayToMatrix(res, n);
     free(res);
     return matrix;
 }
 
-Complex **Iterate1d(Function potential, Function psi0, double dt, int n)
+Complex **Iterate1d(Function potential, Function psi0, int n)
 {
     Complex **res = malloc(n * sizeof(*res));
     // nx * nx
@@ -63,48 +62,31 @@ Complex **Iterate1d(Function potential, Function psi0, double dt, int n)
     Matrix ident = identity(nx);
 
     // 1 * nx
-    Matrix psi = functionToVector(psi0, dx, nx);
-    // 1 * nx
-    Matrix potentialValues = functionToVector(potential, dx, nx);
-    // nx * nx
-    Matrix potentialMatrix = createPotentialMatrix(potentialValues);
-//    printf("V:\n");
-//    printMatrix(potentialValues);
-    freeMatrix(potentialValues);
+    Matrix psi = functionToVector(psi0, dx, nx, 0);
 
     for (int i = 0; i < n-1; i++)
     {
-//        printf("Psi:\n");
-//        printMatrix(psi);
-//        printf("D2:\n");
-//        printMatrix(d2);
         printf("i=%d\n", i);
+
+        // 1 * nx
+        Matrix potentialValues = functionToVector(potential, dx, nx, i * dt);
+        // nx * nx
+        Matrix potentialMatrix = createPotentialMatrix(potentialValues);
+        freeMatrix(potentialValues);
+
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
         Matrix s = sum(d2, potentialMatrix);
-//        printf("D2+V\n");
-//        printMatrix(s);
         Matrix f = factor(s, (Complex) {.real = dt/2, .imaginary = 0});
-//        printf("dt/2 (%lf) * (D2+V)\n", dt/2);
-//        printMatrix(f);
         freeMatrix(s);
         Matrix a = subtract(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
         s = sum(ident, f);
-//        printf("I + dt/2 * (D2 + V)\n");
-//        printMatrix(s);
         freeMatrix(f);
         Matrix b = multiply(s, psi);
         freeMatrix(s);
 
-//        printf("A:\n");
-//        printMatrix(a);
-//        printf("b:\n");
-//        printMatrix(b);
-
         Matrix psiN = thomasSolve(a, b);
-//        printf("PsiN:\n");
-//        printMatrix(psiN);
         // Validate
         Matrix tB = multiply(a, psiN);
         for (int j = 0; j < tB.rowCount; j++)
@@ -119,12 +101,12 @@ Complex **Iterate1d(Function potential, Function psi0, double dt, int n)
         freeMatrix(a);
         freeMatrix(b);
         freeMatrix(psi);
+        freeMatrix(potentialMatrix);
         psi = psiN;
     }
     res[n-1] = matrixToArray(psi);
 
     freeMatrix(psi);
-    freeMatrix(potentialMatrix);
     freeMatrix(ident);
     freeMatrix(d2);
 

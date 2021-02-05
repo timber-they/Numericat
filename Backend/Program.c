@@ -32,14 +32,8 @@ int main(int argc, char *argv[])
     printFunction(initial);
 
     int n = 100;
-    Complex **res = Iterate1d(potential, initial, 0.1, n);
+    Complex **res = Iterate1d(potential, initial, n);
     writeResults(res, potential, n);
-//    for (int i = 0; i < n; i++)
-//    {
-//        for (int j = 0; j < nx; j++)
-//            printf("%5f ", res[i][j]);
-//        printf("\n");
-//    }
 
     for (int i = 0; i < n; i++)
         free(res[i]);
@@ -66,8 +60,14 @@ void writeResults(Complex **data, Function potential, int n)
     }
     fprintf(fp, "\n");
 
-    for (int i = 0; i < nx; i++)
-        fprintf(fp, "%5f ", evaluate(potential, (Complex) {.real = dx * i, .imaginary = 0}).real);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < nx; j++)
+        {
+            fprintf(fp, "%5f ", evaluate(potential, (Input) {.x = dx * j, .t = dt * i}));
+        }
+        fprintf(fp, "\n");
+    }
 
     fclose(fp);
 }

@@ -31,6 +31,7 @@ static void initialize();
 
 static int isDigit(char c);
 
+// TODO: This function is too long
 Function parseFunction(char *raw)
 {
     if (raw == NULL)
@@ -64,9 +65,9 @@ Function parseFunction(char *raw)
             continue;
         }
 
-        if (raw[i] == 'x')
+        if (raw[i] == 'x' || raw[i] == 't')
         {
-            // For now only x - later maybe multiple dimensions
+            // For now only x and t - later maybe multiple dimensions
             if (handleVariable(raw[i]))
             {
                 free(func);
@@ -127,7 +128,7 @@ static int handleParanthesis(char val)
     switch (val)
     {
         case '(':
-            if (j > 0 && func[j - 1].atomType != operator)
+            if (j > 0 && func[j-1].atomType != operator && (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
             {
                 fprintf(stderr, "Missing operator\n");
                 return 2;
@@ -252,7 +253,6 @@ static void finishNumber()
         // No number to finish
         return;
     // Number is finished
-    // TODO: Complex
     if (currentNumberState == 2)
         func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = 0, .imaginary = currentNumber}};
     else
@@ -261,7 +261,7 @@ static void finishNumber()
     currentNumber = 1;
 }
 
-static int handleVariable(__attribute__((unused)) char val)
+static int handleVariable(char val)
 {
     if (currentNumberState != 0 || (j > 0 && func[j - 1].atomType == value))
     {
@@ -274,8 +274,18 @@ static int handleVariable(__attribute__((unused)) char val)
         return 2;
     }
 
-    func[j++] = (Element) {.atomType=variable, .atom.value={.real = -1, .imaginary = 0}};
-    return 0;
+    switch(val)
+    {
+        case 'x':
+            func[j++] = (Element) {.atomType=variable, .atom.variable=variableX};
+            return 0;
+        case 't':
+            func[j++] = (Element) {.atomType=variable, .atom.variable=variableT};
+            return 0;
+        default:
+            fprintf(stderr, "Unexpected variable: %c\n", val);
+            return 3;
+    }
 }
 
 static void initialize()

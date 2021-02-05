@@ -18,6 +18,12 @@ typedef enum Paranthesis{
     close       // )
 } Paranthesis;
 
+typedef enum Variable{
+    variableX,
+    // variableY,
+    variableT
+} Variable;
+
 typedef enum AtomType{
     value,
     operator,
@@ -30,6 +36,7 @@ typedef union Atom{
     Complex value;
     Operator op;
     Paranthesis paranthesis;
+    Variable variable;
 } Atom;
 
 typedef struct Element {
@@ -39,7 +46,13 @@ typedef struct Element {
 
 typedef Element *Function;
 
-Complex evaluate(Function func, Complex in);
+typedef struct Input{
+    double x;
+    // double y;
+    double t;
+} Input;
+
+Complex evaluate(Function func, Input in);
 // Note that it's not really possible to test printing to the console
 void printFunction(Function func);
 
