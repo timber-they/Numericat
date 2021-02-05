@@ -64,7 +64,7 @@ void writeResults(Complex **data, Function potential, int n)
     {
         for (int j = 0; j < nx; j++)
         {
-            fprintf(fp, "%5f ", evaluate(potential, (Input) {.x = dx * j, .t = dt * i}));
+            fprintf(fp, "%5f ", evaluate(potential, (Input) {.x = dx * j, .t = dt * i}).real);
         }
         fprintf(fp, "\n");
     }

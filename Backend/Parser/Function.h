@@ -47,6 +47,7 @@ typedef struct Element {
 typedef Element *Function;
 
 typedef struct Input{
+    // Note that we don't expect to need comlex inputs
     double x;
     // double y;
     double t;

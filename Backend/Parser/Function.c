@@ -135,9 +135,9 @@ static Complex evaluateAtomic(Function func, Input in)
             switch(func->atom.variable)
             {
                 case variableX:
-                    return in.x;
+                    return (Complex) {.real = in.x, .imaginary = 0};
                 case variableT:
-                    return in.t;
+                    return (Complex) {.real = in.t, .imaginary = 0};
                 default:
                     fprintf(stderr, "Unexpected variable: %d\n", func->atom.variable);
                     return (Complex) {.real = -1, .imaginary = 0};

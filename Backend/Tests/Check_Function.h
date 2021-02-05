@@ -50,7 +50,7 @@ START_TEST(test_Evaluate)
     Complex expectedNegative3 = (Complex)
         {
             .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
-                    * cos(inNegative.real),
+                    * cos(inNegative.x),
             .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
                     * sin(inNegative.x)
         };
@@ -76,6 +76,7 @@ START_TEST(test_Evaluate)
             };
     double expected04 = pow(2, in0.x) + 1;
 
+    Complex res0 = evaluate(parsed0, inNormal);
     Complex resNormal1 = evaluate(parsed1, inNormal);
     Complex resNormal2 = evaluate(parsed2, inNormal);
     Complex resNormal3 = evaluate(parsed3, inNormal);
@@ -94,6 +95,7 @@ START_TEST(test_Evaluate)
     Complex res03 = evaluate(parsed3, in0);
     Complex res04 = evaluate(parsed4, in0);
 
+    assertFloatEq(expected0, res0.real);
     assertFloatEq(expectedNormal1, resNormal1.real);
     assertFloatEq(expectedNormal2, resNormal2.real);
     assertFloatEq(expectedNormal3.real, resNormal3.real);
