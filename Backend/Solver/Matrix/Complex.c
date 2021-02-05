@@ -23,6 +23,9 @@ Complex divideComplex(Complex a, Complex b)
 }
 Complex powerComplex(Complex a, Complex b)
 {
+    if (absSquareComplex(a) < 0.00001)
+        // 0^x=0
+        return (Complex){0};
     double a_arg = atan2(a.imaginary, a.real);
     double a_r = sqrt(a.real * a.real + a.imaginary * a.imaginary);
     return expComplex(sumComplex(multiplyComplex((Complex) {.real = log(a_r), .imaginary = 0}, b),

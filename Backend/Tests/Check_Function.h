@@ -13,14 +13,14 @@ static void assertFloatEq(double expected, double actual);
 // Note that these tests depends on Parser to work properly
 START_TEST(test_Evaluate)
 {
-    char *function0 = "10^2";
+    char *function0 = "x^2";
     char *function1 = " 8861/7+x*6";
     char *function2 = "1/29+x*9-88/t";
     // Gaussian wave packet
     char *function3 = "(2/(3.14159265358979323*3^2))^(1/4)*2.718281828^(0-x^2/3^2)*2.718281828^(i*x)";
     char *function4 = "(2)^x+1";
     char *function5 = "3-2-1";
-    char *function6 = "1/(2*3*1/1000)^(1/2)*2.7^(0-x^2*1000/2)";
+    char *function6 = "1/(2*3*1/1000)^(1/2)*2.718281828^(0-x^2*1000/2)";
 
     Function parsed0 = parseFunction(function0);
     Function parsed1 = parseFunction(function1);
@@ -35,7 +35,7 @@ START_TEST(test_Evaluate)
     Input in1 = {.x = 1, .t = 2};
     Input in0 = {.x = 0, .t = -1};
 
-    double expected0 = 100;
+    double expected0 = 0;
     double expectedNormal1 = 8861.0 / 7.0 + inNormal.x * 6.0;
     double expectedNormal2 = 1.0 / 29.0 + inNormal.x * 9.0 - 88.0 / inNormal.t;
     Complex expectedNormal3 = (Complex)
@@ -79,7 +79,7 @@ START_TEST(test_Evaluate)
     double expected04 = pow(2, in0.x) + 1;
     double expected06 = pow(1.0/(2*3*1.0/1000), (1.0/2))*pow(2.7,(0-pow(in0.x, 2)*1000.0/2));
 
-    Complex res0 = evaluate(parsed0, inNormal);
+    Complex res0 = evaluate(parsed0, in0);
     Complex resNormal1 = evaluate(parsed1, inNormal);
     Complex resNormal2 = evaluate(parsed2, inNormal);
     Complex resNormal3 = evaluate(parsed3, inNormal);
@@ -97,30 +97,53 @@ START_TEST(test_Evaluate)
     Complex res02 = evaluate(parsed2, in0);
     Complex res03 = evaluate(parsed3, in0);
     Complex res04 = evaluate(parsed4, in0);
-    Complex res06 = evaluate(parsed4, in0);
+    Complex res06 = evaluate(parsed6, in0);
 
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected0, res0.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNormal1, resNormal1.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNormal2, resNormal2.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNormal3.real, resNormal3.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNormal3.imaginary, resNormal3.imaginary);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNormal4, resNormal4.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNormal5, resNormal5.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNegative1, resNegative1.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNegative2, resNegative2.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNegative3.real, resNegative3.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNegative3.imaginary, resNegative3.imaginary);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expectedNegative4, resNegative4.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected11, res11.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected12, res12.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected13.real, res13.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected13.imaginary, res13.imaginary);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected14, res14.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected01, res01.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected02, res02.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected03.real, res03.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected03.imaginary, res03.imaginary);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected04, res04.real);
+    printf("Line %d\n", __LINE__);
     assertFloatEq(expected06, res06.real);
 
     free(parsed0);
