@@ -20,6 +20,7 @@ START_TEST(test_Evaluate)
     char *function3 = "(2/(3.14159265358979323*3^2))^(1/4)*2.718281828^(0-x^2/3^2)*2.718281828^(i*x)";
     char *function4 = "(2)^x+1";
     char *function5 = "3-2-1";
+    char *function6 = "1/(2*3*1/1000)^(1/2)*2.7^(0-x^2*1000/2)";
 
     Function parsed0 = parseFunction(function0);
     Function parsed1 = parseFunction(function1);
@@ -27,6 +28,7 @@ START_TEST(test_Evaluate)
     Function parsed3 = parseFunction(function3);
     Function parsed4 = parseFunction(function4);
     Function parsed5 = parseFunction(function5);
+    Function parsed6 = parseFunction(function6);
 
     Input inNormal = {.x = 42, .t = 25};
     Input inNegative = {.x = -42, .t = -25};
@@ -75,6 +77,7 @@ START_TEST(test_Evaluate)
                                  * sin(in0.x)
             };
     double expected04 = pow(2, in0.x) + 1;
+    double expected06 = pow(1.0/(2*3*1.0/1000), (1.0/2))*pow(2.7,(0-pow(in0.x, 2)*1000.0/2));
 
     Complex res0 = evaluate(parsed0, inNormal);
     Complex resNormal1 = evaluate(parsed1, inNormal);
@@ -94,6 +97,7 @@ START_TEST(test_Evaluate)
     Complex res02 = evaluate(parsed2, in0);
     Complex res03 = evaluate(parsed3, in0);
     Complex res04 = evaluate(parsed4, in0);
+    Complex res06 = evaluate(parsed4, in0);
 
     assertFloatEq(expected0, res0.real);
     assertFloatEq(expectedNormal1, resNormal1.real);
@@ -117,6 +121,7 @@ START_TEST(test_Evaluate)
     assertFloatEq(expected03.real, res03.real);
     assertFloatEq(expected03.imaginary, res03.imaginary);
     assertFloatEq(expected04, res04.real);
+    assertFloatEq(expected06, res06.real);
 
     free(parsed0);
     free(parsed1);
@@ -124,6 +129,7 @@ START_TEST(test_Evaluate)
     free(parsed3);
     free(parsed4);
     free(parsed5);
+    free(parsed6);
 }
 END_TEST
 
@@ -133,6 +139,8 @@ static void assertFloatEq(double expected, double actual)
     double diff = expected - actual;
     if (diff < 0)
         diff = -diff;
+    ck_assert(!isnan(actual));
+    ck_assert(!isinf(actual));
     ck_assert(diff < 0.001);
 }
 
