@@ -24,4 +24,5 @@ Prerequisities:
 Install:
 * Install using `make` (not yet fully supported)
 Example call:
-```% export CC=clang && make clean && make && ./Program.x "1/(2*3*1/5000)^(1/2)*2.7^(0-(x-0.2)^2*5000/2)" "(1/(2*3.14159*0.005^2))^(1/4)*2.718^(0-(x-0.1)^2/(4*0.005^2))*2.718^(200000i*x)"```
+
+    ```% export CC=clang && make clean && make && ./Program.x "1/(2*3*1/5000)^(1/2)*2.7^(0-(x-0.2)^2*5000/2)" "(1/(2*3.14159*0.005^2))^(1/4)*2.718^(0-(x-0.1)^2/(4*0.005^2))*2.718^(200000i*x)"```
