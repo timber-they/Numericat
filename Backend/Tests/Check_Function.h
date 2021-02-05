@@ -13,7 +13,7 @@ static void assertFloatEq(double expected, double actual);
 // Note that these tests depends on Parser to work properly
 START_TEST(test_Evaluate)
 {
-    char *function0 = "x^2";
+    char *function0 = "1/(2*3*1/1000)^(1/2)*2.7^(0-1^2*1000/2)";
     char *function1 = " 8861/7+x*6";
     char *function2 = "1/29+x*9-88/t";
     // Gaussian wave packet
