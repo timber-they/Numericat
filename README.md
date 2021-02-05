@@ -9,7 +9,9 @@ This project will consist of three parts:
 * Visualising the results (Java)
 
 Currently functional:
-* Basic parsing of functions
+* Parsing of functions (+,-,\*,/,^ with precedence and paranthesis support)
+* Onedimensional solving of the Schrödinger equation
+* Visualisation of the (onedimensional) results
 
 Supported platforms:
 * Linux
