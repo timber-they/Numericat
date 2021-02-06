@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -107,42 +108,63 @@ public class Main {
         }
         res.add(lineToCoordinates(potentialLine));
         System.out.println(line + "\n" + potentialLine);
+        try {
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 
-    private static double getScalingFactor(String outputPath) {
-        double scalingFactor = 0;
+    private static double[] getScalingFactor(String outputPath) {
+        double[] scalingFactor = {0.0,0.0};
         Scanner scanner = null;
+        FileInputStream inputStream = null;
         try {
-            scanner = new Scanner(new FileInputStream(outputPath));
-            while (scanner.hasNextLine()) {
+            inputStream = new FileInputStream(outputPath);
+            scanner = new Scanner(inputStream);
+            while (scanner.hasNextLine() && scanner.nextLine() != "") {
                 String line = scanner.nextLine();
-                if (line != "") {
-//                    System.out.println(line);
+//                  System.out.println(line);
                     String[] splitString = line.split(" ");
                     for (int i = 0; i < splitString.length; i++) {
                         double tmp_Parse = Double.parseDouble(splitString[i]);
-                        if (scalingFactor < tmp_Parse) {
-                            scalingFactor = tmp_Parse;
+                        if (scalingFactor[0] < tmp_Parse) {
+                            scalingFactor[0] = tmp_Parse;
                         }
                     }
+            }
+            String line = scanner.nextLine();
+            System.out.println(line);
+            String[] splitString = line.split(" ");
+            for (int i = 0; i < splitString.length; i++) {
+                double tmp_Parse = Double.parseDouble(splitString[i]);
+                if (scalingFactor[1] < tmp_Parse) {
+                    scalingFactor[1] = tmp_Parse;
                 }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
             scanner.close();
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Scaling Factor 1:" + scalingFactor[0]);
+            System.out.println("Scaling Factor 2:" + scalingFactor[1]);
         }
-        return canvas.getHeight() / scalingFactor;
+        return scalingFactor;
     }
 
     private static List<Coordinate> lineToCoordinates(String line) {
         String[] split = line.split(" ");
 //      System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
-        double scalingFactor =  getScalingFactor(outputPath);
+        double[] scalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
-            double el = scalingFactor * Double.parseDouble(split[i]);
+            double el = (canvas.getHeight() / scalingFactor[0]) * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
