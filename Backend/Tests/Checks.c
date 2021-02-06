@@ -46,6 +46,7 @@ int main(void)
     tcase_add_test(complexCase1, test_subtractComplex);
     tcase_add_test(complexCase1, test_multiplyComplex);
     tcase_add_test(complexCase1, test_divideComplex);
+    tcase_add_test(complexCase1, test_powerComplex);
     tcase_add_test(complexCase1, test_absSquareComplex);
 
 

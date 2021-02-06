@@ -6,6 +6,8 @@
 #ifndef BACKEND_COMPLEX_CHECK_H
 #define BACKEND_COMPLEX_CHECK_H
 
+static void assertComplexEq(Complex expected, Complex actual);
+
 START_TEST(test_sumComplex)
 {
     printf("\n");
@@ -19,7 +21,7 @@ START_TEST(test_sumComplex)
     Complex result = sumComplex(a,b);
     printf("result: \n");
     printComplex(result);
-    ck_assert((result.real - (5.5)) < 0.0001 && (result.imaginary - (5.5)) > -0.0001);
+    assertComplexEq((Complex) {.real = 5.5, .imaginary = 5.5}, result);
     printf("\n");
     printf("----------------------------------------\n");
 }
@@ -38,7 +40,7 @@ START_TEST(test_subtractComplex)
     Complex result = subtractComplex(a,b);
     printf("result: \n");
     printComplex(result);
-    ck_assert((result.real - (3.3)) < 0.0001 && (result.imaginary - (2.2)) > -0.0001);
+    assertComplexEq((Complex) {.real = 3.3, .imaginary = 2.2}, result);
     printf("\n");
     printf("----------------------------------------\n");
 }
@@ -57,7 +59,7 @@ START_TEST(test_multiplyComplex)
     Complex result = multiplyComplex(a,b);
     printf("result: \n");
     printComplex(result);
-    ck_assert((result.real + 2.920000) < 0.0001 && (result.imaginary - (13.310000)) > -0.0001);
+    assertComplexEq((Complex) {.real = -2.920000, .imaginary = 13.310000}, result);
     printf("\n");
     printf("----------------------------------------\n");
 }
@@ -76,7 +78,26 @@ START_TEST(test_divideComplex)
     Complex result = divideComplex(a,b);
     printf("result: \n");
     printComplex(result);
-    ck_assert((result.real - (0.80276)) < 0.0001 && (result.imaginary - (0.49481)) > -0.0001);
+    assertComplexEq((Complex) {.real = 0.80276, .imaginary = 0.49481}, result);
+    printf("\n");
+    printf("----------------------------------------\n");
+}
+END_TEST
+
+START_TEST(test_powerComplex)
+{
+    printf("\n");
+    printf("test_pwerComplex: \n");
+    Complex a = (Complex) {.real = 1.4, .imaginary = 3.3};
+    printComplex(a);
+    printf("\n");
+    Complex b = (Complex) {.real = 3.1, .imaginary = 2.2};
+    printComplex(b);
+    printf("\n");
+    Complex result = powerComplex(a,b);
+    printf("result: \n");
+    printComplex(result);
+    assertComplexEq((Complex) {.real = 3.94783, .imaginary = 0.601310}, result);
     printf("\n");
     printf("----------------------------------------\n");
 }
@@ -91,10 +112,21 @@ START_TEST(test_absSquareComplex)
     printf("\n");
     double result = absSquareComplex(a);
     printf("result: %lf\n", result);
-    ck_assert((result - (12.85)) < 0.0001);
+    ck_assert((result - (12.85)) < 0.0001 && (result - (12.85)) > -0.0001);
     printf("\n");
     printf("----------------------------------------\n");
 }
 END_TEST
+static void assertComplexEq(Complex expected, Complex actual)
+{
+    printf(">>> ");
+    printComplex(expected);
+    printf("\n<<< ");
+    printComplex(actual);
+    printf("\n");
+    double diff = (expected.real - actual.real) * (expected.real - actual.real) +
+            (expected.imaginary - actual.imaginary) * (expected.imaginary - actual.imaginary);
+    ck_assert(diff < 0.001);
+}
 
 #endif
