@@ -3,15 +3,13 @@ package de.numericat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 
 
@@ -123,25 +121,24 @@ public class Main {
         double ScalingFactor = 0;
         int counter = 0;
         int count_potention = 0;
-        BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader(
-                    outputPath));
-            String line = reader.readLine();
-            while (line.length() != 0) {
-                count_potention++;
-                System.out.println(line);
-                String[] splitString = line.split(" ");
-                for(int i = 0; i < splitString.length; i++) {
-                    ScalingFactor += Double.parseDouble(splitString[i]);
-                    counter++;
+            Scanner scanner = new Scanner(new File(outputPath));
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if(line != "")
+                {
+                    System.out.println(line);
+                    String[] splitString = line.split(" ");
+                    for(int i = 0; i < splitString.length; i++) {
+                        if(ScalingFactor < Double.parseDouble(splitString[i]))
+                        {
+                            ScalingFactor = Double.parseDouble(splitString[i]);
+                        }
+                    }
                 }
-                // read next line
-                line = reader.readLine();
             }
-            ScalingFactor /= counter;
-            reader.close();
-        } catch (IOException e) {
+            scanner.close();
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return ScalingFactor;
@@ -149,10 +146,12 @@ public class Main {
 
     private static List<Coordinate> lineToCoordinates(String line) {
         String[] split = line.split(" ");
-//        System.out.println("Got " + split.length + " data points");
+//      System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
+        double PrefSize = 700;
+        double ScalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
-            double el = getScalingFactor(outputPath) * Double.parseDouble(split[i]);
+            double el = (ScalingFactor/PrefSize) * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
