@@ -3,7 +3,6 @@ package de.numericat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -116,7 +115,7 @@ public class Main {
         int counter = 0;
         int count_potention = 0;
         try {
-            Scanner scanner = new Scanner(new File(outputPath));
+            Scanner scanner = new Scanner(new FileInputStream(outputPath));
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 if(line != "")
