@@ -14,7 +14,7 @@ endif
 
 all:${FILE_BASE}.x ${TEST_FILE_BASE}.x
 test:${TEST_FILE_BASE}.x
-			
+
 # TODO: Unresolved prerequisites
 %.x:%.c ${DEPENDENCIES}
 ifneq (,$(findstring Ubuntu,${OS}))

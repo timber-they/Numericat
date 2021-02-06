@@ -11,7 +11,7 @@ all:${FILE_BASE}.class
 	javac $< ${DEPENDENCIES}
 
 README:
-        echo "Run using java package de.numericat.Main in src folder" > README
+	echo "Run using java package de.numericat.Main in src folder" > README
 
 .PHONY:clean
 clean:
