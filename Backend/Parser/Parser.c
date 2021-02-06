@@ -5,15 +5,17 @@
 #include <string.h>
 #include <math.h>
 
+// If no current number is known, this is 1, so that a lonely i means 1 negative unit
 static double currentNumber;
 // 0    -> No current number
 // 1    -> Current number, no decimal point yet
 // n<0  -> Current number, -nth digit after decimal point
+// 2    -> Current number, imaginary unit (i) has already appeared (-> number is done)
 static int currentNumberState;
 static int j;
 static Function func;
 
-static int handleNumber(int val);
+static int handleNumber(char val);
 
 static int handleOperator(char val);
 
@@ -26,6 +28,8 @@ static int handleParanthesis(char val);
 static int validateEnd();
 
 static void initialize();
+
+static int isDigit(char c);
 
 // TODO: This function is too long
 Function parseFunction(char *raw)
@@ -51,25 +55,13 @@ Function parseFunction(char *raw)
             finishNumber();
             continue;
         }
-        if (raw[i] >= '0' && raw[i] <= '9')
+        if (isDigit(raw[i]))
         {
-            int val = raw[i] - '0';
-            if (handleNumber(val))
+            if (handleNumber(raw[i]))
             {
                 free(func);
                 return NULL;
             }
-            continue;
-        }
-
-        if (raw[i] == '.')
-        {
-            if (currentNumberState != 1)
-            {
-                free(func);
-                return NULL;
-            }
-            currentNumberState = -1;
             continue;
         }
 
@@ -109,7 +101,7 @@ Function parseFunction(char *raw)
         free(func);
         return NULL;
     }
-    func[j] = (Element) {.atomType=end, .atom.value=0};
+    func[j] = (Element) {.atomType=end, .atom.value={0}};
 
     return func;
 }
@@ -133,7 +125,7 @@ int validateDyck(char *in)
 
 static int handleParanthesis(char val)
 {
-    switch(val)
+    switch (val)
     {
         case '(':
             if (j > 0 && func[j-1].atomType != operator && (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
@@ -159,7 +151,7 @@ static int validateEnd()
         fprintf(stderr, "Empty function not allowed\n");
         return 1;
     }
-    if (func[j-1].atomType == operator)
+    if (func[j - 1].atomType == operator)
     {
         fprintf(stderr, "Function may not end with an operator\n");
         return 1;
@@ -168,34 +160,54 @@ static int validateEnd()
     return 0;
 }
 
-static int handleNumber(int val)
+static int handleNumber(char val)
 {
+    if (currentNumberState != 2 && val == 'i')
+    {
+        currentNumberState = 2;
+        return 0;
+    }
+    if (val == '.')
+    {
+        if (currentNumberState != 1)
+        {
+            return 5;
+        }
+        currentNumberState = -1;
+        return 0;
+    }
+
+    int number = val - '0';
+
     switch (currentNumberState)
     {
         case 0:
-            if (j > 0 && func[j-1].atomType == value)
+            if (j > 0 && func[j - 1].atomType == value)
             {
                 fprintf(stderr, "A number can't follow a number\n");
                 return 2;
             }
-            if (j > 0 && func[j-1].atomType == variable)
+            if (j > 0 && func[j - 1].atomType == variable)
             {
                 fprintf(stderr, "A number can't follow a variable\n");
                 return 3;
             }
             currentNumberState = 1;
-            currentNumber = val;
+            currentNumber = number;
             break;
         case 1:
-            currentNumber = currentNumber * 10 + val;
+            currentNumber = currentNumber * 10 + number;
             break;
+        case 2:
+            fprintf(stderr, "Imaginary unit can't be inside a number (it has to be at the end)\n");
+            return 4;
         default:
             if (currentNumberState > 0)
             {
                 fprintf(stderr, "Unexpected number state: %d\n", currentNumberState);
                 return 1;
             }
-            currentNumber += pow(10.0, currentNumberState) * val;
+            currentNumber += pow(10.0, currentNumberState) * number;
             currentNumberState--;
             break;
     }
@@ -205,9 +217,9 @@ static int handleNumber(int val)
 
 static int handleOperator(char val)
 {
-    if (j > 0 && func[j-1].atomType == operator)
+    if (j > 0 && func[j - 1].atomType == operator)
     {
-        fprintf(stderr, "Two operators in a row\n");
+        fprintf(stderr, "Two operators in a row (parsing %c)\n", val);
         return 2;
     }
     switch (val)
@@ -241,19 +253,22 @@ static void finishNumber()
         // No number to finish
         return;
     // Number is finished
-    func[j++] = (Element) {.atomType=value, .atom.value=currentNumber};
+    if (currentNumberState == 2)
+        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = 0, .imaginary = currentNumber}};
+    else
+        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = currentNumber, .imaginary = 0}};
     currentNumberState = 0;
-    currentNumber = -1;
+    currentNumber = 1;
 }
 
 static int handleVariable(char val)
 {
-    if (currentNumberState != 0 || (j > 0 && func[j-1].atomType == value))
+    if (currentNumberState != 0 || (j > 0 && func[j - 1].atomType == value))
     {
         fprintf(stderr, "A variable can't follow a number\n");
         return 1;
     }
-    if (j > 0 && func[j-1].atomType == variable)
+    if (j > 0 && func[j - 1].atomType == variable)
     {
         fprintf(stderr, "A variable can't follow a variable\n");
         return 2;
@@ -275,8 +290,13 @@ static int handleVariable(char val)
 
 static void initialize()
 {
-    currentNumber = -1;
+    currentNumber = 1;
     currentNumberState = 0;
     j = 0;
+}
+
+static int isDigit(char c)
+{
+    return (c >= '0' && c <= '9') || c == 'i' || c == '.';
 }
 

@@ -46,7 +46,7 @@ static Matrix functionToVector(Function func, double d, int n, double t)
 {
     Complex *res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
-        res[i] = (Complex) {.real = evaluate(func, (Input) {.x = d * i, .t = t}), .imaginary = 0};
+        res[i] = evaluate(func, (Input) {.x = d * i, .t = t});
 
     Matrix matrix = arrayToMatrix(res, n);
     free(res);

@@ -9,7 +9,9 @@ This project will consist of three parts:
 * Visualising the results (Java)
 
 Currently functional:
-* Basic parsing of functions
+* Parsing of functions (+,-,\*,/,^ with precedence and paranthesis support)
+* Onedimensional solving of the Schrödinger equation
+* Visualisation of the (onedimensional) results
 
 Supported platforms:
 * Linux
@@ -23,3 +25,8 @@ Prerequisities:
 * A Java 8 or higher JDK (e.g. OpenJDK 8)
 Install:
 * Install using `make` (not yet fully supported)
+* Example call:
+
+```bash
+% export CC=clang && make clean && make && ./Program.x "1/(2*3*1/5000)^(1/2)*2.7^(0-(x-0.2)^2*5000/2)" "(1/(2*3.14159*0.005^2))^(1/4)*2.718^(0-(x-0.1)^2/(4*0.005^2))*2.718^(200000i*x)"
+```

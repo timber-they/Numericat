@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     printFunction(potential);
     printFunction(initial);
 
-    int n = 100;
+    int n = 200;
     Complex **res = Iterate1d(potential, initial, n);
     writeResults(res, potential, n);
 
@@ -64,7 +64,7 @@ void writeResults(Complex **data, Function potential, int n)
     {
         for (int j = 0; j < nx; j++)
         {
-            fprintf(fp, "%5f ", evaluate(potential, (Input) {.x = dx * j, .t = dt * i}));
+            fprintf(fp, "%5f ", evaluate(potential, (Input) {.x = dx * j, .t = dt * i}).real);
         }
         fprintf(fp, "\n");
     }

@@ -3,15 +3,12 @@ package de.numericat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-
-
 
 public class Main {
 
@@ -31,9 +28,10 @@ public class Main {
         ActionListener action = e -> {
             List<List<Coordinate>> data = getData();
             if (data == null) {
-                if (timer != null)
-                    timer.stop();
-                return;
+                currentLine = 0;
+//                if (timer != null)
+//                    timer.stop();
+//                return;
             }
             canvas.drawMultipleData(data);
         };
@@ -44,8 +42,7 @@ public class Main {
     private static void createWindow() {
 
         //Create and set up the window
-        JFrame frame;
-        frame = new JFrame("Visualisation");
+        JFrame frame = new JFrame("Visualisation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         canvas = new Numericanvas();
@@ -55,11 +52,7 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setPreferredSize(new Dimension(1000, 700));
         frame.pack();
-        frame.setLayout(new GridLayout(1, 1));
         frame.setVisible(true);
-        frame.setMinimumSize(frame.getSize());
-
-
     }
 
     private static boolean skipLines(Scanner scanner, int lines) {
@@ -117,43 +110,16 @@ public class Main {
         return res;
     }
 
-    private static double getScalingFactor(String outputPath) {
-        double ScalingFactor = 0;
-        int counter = 0;
-        int count_potention = 0;
-        try {
-            Scanner scanner = new Scanner(new File(outputPath));
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if(line != "")
-                {
-                    System.out.println(line);
-                    String[] splitString = line.split(" ");
-                    for(int i = 0; i < splitString.length; i++) {
-                        if(ScalingFactor < Double.parseDouble(splitString[i]))
-                        {
-                            ScalingFactor = Double.parseDouble(splitString[i]);
-                        }
-                    }
-                }
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return ScalingFactor;
-    }
-
     private static List<Coordinate> lineToCoordinates(String line) {
         String[] split = line.split(" ");
-//      System.out.println("Got " + split.length + " data points");
+//        System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
-        double PrefSize = 700;
-        double ScalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
-            double el = (ScalingFactor/PrefSize) * Double.parseDouble(split[i]);
+            // TODO: Scale automatically
+            double el = 20 * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
+
         return calculated;
     }
 
