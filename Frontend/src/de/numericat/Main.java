@@ -3,6 +3,7 @@ package de.numericat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -110,16 +111,42 @@ public class Main {
         return res;
     }
 
+    private static double getScalingFactor(String outputPath) {
+        double ScalingFactor = 0;
+        int counter = 0;
+        int count_potention = 0;
+        try {
+            Scanner scanner = new Scanner(new File(outputPath));
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if(line != "")
+                {
+                    System.out.println(line);
+                    String[] splitString = line.split(" ");
+                    for(int i = 0; i < splitString.length; i++) {
+                        if(ScalingFactor < Double.parseDouble(splitString[i]))
+                        {
+                            ScalingFactor = Double.parseDouble(splitString[i]);
+                        }
+                    }
+                }
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 700/ScalingFactor;
+    }
+
     private static List<Coordinate> lineToCoordinates(String line) {
         String[] split = line.split(" ");
-//        System.out.println("Got " + split.length + " data points");
+//      System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
+        double ScalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
-            // TODO: Scale automatically
-            double el = 20 * Double.parseDouble(split[i]);
+            double el = ScalingFactor * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
-
         return calculated;
     }
 
