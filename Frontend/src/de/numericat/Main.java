@@ -111,39 +111,38 @@ public class Main {
     }
 
     private static double getScalingFactor(String outputPath) {
-        double ScalingFactor = 0;
-        int counter = 0;
-        int count_potention = 0;
+        double scalingFactor = 0;
+        Scanner scanner = null;
         try {
-            Scanner scanner = new Scanner(new FileInputStream(outputPath));
+            scanner = new Scanner(new FileInputStream(outputPath));
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                if(line != "")
-                {
-                    System.out.println(line);
+                if (line != "") {
+//                    System.out.println(line);
                     String[] splitString = line.split(" ");
-                    for(int i = 0; i < splitString.length; i++) {
-                        if(ScalingFactor < Double.parseDouble(splitString[i]))
-                        {
-                            ScalingFactor = Double.parseDouble(splitString[i]);
+                    for (int i = 0; i < splitString.length; i++) {
+                        double tmp_Parse = Double.parseDouble(splitString[i]);
+                        if (scalingFactor < tmp_Parse) {
+                            scalingFactor = tmp_Parse;
                         }
                     }
                 }
             }
-            scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            scanner.close();
         }
-        return 700/ScalingFactor;
+        return canvas.getHeight() / scalingFactor;
     }
 
     private static List<Coordinate> lineToCoordinates(String line) {
         String[] split = line.split(" ");
 //      System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
-        double ScalingFactor =  getScalingFactor(outputPath);
+        double scalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
-            double el = ScalingFactor * Double.parseDouble(split[i]);
+            double el = scalingFactor * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
