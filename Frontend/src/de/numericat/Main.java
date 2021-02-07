@@ -116,13 +116,16 @@ public class Main {
         return res;
     }
 
-    private static double getMaximumOfLine(String line) {
+    private static double getMaximumOfBlock(Scanner scanner) {
         double maximum = 0;
-        String[] splitString = line.split(" ");
-        for (int i = 0; i < splitString.length; i++) {
-            double tmp_Parse = Double.parseDouble(splitString[i]);
-            if (maximum < tmp_Parse) {
-                maximum = tmp_Parse;
+        while(scanner.hasNextLine() && scanner.nextLine() != "") {
+            String line = scanner.nextLine();
+            String[] splitString = line.split(" ");
+            for (int i = 0; i < splitString.length; i++) {
+                double tmp_Parse = Double.parseDouble(splitString[i]);
+                if (maximum < tmp_Parse) {
+                    maximum = tmp_Parse;
+                }
             }
         }
         return maximum;
@@ -131,43 +134,20 @@ public class Main {
     private static double[] getScalingFactor(String outputPath) {
         double[] scalingFactor = {0.0,0.0};
         Scanner scanner = null;
-        Scanner potential_scanner = null;
         double max_1 = 0;
-        double max_2 = 0;
-        FileInputStream inputStream_1 = null;
-        FileInputStream inputStream_2 = null;
+        FileInputStream inputStream = null;
         try {
-            inputStream_1 = new FileInputStream(outputPath);
-            inputStream_2 = new FileInputStream(outputPath);
-            scanner = new Scanner(inputStream_1);
-            potential_scanner = new Scanner(inputStream_2);
-            String line_2;
-            while(potential_scanner.hasNext() && potential_scanner.nextLine() != "") {
-                line_2 = potential_scanner.nextLine();
-            }
-            while (scanner.hasNextLine() && scanner.nextLine() != "") {
-                String line_1 = scanner.nextLine();
-//              System.out.println(line);
-                max_1 = getMaximumOfLine(line_1);
-                if(max_1 > scalingFactor[0]) {
-                    scalingFactor[0] = max_1;
-                }
-                line_2 = potential_scanner.nextLine();
-//              System.out.println(line);
-                max_2 = getMaximumOfLine(line_2);
-                if(max_2 > scalingFactor[1]) {
-                    scalingFactor[1] = max_2;
-                }
-            }
+            inputStream = new FileInputStream(outputPath);
+            scanner = new Scanner(inputStream);
+            scalingFactor[0] = getMaximumOfBlock(scanner);
+            scalingFactor[1] = getMaximumOfBlock(scanner);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
             scanner.close();
             try {
-                inputStream_1.close();
-                inputStream_2.close();
+                inputStream.close();
                 scanner.close();
-                potential_scanner.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
