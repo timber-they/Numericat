@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,13 +26,11 @@ public class Main {
         System.out.println("Got output file: " + outputPath);
         createWindow();
 
+        final double[] scalingFactor =  getScalingFactor(outputPath);
         ActionListener action = e -> {
-            List<List<Coordinate>> data = getData();
+            List<List<Coordinate>> data = getData(scalingFactor);
             if (data == null) {
                 currentLine = 0;
-//                if (timer != null)
-//                    timer.stop();
-//                return;
             }
             canvas.drawMultipleData(data);
         };
@@ -73,7 +72,7 @@ public class Main {
 
     private static int currentLine = 0;
 
-    private static List<List<Coordinate>> getData() {
+    private static List<List<Coordinate>> getData(double[] scalingFactor) {
         String line;
         String potentialLine;
         FileInputStream fis;
@@ -100,39 +99,71 @@ public class Main {
 
         currentLine++;
         List<List<Coordinate>> res = new ArrayList<>(2);
-        res.add(lineToCoordinates(line));
+        res.add(lineToCoordinates(line, scalingFactor[0]));
         if (potentialLine == null) {
             System.err.println("Didn't find potential line");
             return res;
         }
-        res.add(lineToCoordinates(potentialLine));
-        System.out.println(line + "\n" + potentialLine);
+        res.add(lineToCoordinates(potentialLine, scalingFactor[1]));
+        try {
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 
-    private static List<Coordinate> lineToCoordinates(String line) {
-        String[] split = line.split(" ");
-//        System.out.println("Got " + split.length + " data points");
-        List<Coordinate> calculated = new ArrayList<>(split.length);
-        for (int i = 0; i < split.length; i++) {
-            // TODO: Scale automatically
-            double el = 20 * Double.parseDouble(split[i]);
-            calculated.add(new Coordinate(i + 1, el));
+    private static double getMaximumOfBlock(Scanner scanner) {
+        double maximum = 0;
+        while(scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.isEmpty())
+                break;
+            String[] splitString = line.split(" ");
+            for (int i = 0; i < splitString.length; i++) {
+                double tmp_Parse = Double.parseDouble(splitString[i]);
+                if (maximum < tmp_Parse) {
+                    maximum = tmp_Parse;
+                }
+            }
         }
-
-        return calculated;
+        return maximum;
     }
 
-    // Just for demonstrational purposes - will later be removed
-    private static final double dx = 1;
-    private static final double maxX = 1000;
-    private static double deltaX = 0;
+    private static double[] getScalingFactor(String outputPath) {
+        double[] scalingFactor = {0.0,0.0};
+        Scanner scanner = null;
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(outputPath);
+            scanner = new Scanner(inputStream);
+            scalingFactor[0] = getMaximumOfBlock(scanner);
+            scalingFactor[1] = getMaximumOfBlock(scanner);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            scanner.close();
+            try {
+                inputStream.close();
+                scanner.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Scaling Factor 1:" + scalingFactor[0]);
+            System.out.println("Scaling Factor 2:" + scalingFactor[1]);
+        }
+        return scalingFactor;
+    }
 
-    private static List<Coordinate> getTestData() {
-        List<Coordinate> coordinates = new ArrayList<>((int) (maxX / dx));
-        for (double x = 1; x < maxX; x += dx)
-            coordinates.add(new Coordinate(x, (Math.sin((x - deltaX) / 50.0) + 1) * 200));
-        deltaX++;
-        return coordinates;
+    private static List<Coordinate> lineToCoordinates(String line, double scalingFactor) {
+        String[] split = line.split(" ");
+        double el = 0;
+        double height = canvas.getHeight();
+        List<Coordinate> calculated = new ArrayList<>(split.length);
+        for (int i = 0; i < split.length; i++) {
+            el = (height / scalingFactor) * Double.parseDouble(split[i]);
+            calculated.add(new Coordinate(i + 1, el));
+        }
+        return calculated;
     }
 }
