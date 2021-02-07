@@ -101,12 +101,12 @@ public class Main {
 
         currentLine++;
         List<List<Coordinate>> res = new ArrayList<>(2);
-        res.add(lineToCoordinates(line, false));
+        res.add(lineToCoordinates(line, 0));
         if (potentialLine == null) {
             System.err.println("Didn't find potential line");
             return res;
         }
-        res.add(lineToCoordinates(potentialLine, true));
+        res.add(lineToCoordinates(potentialLine, 1));
         System.out.println(line + "\n" + potentialLine);
         try {
             fis.close();
@@ -177,7 +177,7 @@ public class Main {
         return scalingFactor;
     }
 
-    private static List<Coordinate> lineToCoordinates(String line, boolean potential) {
+    private static List<Coordinate> lineToCoordinates(String line, int idx) {
         String[] split = line.split(" ");
         double el = 0;
         double height = canvas.getHeight();
@@ -185,13 +185,7 @@ public class Main {
         List<Coordinate> calculated = new ArrayList<>(split.length);
         double[] scalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
-            if(potential == true)
-            {
-                el = (height / scalingFactor[1]) * Double.parseDouble(split[i]);
-            }
-            else{
-                el = (height / scalingFactor[0]) * Double.parseDouble(split[i]);
-            }
+            el = (height / scalingFactor[idx]) * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
