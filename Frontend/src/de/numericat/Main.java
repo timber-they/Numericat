@@ -117,7 +117,7 @@ public class Main {
         double maximum = 0;
         while(scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if (line.isBlank())
+            if (line.isEmpty())
                 break;
             String[] splitString = line.split(" ");
             for (int i = 0; i < splitString.length; i++) {
