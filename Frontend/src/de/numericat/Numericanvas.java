@@ -14,7 +14,6 @@ public class Numericanvas extends JPanel
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        System.out.println("Painting " + coordinates.size() + " lines");
         for (int j = 0; j < coordinates.size(); j++)
         {
             List<Coordinate> coordinates = this.coordinates.get(j);
