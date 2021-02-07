@@ -118,14 +118,22 @@ public class Main {
 
     private static double getMaximumOfBlock(Scanner scanner) {
         double maximum = 0;
-        while(scanner.hasNextLine() && scanner.nextLine() != "") {
-            String line = scanner.nextLine();
-            String[] splitString = line.split(" ");
-            for (int i = 0; i < splitString.length; i++) {
-                double tmp_Parse = Double.parseDouble(splitString[i]);
-                if (maximum < tmp_Parse) {
-                    maximum = tmp_Parse;
+        String line = null;
+        while(true) {
+            line = scanner.nextLine();
+            if(line != "" && scanner.hasNextLine())
+            {
+                String[] splitString = line.split(" ");
+                for (int i = 0; i < splitString.length; i++) {
+                    double tmp_Parse = Double.parseDouble(splitString[i]);
+                    if (maximum < tmp_Parse) {
+                        maximum = tmp_Parse;
+                    }
                 }
+            }
+            else
+            {
+                break;
             }
         }
         return maximum;
@@ -134,7 +142,6 @@ public class Main {
     private static double[] getScalingFactor(String outputPath) {
         double[] scalingFactor = {0.0,0.0};
         Scanner scanner = null;
-        double max_1 = 0;
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(outputPath);
