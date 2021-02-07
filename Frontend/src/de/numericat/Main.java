@@ -101,12 +101,12 @@ public class Main {
 
         currentLine++;
         List<List<Coordinate>> res = new ArrayList<>(2);
-        res.add(lineToCoordinates(line));
+        res.add(lineToCoordinates(line, false));
         if (potentialLine == null) {
             System.err.println("Didn't find potential line");
             return res;
         }
-        res.add(potentiallineToCoordinates(potentialLine));
+        res.add(lineToCoordinates(potentialLine, true));
         System.out.println(line + "\n" + potentialLine);
         try {
             fis.close();
@@ -116,31 +116,47 @@ public class Main {
         return res;
     }
 
+    private static double getMaximumOfLine(String line) {
+        double maximum = 0;
+        String[] splitString = line.split(" ");
+        for (int i = 0; i < splitString.length; i++) {
+            double tmp_Parse = Double.parseDouble(splitString[i]);
+            if (maximum < tmp_Parse) {
+                maximum = tmp_Parse;
+            }
+        }
+        return maximum;
+    }
+
     private static double[] getScalingFactor(String outputPath) {
         double[] scalingFactor = {0.0,0.0};
         Scanner scanner = null;
-        FileInputStream inputStream = null;
+        Scanner potential_scanner = null;
+        double max_1 = 0;
+        double max_2 = 0;
+        FileInputStream inputStream_1 = null;
+        FileInputStream inputStream_2 = null;
         try {
-            inputStream = new FileInputStream(outputPath);
-            scanner = new Scanner(inputStream);
-            while (scanner.hasNextLine() && scanner.nextLine() != "") {
-                String line = scanner.nextLine();
-//                  System.out.println(line);
-                    String[] splitString = line.split(" ");
-                    for (int i = 0; i < splitString.length; i++) {
-                        double tmp_Parse = Double.parseDouble(splitString[i]);
-                        if (scalingFactor[0] < tmp_Parse) {
-                            scalingFactor[0] = tmp_Parse;
-                        }
-                    }
+            inputStream_1 = new FileInputStream(outputPath);
+            inputStream_2 = new FileInputStream(outputPath);
+            scanner = new Scanner(inputStream_1);
+            potential_scanner = new Scanner(inputStream_2);
+            String line_2;
+            while(potential_scanner.hasNext() && potential_scanner.nextLine() != "") {
+                line_2 = potential_scanner.nextLine();
             }
-            String line = scanner.nextLine();
-            System.out.println(line);
-            String[] splitString = line.split(" ");
-            for (int i = 0; i < splitString.length; i++) {
-                double tmp_Parse = Double.parseDouble(splitString[i]);
-                if (scalingFactor[1] < tmp_Parse) {
-                    scalingFactor[1] = tmp_Parse;
+            while (scanner.hasNextLine() && scanner.nextLine() != "") {
+                String line_1 = scanner.nextLine();
+//              System.out.println(line);
+                max_1 = getMaximumOfLine(line_1);
+                if(max_1 > scalingFactor[0]) {
+                    scalingFactor[0] = max_1;
+                }
+                line_2 = potential_scanner.nextLine();
+//              System.out.println(line);
+                max_2 = getMaximumOfLine(line_2);
+                if(max_2 > scalingFactor[1]) {
+                    scalingFactor[1] = max_2;
                 }
             }
         } catch (FileNotFoundException e) {
@@ -148,7 +164,10 @@ public class Main {
         } finally {
             scanner.close();
             try {
-                inputStream.close();
+                inputStream_1.close();
+                inputStream_2.close();
+                scanner.close();
+                potential_scanner.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -158,25 +177,21 @@ public class Main {
         return scalingFactor;
     }
 
-    private static List<Coordinate> lineToCoordinates(String line) {
+    private static List<Coordinate> lineToCoordinates(String line, boolean potential) {
         String[] split = line.split(" ");
+        double el = 0;
+        double height = canvas.getHeight();
 //      System.out.println("Got " + split.length + " data points");
         List<Coordinate> calculated = new ArrayList<>(split.length);
         double[] scalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
-            double el = (canvas.getHeight() / scalingFactor[0]) * Double.parseDouble(split[i]);
-            calculated.add(new Coordinate(i + 1, el));
-        }
-        return calculated;
-    }
-
-    private static List<Coordinate> potentiallineToCoordinates(String line) {
-        String[] split = line.split(" ");
-//      System.out.println("Got " + split.length + " data points");
-        List<Coordinate> calculated = new ArrayList<>(split.length);
-        double[] scalingFactor =  getScalingFactor(outputPath);
-        for (int i = 0; i < split.length; i++) {
-            double el = (canvas.getHeight() / scalingFactor[1]) * Double.parseDouble(split[i]);
+            if(potential == true)
+            {
+                el = (height / scalingFactor[1]) * Double.parseDouble(split[i]);
+            }
+            else{
+                el = (height / scalingFactor[0]) * Double.parseDouble(split[i]);
+            }
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
