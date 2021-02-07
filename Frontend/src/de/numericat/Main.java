@@ -106,7 +106,7 @@ public class Main {
             System.err.println("Didn't find potential line");
             return res;
         }
-        res.add(lineToCoordinates(potentialLine));
+        res.add(potentiallineToCoordinates(potentialLine));
         System.out.println(line + "\n" + potentialLine);
         try {
             fis.close();
@@ -165,6 +165,18 @@ public class Main {
         double[] scalingFactor =  getScalingFactor(outputPath);
         for (int i = 0; i < split.length; i++) {
             double el = (canvas.getHeight() / scalingFactor[0]) * Double.parseDouble(split[i]);
+            calculated.add(new Coordinate(i + 1, el));
+        }
+        return calculated;
+    }
+
+    private static List<Coordinate> potentiallineToCoordinates(String line) {
+        String[] split = line.split(" ");
+//      System.out.println("Got " + split.length + " data points");
+        List<Coordinate> calculated = new ArrayList<>(split.length);
+        double[] scalingFactor =  getScalingFactor(outputPath);
+        for (int i = 0; i < split.length; i++) {
+            double el = (canvas.getHeight() / scalingFactor[1]) * Double.parseDouble(split[i]);
             calculated.add(new Coordinate(i + 1, el));
         }
         return calculated;
