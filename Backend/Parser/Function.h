@@ -1,3 +1,5 @@
+#include "../Solver/Matrix/Complex.h"
+
 #ifndef BACKEND_FUNCTION_H
 #define BACKEND_FUNCTION_H
 
@@ -8,18 +10,33 @@ typedef enum Operator{
     minus,      // -
     times,      // *
     divide,     // /
+    power       // ^
 } Operator;
+
+typedef enum Paranthesis{
+    open,       // (
+    close       // )
+} Paranthesis;
+
+typedef enum Variable{
+    variableX,
+    // variableY,
+    variableT
+} Variable;
 
 typedef enum AtomType{
     value,
     operator,
     variable,
+    paranthesis,
     end
 } AtomType;
 
 typedef union Atom{
-    double value;
+    Complex value;
     Operator op;
+    Paranthesis paranthesis;
+    Variable variable;
 } Atom;
 
 typedef struct Element {
@@ -29,8 +46,15 @@ typedef struct Element {
 
 typedef Element *Function;
 
-double Evaluate(Function func, double in);
+typedef struct Input{
+    // Note that we don't expect to need comlex inputs
+    double x;
+    // double y;
+    double t;
+} Input;
+
+Complex evaluate(Function func, Input in);
 // Note that it's not really possible to test printing to the console
-void Print(Function func);
+void printFunction(Function func);
 
 #endif //BACKEND_FUNCTION_H

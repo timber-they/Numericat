@@ -25,6 +25,8 @@ int main(void)
 
     tcase_add_test(parserCase1, test_Parse_Functions);
     tcase_add_test(parserCase1, test_Parse_Failing);
+    tcase_add_test(parserCase1, test_Validate_Dyck);
+    tcase_add_test(parserCase1, test_Validate_Dyck_Failing);
     tcase_add_test(parserCase2, test_Evaluate);
     tcase_add_test(solverCase1, test_multiply);
     tcase_add_test(solverCase1, test_identity);
@@ -44,6 +46,7 @@ int main(void)
     tcase_add_test(complexCase1, test_subtractComplex);
     tcase_add_test(complexCase1, test_multiplyComplex);
     tcase_add_test(complexCase1, test_divideComplex);
+    tcase_add_test(complexCase1, test_powerComplex);
     tcase_add_test(complexCase1, test_absSquareComplex);
 
 

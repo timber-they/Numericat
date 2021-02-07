@@ -7,6 +7,7 @@
 
 #define nx 1001
 #define dx 0.001
+#define dt 0.0001
 
 /**
  * Iterate via the Crank-Nicolson method
@@ -15,6 +16,6 @@
  * @param n the steps to iterate
  * @return an array containing the probability distribution for every given time step
  */
-Complex **Iterate1d(Function potential, Function psi0, double dt, int n);
+Complex **Iterate1d(Function potential, Function psi0, int n);
 
 #endif //BACKEND_ITERATE_H
