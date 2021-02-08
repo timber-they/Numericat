@@ -120,7 +120,7 @@ Matrix multiplyTri(Matrix a, Matrix b)
         for (int k = 0; k < n; k++)
         {
             result.matrix[i][k] = (Complex) {0};
-            for (int j = (i == 0 ? 0 : i-1); j < (i == l-1 ? l : i + 2); j++)
+            for (int j = (i == 0 ? 0 : i-1); j < l && j < i+2; j++)
                 result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
         }
     return result;
@@ -145,18 +145,17 @@ Matrix sum(Matrix a, Matrix b)
     return result;
 }
 
-Matrix sumIp(Matrix a, Matrix b)
+Matrix sumIpTri(Matrix a, Matrix b)
 {
-    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
-        fprintf(stderr, "Error: a and b have different dimensions");
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
+        fprintf(stderr, "Error: a and b have different dimensions or are not nxn\n");
         exit(2);
     }
-    int r = a.rowCount;
-    int c = a.columnCount;
+    int n = a.rowCount;
     Matrix result = a;
     int i,j;
-    for(i = 0; i < r ; i++){
-        for(j = 0; j < c; j++){
+    for(i = 0; i < n ; i++){
+        for(j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++){
             result.matrix[i][j] = sumComplex(a.matrix[i][j], b.matrix[i][j]);
         }
     }
@@ -220,15 +219,20 @@ Matrix factor(Matrix a, Complex f)
     return result;
 }
 
-Matrix factorIp(Matrix a, Complex f)
+Matrix factorIpTri(Matrix a, Complex f)
 {
+    if (a.rowCount != a.columnCount)
+    {
+        fprintf(stderr, "a is not nxn, can't be tridiagonal\n");
+        exit(1);
+    }
     int n = a.rowCount;
     Matrix result = a;
 
     int i, j;
     for (i = 0; i < n; i++)
     {
-        for (j = 0; j < n; j++)
+        for (j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++)
         {
             result.matrix[i][j] = multiplyComplex(a.matrix[i][j], f);
         }
