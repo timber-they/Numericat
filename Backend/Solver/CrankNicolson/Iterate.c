@@ -66,7 +66,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
         printf("i=%d\n", i);
 
         // 1 * nx
-        Matrix potentialValues = functionToVector(potential, dx, nx, i * dt);
+        Matrix potentialValues = functionToVector(potential, dx, nx, dt);
         // nx * nx
         Matrix potentialMatrix = createPotentialMatrix(potentialValues);
         freeMatrix(potentialValues);
@@ -80,7 +80,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
 
         Matrix psiN = thomasSolve(a, b);
         // Validate
-        Matrix tB = multiply(a, psiN);
+        /*Matrix tB = multiply(a, psiN);
         for (int j = 0; j < tB.rowCount; j++)
         {
             double diff = absSquareComplex(subtractComplex(b.matrix[j][0], tB.matrix[j][0]));
@@ -89,7 +89,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             if (diff > 0.00001)
                 fprintf(stderr, "Diff is %lf\n", diff);
         }
-        freeMatrix(tB);
+        freeMatrix(tB);*/
         freeMatrix(a);
         freeMatrix(b);
         freeMatrix(psi);
