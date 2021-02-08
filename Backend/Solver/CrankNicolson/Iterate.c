@@ -76,15 +76,11 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
 
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
-        Matrix s = sum(d2, potentialMatrix);
-        Matrix f = factor(s, (Complex) {.real = dt/2, .imaginary = 0});
-        freeMatrix(s);
+        Matrix f = factor(sumIp(potentialMatrix, d2), (Complex) {.real = dt/2, .imaginary = 0});
         Matrix a = subtract(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
-        s = sum(ident, f);
+        Matrix b = multiply(sumIp(f, ident), psi);
         freeMatrix(f);
-        Matrix b = multiply(s, psi);
-        freeMatrix(s);
 
         Matrix psiN = thomasSolve(a, b);
         // Validate
