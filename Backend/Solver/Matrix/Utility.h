@@ -33,6 +33,10 @@ Matrix sum(Matrix a, Matrix b);
  */
 Matrix sumIpTri(Matrix a, Matrix b);
 Matrix subtract(Matrix a, Matrix b);
+/**
+ * Assumes a and b are tridiagonal
+ */
+Matrix subtractTri(Matrix a, Matrix b);
 Matrix arrayToMatrix(Complex *array, int n);
 Complex *matrixToArray(Matrix m);
 /**

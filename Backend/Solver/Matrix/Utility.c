@@ -183,6 +183,25 @@ Matrix subtract(Matrix a, Matrix b)
     return result;
 }
 
+Matrix subtractTri(Matrix a, Matrix b)
+{
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
+        fprintf(stderr, "Error: = matrices are not compatible for subtraction: a.rowCount != b.rowCount or "
+                        "a.columnCount != b.columnCount or a is not nxn matrix and hence not tridiagonal");
+        exit(2);
+    }
+    int n = a.rowCount;
+    Matrix result = createMatrix(n,n);
+    int i,j;
+    for(i = 0; i < n ; i++){
+        for(j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++){
+            result.matrix[i][j] = subtractComplex(a.matrix[i][j], b.matrix[i][j]);
+
+        }
+    }
+    return result;
+}
+
 Matrix arrayToMatrix(Complex *array, int n)
 {
     Matrix result = createMatrix(n, 1);
