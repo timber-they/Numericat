@@ -23,10 +23,7 @@ static Matrix createInitialDerivative()
     }
 
     Complex f = (Complex) {.real = 0, .imaginary = -hBarc * c / (2 * E0p) / (dx * dx)};
-    Matrix scaled = factor(res, f);
-    freeMatrix(res);
-
-    return scaled;
+    return factorIp(res, f);
 }
 
 static Matrix createPotentialMatrix(Matrix potentialValues)
@@ -76,11 +73,10 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
 
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
-        Matrix f = factor(sumIp(potentialMatrix, d2), (Complex) {.real = dt/2, .imaginary = 0});
+        Matrix f = factorIp(sumIp(potentialMatrix, d2), (Complex) {.real = dt/2, .imaginary = 0});
         Matrix a = subtract(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
         Matrix b = multiply(sumIp(f, ident), psi);
-        freeMatrix(f);
 
         Matrix psiN = thomasSolve(a, b);
         // Validate

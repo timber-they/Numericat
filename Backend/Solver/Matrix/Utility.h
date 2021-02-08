@@ -18,6 +18,10 @@ void printMatrix(Matrix m);
 Complex getElement(const Matrix m, const int r, const int c);
 Matrix multiply(Matrix a, Matrix b);
 Matrix factor(Matrix a, Complex f);
+/**
+ * Result will be stored in a
+ */
+Matrix factorIp(Matrix a, Complex f);
 Matrix sum(Matrix a, Matrix b);
 /**
  * Result will be stored in a

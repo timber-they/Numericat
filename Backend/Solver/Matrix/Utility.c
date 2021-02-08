@@ -191,6 +191,22 @@ Matrix factor(Matrix a, Complex f)
     return result;
 }
 
+Matrix factorIp(Matrix a, Complex f)
+{
+    int n = a.rowCount;
+    Matrix result = a;
+
+    int i, j;
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            result.matrix[i][j] = multiplyComplex(a.matrix[i][j], f);
+        }
+    }
+    return result;
+}
+
 // Mutable (result will be in d). Parameters are similar to https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm#Method
 static Complex *thomasHelperSolve(Complex *a, Complex *b, Complex *c, Complex *d, int n)
 {
