@@ -22,26 +22,37 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
 
     Function ptr = NULL;
     Function plusPtr = findOperator(plus, func),
-             minusPtr = findOperator(minus, func),
-             timesPtr = findOperator(times, func),
-             dividePtr = findOperator(divide, func),
-             powerPtr = findOperator(power, func);
+            minusPtr = findOperator(minus, func);
 
-    if (plusPtr != NULL && (minusPtr == NULL || plusPtr > minusPtr)) {
+    if (plusPtr != NULL && (minusPtr == NULL || plusPtr > minusPtr))
+    {
         ptr = plusPtr;
         op = plus;
-    } else if (minusPtr != NULL) {
+    } else if (minusPtr != NULL)
+    {
         ptr = minusPtr;
         op = minus;
-    } else if (timesPtr != NULL && (dividePtr == NULL || timesPtr > dividePtr)) {
-        ptr = timesPtr;
-        op = times;
-    } else if (dividePtr != NULL) {
-        ptr = dividePtr;
-        op = divide;
-    } else if (powerPtr != NULL) {
-        ptr = powerPtr;
-        op = power;
+    } else
+    {
+        Function timesPtr = findOperator(times, func),
+                dividePtr = findOperator(divide, func);
+        if (timesPtr != NULL && (dividePtr == NULL || timesPtr > dividePtr))
+        {
+            ptr = timesPtr;
+            op = times;
+        } else if (dividePtr != NULL)
+        {
+            ptr = dividePtr;
+            op = divide;
+        } else
+        {
+            Function powerPtr = findOperator(power, func);
+            if (powerPtr != NULL)
+            {
+                ptr = powerPtr;
+                op = power;
+            }
+        }
     }
 
     if (ptr == NULL)
@@ -57,11 +68,11 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
             lhs = evaluate(func + 1, in);
             closing->atomType = prevType;
 
-            if (closing[1].atomType == end) {
+            if (closing[1].atomType == end)
+            {
                 return lhs;
             }
-        }
-        else
+        } else
             // Length must be 1
             return evaluateAtomic(func, in);
     }
@@ -79,7 +90,7 @@ static Function findClosingParanthesis(Function start)
 {
     int depth = 1;
     Function iter;
-    for (iter = start+1; iter->atomType != end; iter++)
+    for (iter = start + 1; iter->atomType != end; iter++)
     {
         if (iter->atomType != paranthesis)
             continue;
@@ -127,12 +138,12 @@ static Function findEnd(Function func)
 
 static Complex evaluateAtomic(Function func, Input in)
 {
-    switch(func->atomType)
+    switch (func->atomType)
     {
         case value:
             return func->atom.value;
         case variable:
-            switch(func->atom.variable)
+            switch (func->atom.variable)
             {
                 case variableX:
                     return (Complex) {.real = in.x, .imaginary = 0};
@@ -199,7 +210,7 @@ void printFunction(Function func)
                 }
                 break;
             case paranthesis:
-                switch(func->atom.paranthesis)
+                switch (func->atom.paranthesis)
                 {
                     case open:
                         printf("(");
