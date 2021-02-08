@@ -120,7 +120,7 @@ Matrix multiplyTri(Matrix a, Matrix b)
         for (int k = 0; k < n; k++)
         {
             result.matrix[i][k] = (Complex) {0};
-            for (int j = i == 0 ? 0 : i-1; j < i + 1; j++)
+            for (int j = i == 0 ? 0 : i-1; j < i == l-1 ? l : i + 2; j++)
                 result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
         }
     return result;
