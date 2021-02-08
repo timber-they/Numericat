@@ -76,7 +76,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
         Matrix f = factorIp(sumIp(potentialMatrix, d2), (Complex) {.real = dt/2, .imaginary = 0});
         Matrix a = subtract(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
-        Matrix b = multiply(sumIp(f, ident), psi);
+        Matrix b = multiplyTri(sumIp(f, ident), psi);
 
         Matrix psiN = thomasSolve(a, b);
         // Validate

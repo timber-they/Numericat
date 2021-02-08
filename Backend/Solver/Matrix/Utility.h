@@ -17,6 +17,10 @@ Matrix identity(int n);
 void printMatrix(Matrix m);
 Complex getElement(const Matrix m, const int r, const int c);
 Matrix multiply(Matrix a, Matrix b);
+/**
+ * Assumes a is tridiagonal
+ */
+Matrix multiplyTri(Matrix a, Matrix b);
 Matrix factor(Matrix a, Complex f);
 /**
  * Result will be stored in a

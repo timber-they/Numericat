@@ -97,6 +97,35 @@ Matrix multiply(Matrix a, Matrix b)
     return result;
 }
 
+Matrix multiplyTri(Matrix a, Matrix b)
+{
+    int l = a.rowCount;
+    int m = a.columnCount;
+    // check if multiplication is possible
+    if (m != b.rowCount)
+    {
+        fprintf(stderr, "Error: columns of Matrix a = %d != %d = rows of Matrix b\n", a.columnCount, b.rowCount);
+        exit(1);
+    }
+    if (l != m)
+    {
+        fprintf(stderr, "Error: a is not an nxn matrix and hence can't be tridiagonal\n");
+        exit(2);
+    }
+    int n = b.columnCount;
+
+    Matrix result = createMatrix(l, n);
+
+    for (int i = 0; i < l; i++)
+        for (int k = 0; k < n; k++)
+        {
+            result.matrix[i][k] = (Complex) {0};
+            for (int j = i == 0 ? 0 : i-1; j < i + 1; j++)
+                result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
+        }
+    return result;
+}
+
 Matrix sum(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
