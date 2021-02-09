@@ -28,6 +28,7 @@ int main(void)
     tcase_add_test(parserCase1, test_Validate_Dyck);
     tcase_add_test(parserCase1, test_Validate_Dyck_Failing);
     tcase_add_test(parserCase2, test_Evaluate);
+    tcase_add_test(parserCase2, test_TimeDependence);
     tcase_add_test(solverCase1, test_multiply);
     tcase_add_test(solverCase1, test_identity);
     tcase_add_test(solverCase1, test_multiply_3x3);

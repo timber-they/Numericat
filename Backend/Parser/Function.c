@@ -233,6 +233,8 @@ void printFunction(Function func)
 
 int isTimeDependent(Function func)
 {
+    if (func == NULL)
+        return 0;
     int i = 0;
     for (Function iter = func; iter->atomType != end; iter++)
     {
