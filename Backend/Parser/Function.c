@@ -230,3 +230,18 @@ void printFunction(Function func)
         func++;
     }
 }
+
+int isTimeDependent(Function func)
+{
+    int i = 0;
+    for (Function iter = func; iter->atomType != end; iter++)
+    {
+        if (iter->atomType == variable && iter->atom.variable == variableT)
+        {
+            printf("Found t at %d\n", i);
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}

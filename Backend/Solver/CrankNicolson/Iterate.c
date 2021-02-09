@@ -58,15 +58,13 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
     // 1 * nx
     Matrix psi = functionToVector(psi0, dx, nx, 0);
 
+    Matrix potentialValues = functionToVector(potential, dx, nx, 0);
+    Matrix potentialMatrix = createPotentialMatrix(potentialValues);
+    int timeDependent = isTimeDependent(potential);
+
     for (int i = 0; i < n-1; i++)
     {
         printf("i=%d\n", i);
-
-        // 1 * nx
-        Matrix potentialValues = functionToVector(potential, dx, nx, dt);
-        // nx * nx
-        Matrix potentialMatrix = createPotentialMatrix(potentialValues);
-        freeMatrix(potentialValues);
 
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
@@ -90,11 +88,21 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
         freeMatrix(a);
         freeMatrix(b);
         freeMatrix(psi);
-        freeMatrix(potentialMatrix);
         psi = psiN;
+        if (timeDependent)
+        {
+            freeMatrix(potentialValues);
+            freeMatrix(potentialMatrix);
+            // 1 * nx
+            potentialValues = functionToVector(potential, dx, nx, i * dt);
+            // nx * nx
+            potentialMatrix = createPotentialMatrix(potentialValues);
+        }
     }
     res[n-1] = matrixToArray(psi);
 
+    freeMatrix(potentialValues);
+    freeMatrix(potentialMatrix);
     freeMatrix(psi);
     freeMatrix(ident);
     freeMatrix(d2);
