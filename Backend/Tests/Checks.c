@@ -36,6 +36,7 @@ int main(void)
     tcase_add_test(solverCase1, test_ones);
     tcase_add_test(solverCase1, test_sum);
     tcase_add_test(solverCase1, test_sumIpTri);
+    tcase_add_test(solverCase1, test_sumTri);
     tcase_add_test(solverCase1, test_Matrixsubtract);
     tcase_add_test(solverCase1, test_MatrixsubtractTri);
     tcase_add_test(solverCase1, test_factor);

@@ -32,6 +32,10 @@ Matrix sum(Matrix a, Matrix b);
  * Result will be stored in a. Assumes a and b are tridiagonal
  */
 Matrix sumIpTri(Matrix a, Matrix b);
+/**
+ * Assumes a and b are tridiagonal
+ */
+Matrix sumTri(Matrix a, Matrix b);
 Matrix subtract(Matrix a, Matrix b);
 /**
  * Assumes a and b are tridiagonal

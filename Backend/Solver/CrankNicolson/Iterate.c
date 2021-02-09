@@ -68,10 +68,12 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
 
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
-        Matrix f = factorIpTri(sumIpTri(potentialMatrix, d2), (Complex) {.real = dt/2, .imaginary = 0});
+        Matrix s = sumTri(potentialMatrix, d2);
+        Matrix f = factorIpTri(s, (Complex) {.real = dt/2, .imaginary = 0});
         Matrix a = subtractTri(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
         Matrix b = multiplyTri(sumIpTri(f, ident), psi);
+        freeMatrix(f);
 
         Matrix psiN = thomasSolve(a, b);
         // Validate

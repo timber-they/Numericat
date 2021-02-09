@@ -163,6 +163,24 @@ Matrix sumIpTri(Matrix a, Matrix b)
     return result;
 }
 
+Matrix sumTri(Matrix a, Matrix b)
+{
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
+        fprintf(stderr, "Error: a and b have different dimensions or are not nxn\n");
+        exit(2);
+    }
+    int n = a.rowCount;
+    Matrix result = createMatrix(n, n);
+    int i,j;
+    for(i = 0; i < n ; i++){
+        for(j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++){
+            result.matrix[i][j] = sumComplex(a.matrix[i][j], b.matrix[i][j]);
+        }
+    }
+
+    return result;
+}
+
 Matrix subtract(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){

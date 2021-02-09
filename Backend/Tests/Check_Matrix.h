@@ -358,6 +358,42 @@ START_TEST(test_sumIpTri)
 }
 END_TEST
 
+START_TEST(test_sumTri)
+{
+    printf("\n");
+    printf("test_sumIpTri \n");
+    Matrix input_1 = createMatrix(2, 2);
+    input_1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 0};
+    input_1.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
+    input_1.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
+    input_1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
+    printf("Input Matrix 1: \n");
+    printMatrix(input_1);
+    Matrix input_2 = createMatrix(2, 2);
+    input_2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
+    input_2.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
+    input_2.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
+    input_2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
+    printf("Input Matrix 2: \n");
+    printMatrix(input_2);
+    printf("result:\n");
+    Matrix result = sumTri(input_1, input_2);
+    printMatrix(result);
+    ck_assert((result.matrix[0][0].real - (5.5)) < 0.0001 && (result.matrix[0][0].real - (5.5)) > -0.0001);
+    ck_assert((result.matrix[0][0].real - (5.5)) > -0.0001 && (result.matrix[0][0].real - (5.5)) < 0.0001);
+    ck_assert((result.matrix[1][1].real - (5.5)) < 0.0001 && (result.matrix[1][1].real - (5.5)) > -0.0001);
+    ck_assert((result.matrix[1][1].real - (5.5)) > -0.0001 && (result.matrix[1][1].real - (5.5)) < 0.0001);
+    ck_assert((result.matrix[0][1].real - (0)) < 0.0001 && (result.matrix[0][1].real - (0)) > -0.0001);
+    ck_assert((result.matrix[0][1].real - (0)) > -0.0001 && (result.matrix[0][1].real - (0)) < 0.0001);
+    ck_assert((result.matrix[1][0].real - (0)) < 0.0001 && (result.matrix[1][0].real - (0)) > -0.0001);
+    ck_assert((result.matrix[1][0].real - (0)) > -0.0001 && (result.matrix[1][0].real - (0)) < 0.0001);
+    freeMatrix(input_1);
+    freeMatrix(input_2);
+    freeMatrix(result);
+    printf("----------------------------------------\n");
+}
+END_TEST
+
 START_TEST(test_Matrixsubtract)
 {
     printf("\n");
