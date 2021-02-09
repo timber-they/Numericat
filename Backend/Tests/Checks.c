@@ -32,10 +32,14 @@ int main(void)
     tcase_add_test(solverCase1, test_multiply);
     tcase_add_test(solverCase1, test_identity);
     tcase_add_test(solverCase1, test_multiply_3x3);
+    tcase_add_test(solverCase1, test_multiply_tri);
     tcase_add_test(solverCase1, test_ones);
     tcase_add_test(solverCase1, test_sum);
+    tcase_add_test(solverCase1, test_sumIpTri);
     tcase_add_test(solverCase1, test_Matrixsubtract);
+    tcase_add_test(solverCase1, test_MatrixsubtractTri);
     tcase_add_test(solverCase1, test_factor);
+    tcase_add_test(solverCase1, test_factorIpTri);
     tcase_add_test(solverCase1, test_arrayToMatrix);
     tcase_add_test(solverCase1, test_MatrixToArray);
     tcase_add_test(solverCase1, test_thomas);
