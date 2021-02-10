@@ -31,6 +31,7 @@ public class Main {
             List<List<Coordinate>> data = getData(scalingFactor);
             if (data == null) {
                 currentLine = 0;
+                return;
             }
             canvas.drawMultipleData(data);
         };
@@ -75,42 +76,55 @@ public class Main {
     private static List<List<Coordinate>> getData(double[] scalingFactor) {
         String line;
         String potentialLine;
-        FileInputStream fis;
+        FileInputStream fis = null;
+        Scanner sc = null;
         try {
-            fis = new FileInputStream(outputPath);
-            Scanner sc = new Scanner(fis);
+            try {
+                fis = new FileInputStream(outputPath);
+                sc = new Scanner(fis);
 
-            if (!skipLines(sc, currentLine) || !sc.hasNextLine())
+                if (!skipLines(sc, currentLine) || !sc.hasNextLine())
+                    return null;
+                line = sc.nextLine();
+
+                if (!skipTillEmptyLine(sc) || !skipLines(sc, currentLine) || !sc.hasNextLine())
+                    return null;
+                potentialLine = sc.nextLine();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
                 return null;
-            line = sc.nextLine();
-
-            if (!skipTillEmptyLine(sc) || !skipLines(sc, currentLine) || !sc.hasNextLine())
+            }
+            if (line == null || Objects.equals(line, "")) {
+                System.out.println("Invalid line: " + line);
                 return null;
-            potentialLine = sc.nextLine();
+            }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (line == null || Objects.equals(line, "")) {
-            System.out.println("Invalid line: " + line);
-            return null;
-        }
-
-        currentLine++;
-        List<List<Coordinate>> res = new ArrayList<>(2);
-        res.add(lineToCoordinates(line, scalingFactor[0]));
-        if (potentialLine == null) {
-            System.err.println("Didn't find potential line");
+            currentLine++;
+            List<List<Coordinate>> res = new ArrayList<>(2);
+            res.add(lineToCoordinates(line, scalingFactor[0]));
+            if (potentialLine == null) {
+                System.err.println("Didn't find potential line");
+                return res;
+            }
+            res.add(lineToCoordinates(potentialLine, scalingFactor[1]));
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return res;
+        } finally {
+            try {
+                if (fis != null)
+                    fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (sc != null)
+                sc.close();
         }
-        res.add(lineToCoordinates(potentialLine, scalingFactor[1]));
-        try {
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return res;
     }
 
     private static double getMaximumOfBlock(Scanner scanner) {
@@ -142,10 +156,11 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            scanner.close();
             try {
-                inputStream.close();
-                scanner.close();
+                if (inputStream != null)
+                    inputStream.close();
+                if (scanner != null)
+                    scanner.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
