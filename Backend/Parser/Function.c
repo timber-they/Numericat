@@ -7,7 +7,7 @@ static Complex applyOperator(Complex current, Complex operand, Operator operator
 static Function findClosingParanthesis(Function start);
 
 // Note that this finds the _last_ operator in order to preserve precedence
-static Function findOperator(Operator op, Function func);
+static Function findOperator(Operator op, Function func, Function end);
 
 static Function findEnd(Function func);
 
@@ -20,28 +20,40 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
     Operator op;
     AtomType prevType;
 
+    Function endPtr = findEnd(func);
     Function ptr = NULL;
-    Function plusPtr = findOperator(plus, func),
-             minusPtr = findOperator(minus, func),
-             timesPtr = findOperator(times, func),
-             dividePtr = findOperator(divide, func),
-             powerPtr = findOperator(power, func);
+    Function plusPtr = findOperator(plus, func, endPtr),
+            minusPtr = findOperator(minus, func, endPtr);
 
-    if (plusPtr != NULL && (minusPtr == NULL || plusPtr > minusPtr)) {
+    if (plusPtr != NULL && (minusPtr == NULL || plusPtr > minusPtr))
+    {
         ptr = plusPtr;
         op = plus;
-    } else if (minusPtr != NULL) {
+    } else if (minusPtr != NULL)
+    {
         ptr = minusPtr;
         op = minus;
-    } else if (timesPtr != NULL && (dividePtr == NULL || timesPtr > dividePtr)) {
-        ptr = timesPtr;
-        op = times;
-    } else if (dividePtr != NULL) {
-        ptr = dividePtr;
-        op = divide;
-    } else if (powerPtr != NULL) {
-        ptr = powerPtr;
-        op = power;
+    } else
+    {
+        Function timesPtr = findOperator(times, func, endPtr),
+                dividePtr = findOperator(divide, func, endPtr);
+        if (timesPtr != NULL && (dividePtr == NULL || timesPtr > dividePtr))
+        {
+            ptr = timesPtr;
+            op = times;
+        } else if (dividePtr != NULL)
+        {
+            ptr = dividePtr;
+            op = divide;
+        } else
+        {
+            Function powerPtr = findOperator(power, func, endPtr);
+            if (powerPtr != NULL)
+            {
+                ptr = powerPtr;
+                op = power;
+            }
+        }
     }
 
     if (ptr == NULL)
@@ -57,11 +69,11 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
             lhs = evaluate(func + 1, in);
             closing->atomType = prevType;
 
-            if (closing[1].atomType == end) {
+            if (closing[1].atomType == end)
+            {
                 return lhs;
             }
-        }
-        else
+        } else
             // Length must be 1
             return evaluateAtomic(func, in);
     }
@@ -79,7 +91,7 @@ static Function findClosingParanthesis(Function start)
 {
     int depth = 1;
     Function iter;
-    for (iter = start+1; iter->atomType != end; iter++)
+    for (iter = start + 1; iter->atomType != end; iter++)
     {
         if (iter->atomType != paranthesis)
             continue;
@@ -102,11 +114,11 @@ static Function findClosingParanthesis(Function start)
     return iter;
 }
 
-static Function findOperator(Operator op, Function func)
+static Function findOperator(Operator op, Function func, Function end)
 {
     int depth = 0;
     Function iter;
-    for (iter = findEnd(func); iter > func && (depth != 0 || iter->atomType != operator || iter->atom.op != op); iter--)
+    for (iter = end; iter > func && (depth != 0 || iter->atomType != operator || iter->atom.op != op); iter--)
     {
         if (iter->atomType != paranthesis)
             continue;
@@ -127,12 +139,12 @@ static Function findEnd(Function func)
 
 static Complex evaluateAtomic(Function func, Input in)
 {
-    switch(func->atomType)
+    switch (func->atomType)
     {
         case value:
             return func->atom.value;
         case variable:
-            switch(func->atom.variable)
+            switch (func->atom.variable)
             {
                 case variableX:
                     return (Complex) {.real = in.x, .imaginary = 0};
@@ -142,7 +154,6 @@ static Complex evaluateAtomic(Function func, Input in)
                     fprintf(stderr, "Unexpected variable: %d\n", func->atom.variable);
                     return (Complex) {.real = -1, .imaginary = 0};
             }
-            break;
         default:
             fprintf(stderr, "Unexpected atomic: %d\n", func->atomType);
             return (Complex) {.real = -1, .imaginary = 0};
@@ -199,7 +210,7 @@ void printFunction(Function func)
                 }
                 break;
             case paranthesis:
-                switch(func->atom.paranthesis)
+                switch (func->atom.paranthesis)
                 {
                     case open:
                         printf("(");
@@ -218,4 +229,21 @@ void printFunction(Function func)
         }
         func++;
     }
+}
+
+int isTimeDependent(Function func)
+{
+    if (func == NULL)
+        return 0;
+    int i = 0;
+    for (Function iter = func; iter->atomType != end; iter++)
+    {
+        if (iter->atomType == variable && iter->atom.variable == variableT)
+        {
+            printf("Found t at %d\n", i);
+            return 1;
+        }
+        i++;
+    }
+    return 0;
 }

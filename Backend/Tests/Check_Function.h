@@ -156,6 +156,34 @@ START_TEST(test_Evaluate)
 }
 END_TEST
 
+START_TEST(test_TimeDependence)
+{
+    char *empty = "";
+    char *no = "(2/(3.14159265358979323*3^2))^(1/4)*2.718281828^(0-x^2/3^2)*2.718281828^(i*x)";
+    char *yes = "1/29+t*9-88/x";
+
+    Function parsedEmpty = parseFunction(empty);
+    Function parsedNo = parseFunction(no);
+    Function parsedYes = parseFunction(yes);
+
+    int expectedEmpty = 0;
+    int expectedNo = 0;
+    int expectedYes = 1;
+
+    int resEmpty = isTimeDependent(parsedEmpty);
+    int resNo = isTimeDependent(parsedNo);
+    int resYes = isTimeDependent(parsedYes);
+
+    ck_assert(expectedEmpty == resEmpty);
+    ck_assert(expectedNo == resNo);
+    ck_assert(expectedYes == resYes);
+
+    free(parsedEmpty);
+    free(parsedNo);
+    free(parsedYes);
+}
+END_TEST
+
 static void assertFloatEq(double expected, double actual)
 {
     printf(">>> %lf\n<<< %lf\n", expected, actual);

@@ -23,10 +23,7 @@ static Matrix createInitialDerivative()
     }
 
     Complex f = (Complex) {.real = 0, .imaginary = -hBarc * c / (2 * E0p) / (dx * dx)};
-    Matrix scaled = factor(res, f);
-    freeMatrix(res);
-
-    return scaled;
+    return factorIpTri(res, f);
 }
 
 static Matrix createPotentialMatrix(Matrix potentialValues)
@@ -36,10 +33,7 @@ static Matrix createPotentialMatrix(Matrix potentialValues)
         res.matrix[i][i] = potentialValues.matrix[i][0];
 
     Complex f = (Complex) {.real = 0, .imaginary = c / hBarc};
-    Matrix scaled = factor(res, f);
-    freeMatrix(res);
-
-    return scaled;
+    return factorIpTri(res, f);
 }
 
 static Matrix functionToVector(Function func, double d, int n, double t)
@@ -64,31 +58,26 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
     // 1 * nx
     Matrix psi = functionToVector(psi0, dx, nx, 0);
 
+    Matrix potentialValues = functionToVector(potential, dx, nx, 0);
+    Matrix potentialMatrix = createPotentialMatrix(potentialValues);
+    int timeDependent = isTimeDependent(potential);
+
     for (int i = 0; i < n-1; i++)
     {
         printf("i=%d\n", i);
 
-        // 1 * nx
-        Matrix potentialValues = functionToVector(potential, dx, nx, i * dt);
-        // nx * nx
-        Matrix potentialMatrix = createPotentialMatrix(potentialValues);
-        freeMatrix(potentialValues);
-
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
-        Matrix s = sum(d2, potentialMatrix);
-        Matrix f = factor(s, (Complex) {.real = dt/2, .imaginary = 0});
-        freeMatrix(s);
-        Matrix a = subtract(ident, f);
+        Matrix s = sumTri(potentialMatrix, d2);
+        Matrix f = factorIpTri(s, (Complex) {.real = dt/2, .imaginary = 0});
+        Matrix a = subtractTri(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
-        s = sum(ident, f);
+        Matrix b = multiplyTri(sumIpTri(f, ident), psi);
         freeMatrix(f);
-        Matrix b = multiply(s, psi);
-        freeMatrix(s);
 
         Matrix psiN = thomasSolve(a, b);
         // Validate
-        Matrix tB = multiply(a, psiN);
+        /*Matrix tB = multiply(a, psiN);
         for (int j = 0; j < tB.rowCount; j++)
         {
             double diff = absSquareComplex(subtractComplex(b.matrix[j][0], tB.matrix[j][0]));
@@ -97,15 +86,25 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             if (diff > 0.00001)
                 fprintf(stderr, "Diff is %lf\n", diff);
         }
-        freeMatrix(tB);
+        freeMatrix(tB);*/
         freeMatrix(a);
         freeMatrix(b);
         freeMatrix(psi);
-        freeMatrix(potentialMatrix);
         psi = psiN;
+        if (timeDependent)
+        {
+            freeMatrix(potentialValues);
+            freeMatrix(potentialMatrix);
+            // 1 * nx
+            potentialValues = functionToVector(potential, dx, nx, i * dt);
+            // nx * nx
+            potentialMatrix = createPotentialMatrix(potentialValues);
+        }
     }
     res[n-1] = matrixToArray(psi);
 
+    freeMatrix(potentialValues);
+    freeMatrix(potentialMatrix);
     freeMatrix(psi);
     freeMatrix(ident);
     freeMatrix(d2);

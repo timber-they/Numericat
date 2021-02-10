@@ -16,6 +16,8 @@ public class Numericanvas extends JPanel
         super.paintComponent(g);
         for (int j = 0; j < coordinates.size(); j++)
         {
+            if (coordinates.get(j) == null)
+                continue;
             List<Coordinate> coordinates = this.coordinates.get(j);
             g.setColor(colors.get(j));
             for (int i = 1; i < coordinates.size(); i++)

@@ -56,5 +56,6 @@ typedef struct Input{
 Complex evaluate(Function func, Input in);
 // Note that it's not really possible to test printing to the console
 void printFunction(Function func);
+int isTimeDependent(Function func);
 
 #endif //BACKEND_FUNCTION_H
