@@ -1,1 +1,8 @@
-# TODO: Make Backend and Frontend (using the backend makefile and javac)
+.PHONY:all
+all:
+	cd Backend && make
+	cd Frontend && make
+.PHONY:clean
+clean:
+	cd Backend && make clean
+	cd Frontend && make clean
