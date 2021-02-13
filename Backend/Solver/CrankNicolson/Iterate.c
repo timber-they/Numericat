@@ -9,6 +9,18 @@
 // Speed of light in pm/as
 #define c 302
 
+static Matrix normalize(Function psi0)
+{
+    double result = 0;
+    for(int i = 0; i < nx; i++)
+    {
+        if(pow(fabs(psi0)) == 1)
+        {
+            result += pow(fabs(psi0);
+        }
+    }
+}
+
 static Matrix createInitialDerivative()
 {
     Matrix res = createMatrix(nx, nx);
