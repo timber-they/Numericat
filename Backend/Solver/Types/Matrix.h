@@ -7,7 +7,6 @@ typedef struct Matrix {
     int rowCount;
     int columnCount;
     Complex **matrix; // Row x Column
-    int dimension;
 } Matrix;
 
 Matrix createMatrix(int r, int c);

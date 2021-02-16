@@ -5,17 +5,14 @@
 
 void freeMatrix(Matrix a)
 {
-    for (int i = 0; i < a.dimension; i++)
+    for (int i = 0; i < a.rowCount; i++)
         free(a.matrix[i]);
     free(a.matrix);
 }
 
 Matrix createMatrix(int r, int c)
 {
-    Matrix result = {r, c, calloc(r, sizeof(Complex *))};
-    result.rowCount = r;
-    result.columnCount = c;
-    result.dimension = r;
+    Matrix result = {.rowCount = r, .columnCount = c, .matrix = calloc(r, sizeof(Complex *))};
 
     if (result.matrix == NULL)
     {
