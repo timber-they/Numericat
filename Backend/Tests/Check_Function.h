@@ -1,9 +1,9 @@
 #include <float.h>
 #include <stdio.h>
 #include <math.h>
+#include <check.h>
 #include "../Parser/Parser.h"
 #include "../Parser/Function.h"
-#include "check.h"
 #include "TestHelper.h"
 
 #ifndef BACKEND_CHECK_FUNCTION_H

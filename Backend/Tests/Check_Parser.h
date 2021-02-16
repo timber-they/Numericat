@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <check.h>
 #include "../Parser/Parser.h"
 #include "TestHelper.h"
-#include "check.h"
 
 #ifndef BACKEND_CHECK_PARSER_H
 #define BACKEND_CHECK_PARSER_H

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
+#include <check.h>
 #include "../Parser/Parser.h"
 #include "TestHelper.h"
-#include "check.h"
 #include "TestHelper.h"
 
 void assertFunctionsEq(char *function, Function expected, Function actual)

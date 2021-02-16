@@ -1,8 +1,8 @@
-#include "../Solver/Types/Matrix.h"
-#include "../Solver/Types/Complex.h"
-#include "check.h"
+#include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../Solver/Types/Matrix.h"
+#include "../Solver/Types/Complex.h"
 
 #ifndef BACKEND_UTILITY_CHECK_H
 #define BACKEND_UTILITY_CHECK_H

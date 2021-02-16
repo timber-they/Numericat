@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <check.h>
 #include "../Solver/Types/Complex.h"
-#include "check.h"
 #include "TestHelper.h"
 
 #ifndef BACKEND_COMPLEX_CHECK_H
