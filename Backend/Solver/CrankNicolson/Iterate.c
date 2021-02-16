@@ -12,17 +12,16 @@
 
 static Complex** normalize(Complex **res)
 {
-    double size = sizeof(res)/sizeof(Complex);
-    for(int i = 0; i < size; i++)
+    for(int i = 0; i < 199; i++) // should be globally imported from program.c
     {
         Complex result = {.real = 0, .imaginary = 0};
-        for(int j = 0; j < size; j++)
+        for(int j = 0; j < 199; j++)
         {
-            sumComplex(result, res[i][j]);
+            result = sumComplex(result, res[i][j]);
         }
-        for(int j = 0; j < size; j++)
+        for(int j = 0; j < 199; j++)
         {
-            divideComplex(res[i][j], result);
+            res[i][j] = divideComplex(res[i][j], result);
         }
     }
     return res;
@@ -86,6 +85,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
         printf("i=%d\n", i);
 
         res[i] = matrixToArray(psi);
+
         // A = (I - dt/2 * (D2 + V))
         Matrix s = sumTri(potentialMatrix, d2);
         Matrix f = factorIpTri(s, (Complex) {.real = dt/2, .imaginary = 0});
@@ -120,6 +120,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             potentialMatrix = createPotentialMatrix(potentialValues);
         }
     }
+    res = normalize(res);
     res[n-1] = matrixToArray(psi);
 
     freeMatrix(potentialValues);
