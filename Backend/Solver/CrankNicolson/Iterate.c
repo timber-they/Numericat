@@ -1,4 +1,5 @@
 #include "Iterate.h"
+#include "../Matrix/Complex.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -9,16 +10,22 @@
 // Speed of light in pm/as
 #define c 302
 
-static Matrix normalize(Function psi0)
+static Complex** normalize(Complex **res)
 {
-    double result = 0;
-    for(int i = 0; i < nx; i++)
+    double size = sizeof(res)/sizeof(Complex);
+    for(int i = 0; i < size; i++)
     {
-        if(pow(fabs(psi0)) == 1)
+        Complex result = {.real = 0, .imaginary = 0};
+        for(int j = 0; j < size; j++)
         {
-            result += pow(fabs(psi0);
+            sumComplex(result, res[i][j]);
+        }
+        for(int j = 0; j < size; j++)
+        {
+            divideComplex(res[i][j], result);
         }
     }
+    return res;
 }
 
 static Matrix createInitialDerivative()
