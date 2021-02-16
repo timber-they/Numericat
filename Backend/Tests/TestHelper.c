@@ -49,7 +49,7 @@ void assertComplexEq(Complex expected, Complex actual)
     ck_assert(diff < 0.001);
 }
 
-static void assertFloatEq(double expected, double actual)
+void assertFloatEq(double expected, double actual)
 {
     printf(">>> %lf\n<<< %lf\n", expected, actual);
     double diff = expected - actual;
@@ -67,5 +67,5 @@ void assertMatrixEq(Matrix expected, Matrix actual)
 
     for (int r = 0; r < expected.rowCount; r++)
         for (int c = 0; c < expected.columnCount; c++)
-            ck_assert(expected.matrix[r][c] == actual.matrix[r][c]);
+            assertComplexEq(expected.matrix[r][c], actual.matrix[r][c]);
 }
