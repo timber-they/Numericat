@@ -10,18 +10,14 @@
 // Speed of light in pm/as
 #define c 302
 
-static Complex** normalize(Complex **res)
-{
-    for(int i = 0; i < 200; i++) // should be globally imported from program.c
-    {
+static Complex **normalize(Complex **res, int n) {
+    for (int i = 0; i < n; i++) {
         double result = 0;
-        for(int j = 0; j < nx; j++)
-        {
+        for (int j = 0; j < nx; j++) {
             result += absSquareComplex(res[i][j]) * dx;
         }
-        for(int j = 0; j < nx; j++)
-        {
-            res[i][j] = divideComplex(res[i][j] ,(Complex) {.real = result, . imaginary = 0});
+        for (int j = 0; j < nx; j++) {
+            res[i][j] = divideComplex(res[i][j], (Complex) {.real = result, . imaginary = 0});
         }
     }
     return res;
@@ -120,8 +116,8 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             potentialMatrix = createPotentialMatrix(potentialValues);
         }
     }
-    res[n-1] = matrixToArray(psi);
-    res = normalize(res);
+    res[n - 1] = matrixToArray(psi);
+    res = normalize(res, n);
 
     freeMatrix(potentialValues);
     freeMatrix(potentialMatrix);
