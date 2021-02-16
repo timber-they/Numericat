@@ -12,16 +12,16 @@
 
 static Complex** normalize(Complex **res)
 {
-    for(int i = 0; i < 199; i++) // should be globally imported from program.c
+    for(int i = 0; i < 200; i++) // should be globally imported from program.c
     {
-        Complex result = {.real = 0, .imaginary = 0};
-        for(int j = 0; j < 199; j++)
+        double result = 0;
+        for(int j = 0; j < nx; j++)
         {
-            result = sumComplex(result, res[i][j]);
+            result += absSquareComplex(res[i][j]) * dx;
         }
-        for(int j = 0; j < 199; j++)
+        for(int j = 0; j < nx; j++)
         {
-            res[i][j] = divideComplex(res[i][j], result);
+            res[i][j] = divideComplex(res[i][j] ,(Complex) {.real = result, . imaginary = 0});
         }
     }
     return res;
@@ -120,8 +120,8 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             potentialMatrix = createPotentialMatrix(potentialValues);
         }
     }
-    res = normalize(res);
     res[n-1] = matrixToArray(psi);
+    res = normalize(res);
 
     freeMatrix(potentialValues);
     freeMatrix(potentialMatrix);
