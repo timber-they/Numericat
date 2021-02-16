@@ -1,6 +1,6 @@
 #include "../../Parser/Function.h"
-#include "../Matrix/Utility.h"
-#include "../Matrix/Complex.h"
+#include "../Types/Matrix.h"
+#include "../Types/Complex.h"
 
 #ifndef BACKEND_ITERATE_H
 #define BACKEND_ITERATE_H

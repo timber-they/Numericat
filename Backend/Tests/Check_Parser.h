@@ -1,12 +1,11 @@
-#include "../Parser/Parser.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "../Parser/Parser.h"
+#include "TestHelper.h"
 #include "check.h"
 
 #ifndef BACKEND_CHECK_PARSER_H
 #define BACKEND_CHECK_PARSER_H
-
-static void validateEquality(char *function, Function expected, Function actual);
 
 START_TEST(test_Parse_Functions)
 {
@@ -55,8 +54,8 @@ START_TEST(test_Parse_Functions)
     Function actual1 = parseFunction(function1);
     Function actual2 = parseFunction(function2);
 
-    validateEquality(function1, expected1, actual1);
-    validateEquality(function2, expected2, actual2);
+    assertFunctionsEq(function1, expected1, actual1);
+    assertFunctionsEq(function2, expected2, actual2);
 
     free(actual1);
     free(actual2);
@@ -140,37 +139,5 @@ START_TEST(test_Validate_Dyck_Failing)
         ck_assert(complex2Res != 0);
     }
 END_TEST
-
-static void validateEquality(char *function, Function expected, Function actual)
-{
-    printf(">>> %s\n", function);
-    printf("=== ");
-    printFunction(expected);
-    printf("<<< ");
-    printFunction(actual);
-
-    for (int i = 0;; i++)
-    {
-        ck_assert(actual[i].atomType == expected[i].atomType);
-        switch(actual[i].atomType)
-        {
-            case value:
-                ck_assert(actual[i].atom.value.real == expected[i].atom.value.real);
-                ck_assert(actual[i].atom.value.imaginary == expected[i].atom.value.imaginary);
-                break;
-            case operator:
-                ck_assert(actual[i].atom.op == expected[i].atom.op);
-                break;
-            case paranthesis:
-                ck_assert(actual[i].atom.paranthesis == expected[i].atom.paranthesis);
-                break;
-            case end:
-                return;
-            default:
-                fprintf(stderr, "Unknown atom type: %d\n", actual[i].atomType);
-                continue;
-        }
-    }
-}
 
 #endif //BACKEND_CHECK_PARSER_H

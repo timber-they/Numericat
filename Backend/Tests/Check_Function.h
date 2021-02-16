@@ -1,14 +1,13 @@
-#include "../Parser/Parser.h"
-#include "../Parser/Function.h"
 #include <float.h>
 #include <stdio.h>
 #include <math.h>
+#include "../Parser/Parser.h"
+#include "../Parser/Function.h"
 #include "check.h"
+#include "TestHelper.h"
 
 #ifndef BACKEND_CHECK_FUNCTION_H
 #define BACKEND_CHECK_FUNCTION_H
-
-static void assertFloatEq(double expected, double actual);
 
 // Note that these tests depends on Parser to work properly
 START_TEST(test_Evaluate)
@@ -183,16 +182,5 @@ START_TEST(test_TimeDependence)
     free(parsedYes);
 }
 END_TEST
-
-static void assertFloatEq(double expected, double actual)
-{
-    printf(">>> %lf\n<<< %lf\n", expected, actual);
-    double diff = expected - actual;
-    if (diff < 0)
-        diff = -diff;
-    ck_assert(!isnan(actual));
-    ck_assert(!isinf(actual));
-    ck_assert(diff < 0.001);
-}
 
 #endif //BACKEND_CHECK_FUNCTION_H
