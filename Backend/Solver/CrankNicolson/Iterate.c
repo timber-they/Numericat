@@ -10,17 +10,17 @@
 // Speed of light in pm/as
 #define c 302
 
-static Complex **normalize(Complex **res, int n) {
+static Complex **normalize(Complex **normalized, int n) {
     for (int i = 0; i < n; i++) {
-        double result = 0;
+        double sum = 0;
         for (int j = 0; j < nx; j++) {
-            result += absSquareComplex(res[i][j]) * dx;
+            sum += absSquareComplex(normalized[i][j]) * dx;
         }
         for (int j = 0; j < nx; j++) {
-            res[i][j] = divideComplex(res[i][j], (Complex) {.real = result, . imaginary = 0});
+            normalized[i][j] = divideComplex(normalized[i][j], (Complex) {.real = sum, . imaginary = 0});
         }
     }
-    return res;
+    return normalized;
 }
 
 static Matrix createInitialDerivative()
@@ -79,9 +79,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
     for (int i = 0; i < n-1; i++)
     {
         printf("i=%d\n", i);
-
         res[i] = matrixToArray(psi);
-
         // A = (I - dt/2 * (D2 + V))
         Matrix s = sumTri(potentialMatrix, d2);
         Matrix f = factorIpTri(s, (Complex) {.real = dt/2, .imaginary = 0});
