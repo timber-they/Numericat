@@ -10,7 +10,7 @@
 // Speed of light in pm/as
 #define c 302
 
-static Complex **normalize(Complex **normalized, int n) {
+Complex **normalize(Complex **normalized, int n) {
     for (int i = 0; i < n; i++) {
         double sum = 0;
         for (int j = 0; j < nx; j++) {
