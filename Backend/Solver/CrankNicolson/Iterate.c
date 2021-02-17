@@ -75,6 +75,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
     Matrix potentialValues = functionToVector(potential, dx, nx, 0);
     Matrix potentialMatrix = createPotentialMatrix(potentialValues);
     int timeDependent = isTimeDependent(potential);
+    res = normalize(res, n);
 
     for (int i = 0; i < n-1; i++)
     {
@@ -113,9 +114,9 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             // nx * nx
             potentialMatrix = createPotentialMatrix(potentialValues);
         }
+        res = normalize(res, n);
     }
     res[n - 1] = matrixToArray(psi);
-    res = normalize(res, n);
 
     freeMatrix(potentialValues);
     freeMatrix(potentialMatrix);
