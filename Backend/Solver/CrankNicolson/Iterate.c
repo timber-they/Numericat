@@ -10,13 +10,17 @@
 // Speed of light in pm/as
 #define c 302
 
-Complex **normalize(Complex **normalized, int n) {
-    for (int i = 0; i < n; i++) {
+Complex **normalize(Complex **normalized, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
         double sum = 0;
-        for (int j = 0; j < nx; j++) {
+        for (int j = 0; j < nx; j++)
+        {
             sum += absSquareComplex(normalized[i][j]) * dx;
         }
-        for (int j = 0; j < nx; j++) {
+        for (int j = 0; j < nx; j++)
+        {
             normalized[i][j] = divideComplex(normalized[i][j], (Complex) {.real = sum, . imaginary = 0});
         }
     }
