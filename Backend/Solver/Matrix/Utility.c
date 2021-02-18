@@ -97,6 +97,35 @@ Matrix multiply(Matrix a, Matrix b)
     return result;
 }
 
+Matrix multiplyTri(Matrix a, Matrix b)
+{
+    int l = a.rowCount;
+    int m = a.columnCount;
+    // check if multiplication is possible
+    if (m != b.rowCount)
+    {
+        fprintf(stderr, "Error: columns of Matrix a = %d != %d = rows of Matrix b\n", a.columnCount, b.rowCount);
+        exit(1);
+    }
+    if (l != m)
+    {
+        fprintf(stderr, "Error: a is not an nxn matrix and hence can't be tridiagonal\n");
+        exit(2);
+    }
+    int n = b.columnCount;
+
+    Matrix result = createMatrix(l, n);
+
+    for (int i = 0; i < l; i++)
+        for (int k = 0; k < n; k++)
+        {
+            result.matrix[i][k] = (Complex) {0};
+            for (int j = (i == 0 ? 0 : i-1); j < l && j < i+2; j++)
+                result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
+        }
+    return result;
+}
+
 Matrix sum(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
@@ -109,6 +138,42 @@ Matrix sum(Matrix a, Matrix b)
     int i,j;
     for(i = 0; i < r ; i++){
         for(j = 0; j < c; j++){
+            result.matrix[i][j] = sumComplex(a.matrix[i][j], b.matrix[i][j]);
+        }
+    }
+
+    return result;
+}
+
+Matrix sumIpTri(Matrix a, Matrix b)
+{
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
+        fprintf(stderr, "Error: a and b have different dimensions or are not nxn\n");
+        exit(2);
+    }
+    int n = a.rowCount;
+    Matrix result = a;
+    int i,j;
+    for(i = 0; i < n ; i++){
+        for(j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++){
+            result.matrix[i][j] = sumComplex(a.matrix[i][j], b.matrix[i][j]);
+        }
+    }
+
+    return result;
+}
+
+Matrix sumTri(Matrix a, Matrix b)
+{
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
+        fprintf(stderr, "Error: a and b have different dimensions or are not nxn\n");
+        exit(2);
+    }
+    int n = a.rowCount;
+    Matrix result = createMatrix(n, n);
+    int i,j;
+    for(i = 0; i < n ; i++){
+        for(j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++){
             result.matrix[i][j] = sumComplex(a.matrix[i][j], b.matrix[i][j]);
         }
     }
@@ -129,6 +194,25 @@ Matrix subtract(Matrix a, Matrix b)
     int i,j;
     for(i = 0; i < r ; i++){
         for(j = 0; j < c; j++){
+            result.matrix[i][j] = subtractComplex(a.matrix[i][j], b.matrix[i][j]);
+
+        }
+    }
+    return result;
+}
+
+Matrix subtractTri(Matrix a, Matrix b)
+{
+    if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
+        fprintf(stderr, "Error: = matrices are not compatible for subtraction: a.rowCount != b.rowCount or "
+                        "a.columnCount != b.columnCount or a is not nxn matrix and hence not tridiagonal");
+        exit(2);
+    }
+    int n = a.rowCount;
+    Matrix result = createMatrix(n,n);
+    int i,j;
+    for(i = 0; i < n ; i++){
+        for(j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++){
             result.matrix[i][j] = subtractComplex(a.matrix[i][j], b.matrix[i][j]);
 
         }
@@ -165,6 +249,27 @@ Matrix factor(Matrix a, Complex f)
     for (i = 0; i < n; i++)
     {
         for (j = 0; j < n; j++)
+        {
+            result.matrix[i][j] = multiplyComplex(a.matrix[i][j], f);
+        }
+    }
+    return result;
+}
+
+Matrix factorIpTri(Matrix a, Complex f)
+{
+    if (a.rowCount != a.columnCount)
+    {
+        fprintf(stderr, "a is not nxn, can't be tridiagonal\n");
+        exit(1);
+    }
+    int n = a.rowCount;
+    Matrix result = a;
+
+    int i, j;
+    for (i = 0; i < n; i++)
+    {
+        for (j = (i == 0 ? 0 : i-1); j < n && j < i+2; j++)
         {
             result.matrix[i][j] = multiplyComplex(a.matrix[i][j], f);
         }

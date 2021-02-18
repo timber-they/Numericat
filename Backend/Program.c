@@ -28,7 +28,9 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Couldn't parse '%s'\n", argv[2]);
         return 1;
     }
+    printf("Potential: ");
     printFunction(potential);
+    printf("Initial wave function: ");
     printFunction(initial);
 
     int n = 200;
