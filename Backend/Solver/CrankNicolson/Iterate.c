@@ -12,6 +12,7 @@
 
 Complex **normalize(Complex **normalized, int n)
 {
+    Complex **res = malloc(n * sizeof(*res));
     for (int i = 0; i < n; i++)
     {
         double sum = 0;
@@ -21,10 +22,10 @@ Complex **normalize(Complex **normalized, int n)
         }
         for (int j = 0; j < nx; j++)
         {
-            normalized[i][j] = divideComplex(normalized[i][j], (Complex) {.real = sum, . imaginary = 0});
+            res[i][j] = divideComplex(normalized[i][j], (Complex) {.real = sum, . imaginary = 0});
         }
     }
-    return normalized;
+    return res;
 }
 
 static Matrix createInitialDerivative()
@@ -79,7 +80,6 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
     Matrix potentialValues = functionToVector(potential, dx, nx, 0);
     Matrix potentialMatrix = createPotentialMatrix(potentialValues);
     int timeDependent = isTimeDependent(potential);
-    res = normalize(res, n);
 
     for (int i = 0; i < n-1; i++)
     {
@@ -118,8 +118,8 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             // nx * nx
             potentialMatrix = createPotentialMatrix(potentialValues);
         }
-        res = normalize(res, n);
     }
+    res = normalize(res, n);
     res[n - 1] = matrixToArray(psi);
 
     freeMatrix(potentialValues);
