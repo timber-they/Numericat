@@ -1,4 +1,5 @@
 #include "Iterate.h"
+#include "../Matrix/Complex.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -8,6 +9,22 @@
 #define hBarc 0.1973
 // Speed of light in pm/as
 #define c 302
+
+void normalize(Complex **values, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        double sum = 0;
+        for (int j = 0; j < nx; j++)
+        {
+            sum += absSquareComplex(values[i][j]) * dx;
+        }
+        for (int j = 0; j < nx; j++)
+        {
+            values[i][j] = divideComplex(values[i][j], (Complex) {.real = sum, . imaginary = 0});
+        }
+    }
+}
 
 static Matrix createInitialDerivative()
 {
@@ -65,7 +82,6 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
     for (int i = 0; i < n-1; i++)
     {
         printf("i=%d\n", i);
-
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
         Matrix s = sumTri(potentialMatrix, d2);
@@ -101,7 +117,8 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
             potentialMatrix = createPotentialMatrix(potentialValues);
         }
     }
-    res[n-1] = matrixToArray(psi);
+    res[n - 1] = matrixToArray(psi);
+    normalize(res, n);
 
     freeMatrix(potentialValues);
     freeMatrix(potentialMatrix);
