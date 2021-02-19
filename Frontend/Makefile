@@ -2,7 +2,7 @@ $(info $(SHELL))
 SRC=src/
 DIRECTORY=${SRC}de/numericat/
 FILE_BASE=${DIRECTORY}Main
-DEPENDENCIES=${DIRECTORY}Coordinate.java ${DIRECTORY}Numericanvas.java
+DEPENDENCIES=${DIRECTORY}Coordinate.java ${DIRECTORY}Numericanvas.java ${DIRECTORY}Io.java
 
 all:${FILE_BASE}.class
 
