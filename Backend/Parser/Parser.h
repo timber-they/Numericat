@@ -6,6 +6,7 @@
 /// Returns NULL when something goes wrong
 /// Remember to free the result of this method, if not NULL
 /// raw should be a null terminated string
+/// Not thread safe!
 Function parseFunction(char *raw);
 int validateDyck(char *in);
 

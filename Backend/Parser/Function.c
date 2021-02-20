@@ -1,6 +1,10 @@
 #include "Function.h"
 #include <stdio.h>
-#include <math.h>
+
+struct Splitter{
+    Function ptr;
+    Operator op;
+};
 
 static Complex applyOperator(Complex current, Complex operand, Operator operator);
 
@@ -13,13 +17,51 @@ static Function findEnd(Function func);
 
 static Complex evaluateAtomic(Function func, Input in);
 
-// TODO: This function is too long
+static struct Splitter getSplitter(Function func);
+
 Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
 {
     Complex lhs, rhs;
-    Operator op;
     AtomType prevType;
 
+    struct Splitter splitter = getSplitter(func);
+    Function ptr = splitter.ptr;
+    Operator op = splitter.op;
+
+    if (ptr == NULL)
+    {
+        if (func->atomType == paranthesis)
+        {
+            // Must be opening
+            Function closing = findClosingParanthesis(func);
+            if (closing == NULL)
+                return (Complex) {.real = -1, .imaginary = 0};
+            prevType = closing->atomType;
+            closing->atomType = end;
+            lhs = evaluate(func + 1, in);
+            closing->atomType = prevType;
+
+            if (closing[1].atomType == end)
+            {
+                return lhs;
+            }
+        } else
+            // Length must be 1
+            return evaluateAtomic(func, in);
+    }
+
+    prevType = ptr->atomType;
+    ptr->atomType = end;
+    lhs = evaluate(func, in);
+    rhs = evaluate(ptr + 1, in);
+    ptr->atomType = prevType;
+
+    return applyOperator(lhs, rhs, op);
+}
+
+static struct Splitter getSplitter(Function func)
+{
+    Operator op = {0};
     Function endPtr = findEnd(func);
     Function ptr = NULL;
     Function plusPtr = findOperator(plus, func, endPtr),
@@ -56,35 +98,7 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
         }
     }
 
-    if (ptr == NULL)
-    {
-        if (func->atomType == paranthesis)
-        {
-            // Must be opening
-            Function closing = findClosingParanthesis(func);
-            if (closing == NULL)
-                return (Complex) {.real = -1, .imaginary = 0};
-            prevType = closing->atomType;
-            closing->atomType = end;
-            lhs = evaluate(func + 1, in);
-            closing->atomType = prevType;
-
-            if (closing[1].atomType == end)
-            {
-                return lhs;
-            }
-        } else
-            // Length must be 1
-            return evaluateAtomic(func, in);
-    }
-
-    prevType = ptr->atomType;
-    ptr->atomType = end;
-    lhs = evaluate(func, in);
-    rhs = evaluate(ptr + 1, in);
-    ptr->atomType = prevType;
-
-    return applyOperator(lhs, rhs, op);
+    return (struct Splitter) {.op = op, .ptr = ptr};
 }
 
 static Function findClosingParanthesis(Function start)
