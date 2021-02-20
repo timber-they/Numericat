@@ -19,13 +19,13 @@ int main(int argc, char *argv[])
     potential = parseFunction(argv[1]);
     if (potential == NULL)
     {
-        fprintf(stderr, "Couldn't parse '%s'\n", argv[1]);
+        fprintf(stderr, "Couldn't iterate '%s'\n", argv[1]);
         return 1;
     }
     initial = parseFunction(argv[2]);
     if (initial == NULL)
     {
-        fprintf(stderr, "Couldn't parse '%s'\n", argv[2]);
+        fprintf(stderr, "Couldn't iterate '%s'\n", argv[2]);
         return 1;
     }
     printf("Potential: ");
