@@ -15,7 +15,7 @@ static int currentNumberState;
 static int j;
 static Function func;
 
-static int handleNumber(char val);
+static int handleDigit(char val);
 
 static int handleOperator(char val);
 
@@ -31,22 +31,49 @@ static void initialize();
 
 static int isDigit(char c);
 
-// TODO: This function is too long
+static int isVariable(char c);
+
+static int isParanthesis(char c);
+
+static int isOperator(char c);
+
+// Assumes raw is already validated / will be validated afterwards and everything is already initialized
+static int iterate(char *raw, int length);
+
 Function parseFunction(char *raw)
 {
     if (raw == NULL)
         return NULL;
 
     if (validateDyck(raw))
-    {
-        fprintf(stderr, "Not a valid Dyck language\n");
         return NULL;
-    }
 
     initialize();
 
     size_t length = strlen(raw);
     func = malloc((length + 1) * sizeof(*func));
+
+    if (iterate(raw, length))
+        goto error;
+
+    if (validateEnd())
+        goto error;
+    return func;
+
+    error:
+    free(func);
+    return NULL;
+}
+
+#define HANDLE(type) if (is##type(raw[i])) \
+{                                          \
+    int returnCode = handle##type(raw[i]); \
+    if (returnCode)                        \
+        return returnCode;                 \
+    continue;                              \
+}
+static int iterate(char *raw, int length)
+{
 
     for (int i = 0; i < length; i++)
     {
@@ -55,57 +82,22 @@ Function parseFunction(char *raw)
             finishNumber();
             continue;
         }
-        if (isDigit(raw[i]))
-        {
-            if (handleNumber(raw[i]))
-            {
-                free(func);
-                return NULL;
-            }
-            continue;
-        }
-
-        if (raw[i] == 'x' || raw[i] == 't')
-        {
-            // For now only x and t - later maybe multiple dimensions
-            if (handleVariable(raw[i]))
-            {
-                free(func);
-                return NULL;
-            }
-            continue;
-        }
+        HANDLE(Digit)
+        HANDLE(Variable)
 
         finishNumber();
 
-        if (raw[i] == '(' || raw[i] == ')')
-        {
-            if (handleParanthesis(raw[i]))
-            {
-                free(func);
-                return NULL;
-            }
-            continue;
-        }
+        HANDLE(Paranthesis)
+        HANDLE(Operator)
 
-        if (handleOperator(raw[i]))
-        {
-            free(func);
-            return NULL;
-        }
+        fprintf(stderr, "Unexpected character: %c\n", raw[i]);
+        return 6;
     }
 
     finishNumber();
-    if (validateEnd())
-    {
-        free(func);
-        return NULL;
-    }
     func[j] = (Element) {.atomType=end, .atom.value={0}};
-
-    return func;
+    return 0;
 }
-
 
 int validateDyck(char *in)
 {
@@ -117,9 +109,14 @@ int validateDyck(char *in)
         if (*it == ')')
             depth--;
         if (depth < 0)
+        {
+            fprintf(stderr, "Not a valid Dyck language\n");
             return depth;
+        }
     }
 
+    if (depth != 0)
+        fprintf(stderr, "Not a valid Dyck language\n");
     return depth;
 }
 
@@ -160,7 +157,7 @@ static int validateEnd()
     return 0;
 }
 
-static int handleNumber(char val)
+static int handleDigit(char val)
 {
     if (currentNumberState != 2 && val == 'i')
     {
@@ -300,3 +297,21 @@ static int isDigit(char c)
     return (c >= '0' && c <= '9') || c == 'i' || c == '.';
 }
 
+static int isVariable(char c)
+{
+    return c == 'x' || c == 't';
+}
+
+static int isParanthesis(char c)
+{
+    return c == '(' || c == ')';
+}
+
+static int isOperator(char c)
+{
+    return c == '*' ||
+        c == '/' ||
+        c == '+' ||
+        c == '-' ||
+        c == '^';
+}
