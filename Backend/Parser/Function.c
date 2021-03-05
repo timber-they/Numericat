@@ -1,6 +1,6 @@
 #include "Function.h"
 #include <stdio.h>
-#include <math.h>
+#include "../Solver/Types/Complex.h"
 
 struct Splitter{
     Function ptr;
@@ -90,16 +90,40 @@ static Complex evaluateFunction(Function func, Complex rhs)
     switch(func->atom.function)
     {
         case fsin:
-            break;
+            return divideComplex(subtractComplex(
+                        expComplex(multiplyComplex(rhs, 
+                                (Complex) {.real = 0, .imaginary = 1})),
+                        expComplex(multiplyComplex(rhs, 
+                                (Complex) {.real = 0, .imaginary = -1}))
+                        ), (Complex) {.real = 0, .imaginary = 2});
         case fcos:
-            break;
+            return divideComplex(sumComplex(
+                        expComplex(multiplyComplex(rhs, 
+                                (Complex) {.real = 0, .imaginary = 1})),
+                        expComplex(multiplyComplex(rhs, 
+                                (Complex) {.real = 0, .imaginary = -1}))
+                        ), (Complex) {.real = 2, .imaginary = 0});
         case ftan:
-            break;
+            return divideComplex(
+                    divideComplex(subtractComplex(
+                            expComplex(multiplyComplex(rhs, 
+                                    (Complex) {.real = 0, .imaginary = 1})),
+                            expComplex(multiplyComplex(rhs, 
+                                    (Complex) {.real = 0, .imaginary = -1}))
+                            ), (Complex) {.real = 0, .imaginary = 2}),
+                    divideComplex(sumComplex(
+                            expComplex(multiplyComplex(rhs, 
+                                    (Complex) {.real = 0, .imaginary = 1})),
+                            expComplex(multiplyComplex(rhs, 
+                                    (Complex) {.real = 0, .imaginary = -1}))
+                            ), (Complex) {.real = 2, .imaginary = 0}));
         case fexp:
-            break;
+            return expComplex(rhs);
         case fdelta:
+            // TODO
             break;
         case ftheta:
+            // TODO
             break;
     }
     return (Complex) {0};

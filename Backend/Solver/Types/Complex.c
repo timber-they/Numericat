@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <math.h>
 
+Complex imaginaryUnit = (Complex) {.real = 0, .imaginary = 1};
+
 Complex sumComplex(Complex a, Complex b)
 {
     return (Complex) {.real = a.real + b.real, .imaginary = a.imaginary + b.imaginary};
