@@ -151,22 +151,22 @@ static int handleFunction(char val)
     switch (val)
     {
         case 's':
-            func[j++] = (Element) {.atomType=function, atom.function = sin};
+            func[j++] = (Element) {.atomType=function, .atom.function = fsin};
             return 0;
         case 'c':
-            func[j++] = (Element) {.atomType=function, atom.function = cos};
+            func[j++] = (Element) {.atomType=function, .atom.function = fcos};
             return 0;
         case 't':
-            func[j++] = (Element) {.atomType=function, atom.function = tan};
+            func[j++] = (Element) {.atomType=function, .atom.function = ftan};
             return 0;
         case 'e':
-            func[j++] = (Element) {.atomType=function, atom.function = exp};
+            func[j++] = (Element) {.atomType=function, .atom.function = fexp};
             return 0;
         case 'd':
-            func[j++] = (Element) {.atomType=function, atom.function = delta};
+            func[j++] = (Element) {.atomType=function, .atom.function = fdelta};
             return 0;
         case 'h':
-            func[j++] = (Element) {.atomType=function, atom.function = theta};
+            func[j++] = (Element) {.atomType=function, .atom.function = ftheta};
             return 0;
         default:
             fprintf(stderr, "Unexpected function: %c\n", val);

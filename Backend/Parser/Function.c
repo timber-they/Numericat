@@ -1,5 +1,6 @@
 #include "Function.h"
 #include <stdio.h>
+#include <math.h>
 
 struct Splitter{
     Function ptr;
@@ -19,6 +20,10 @@ static Complex evaluateAtomic(Function func, Input in);
 
 static struct Splitter getSplitter(Function func);
 
+static Complex evaluateParanthesis(Function func, Function closing, Input in);
+
+static Complex evaluateFunction(Function func, Complex rhs);
+
 Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
 {
     Complex lhs, rhs;
@@ -30,24 +35,45 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
 
     if (ptr == NULL)
     {
-        if (func->atomType == paranthesis)
-        {
-            // Must be opening
-            Function closing = findClosingParanthesis(func);
-            if (closing == NULL)
-                return (Complex) {.real = -1, .imaginary = 0};
-            prevType = closing->atomType;
-            closing->atomType = end;
-            lhs = evaluate(func + 1, in);
-            closing->atomType = prevType;
 
-            if (closing[1].atomType == end)
-            {
-                return lhs;
-            }
-        } else
-            // Length must be 1
-            return evaluateAtomic(func, in);
+        Function closing;
+        switch (func->atomType)
+        {
+            case paranthesis:
+                // Must be opening
+                closing = findClosingParanthesis(func);
+                if (closing == NULL)
+                    return (Complex) {.real = -1, .imaginary = 0};
+
+                lhs = evaluateParanthesis(func, closing, in);
+
+                if (closing[1].atomType == end)
+                    return lhs;
+                fprintf(stderr, "Expected end after paranthesis\n");
+                return (Complex) {.real = -1, .imaginary = 0};
+            case function:
+                switch((func+1)->atomType)
+                {
+                    case end:
+                        fprintf(stderr, "Expected parameter after function call\n");
+                        return (Complex) {.real = -1, .imaginary = 0};
+                    case paranthesis:
+                        closing = findClosingParanthesis(func+1);
+                        if (closing == NULL)
+                            return (Complex) {.real = -1, .imaginary = 0};
+
+                        rhs = evaluateParanthesis(func+1, closing, in);
+                        break;
+                    default:
+                        rhs = evaluateAtomic(func+1, in);
+                        break;
+                }
+                return evaluateFunction(func, rhs);
+                break;
+            default:
+                // Length must be 1
+                return evaluateAtomic(func, in);
+        }
     }
 
     prevType = ptr->atomType;
@@ -57,6 +83,35 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
     ptr->atomType = prevType;
 
     return applyOperator(lhs, rhs, op);
+}
+
+static Complex evaluateFunction(Function func, Complex rhs)
+{
+    switch(func->atom.function)
+    {
+        case fsin:
+            break;
+        case fcos:
+            break;
+        case ftan:
+            break;
+        case fexp:
+            break;
+        case fdelta:
+            break;
+        case ftheta:
+            break;
+    }
+    return (Complex) {0};
+}
+
+static Complex evaluateParanthesis(Function func, Function closing, Input in)
+{
+    AtomType prevType = closing->atomType;
+    closing->atomType = end;
+    Complex res = evaluate(func + 1, in);
+    closing->atomType = prevType;
+    return res;
 }
 
 static struct Splitter getSplitter(Function func)
@@ -237,6 +292,28 @@ void printFunction(Function func)
             case variable:
                 printf("x");
                 break;
+            case function:
+                switch(func->atom.function)
+                {
+                    case fsin:
+                        printf("sin");
+                        break;
+                    case fcos:
+                        printf("cos");
+                        break;
+                    case ftan:
+                        printf("tan");
+                        break;
+                    case fexp:
+                        printf("exp");
+                        break;
+                    case fdelta:
+                        printf("delta");
+                        break;
+                    case ftheta:
+                        printf("theta");
+                        break;
+                }
             case end:
                 printf("\n");
                 return;
