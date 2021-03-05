@@ -18,6 +18,15 @@ typedef enum Paranthesis{
     close       // )
 } Paranthesis;
 
+typedef enum Function{
+    sin,
+    cos,
+    tan,
+    exp,
+    delta,
+    theta
+} Function;
+
 typedef enum Variable{
     variableX,
     // variableY,
@@ -29,6 +38,7 @@ typedef enum AtomType{
     operator,
     variable,
     paranthesis,
+    function,
     end
 } AtomType;
 
@@ -37,6 +47,7 @@ typedef union Atom{
     Operator op;
     Paranthesis paranthesis;
     Variable variable;
+    Function function;
 } Atom;
 
 typedef struct Element {
