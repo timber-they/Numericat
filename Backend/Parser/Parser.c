@@ -25,6 +25,8 @@ static int handleVariable(char val);
 
 static int handleParanthesis(char val);
 
+static int handleFunction(char val);
+
 static int validateEnd();
 
 static void initialize();
@@ -36,6 +38,8 @@ static int isVariable(char c);
 static int isParanthesis(char c);
 
 static int isOperator(char c);
+
+static int isFunction(char c);
 
 // Assumes raw is already validated / will be validated afterwards and everything is already initialized
 static int iterate(char *raw, int length);
@@ -84,6 +88,7 @@ static int iterate(char *raw, int length)
         }
         HANDLE(Digit)
         HANDLE(Variable)
+        HANDLE(Function)
 
         finishNumber();
 
@@ -137,6 +142,34 @@ static int handleParanthesis(char val)
             return 0;
         default:
             fprintf(stderr, "Unexpected paranthesis character: %c\n", val);
+            return 1;
+    }
+}
+
+static int handleFunction(char val)
+{
+    switch (val)
+    {
+        case 's':
+            func[j++] = (Element) {.atomType=function, atom.function = sin};
+            return 0;
+        case 'c':
+            func[j++] = (Element) {.atomType=function, atom.function = cos};
+            return 0;
+        case 't':
+            func[j++] = (Element) {.atomType=function, atom.function = tan};
+            return 0;
+        case 'e':
+            func[j++] = (Element) {.atomType=function, atom.function = exp};
+            return 0;
+        case 'd':
+            func[j++] = (Element) {.atomType=function, atom.function = delta};
+            return 0;
+        case 'h':
+            func[j++] = (Element) {.atomType=function, atom.function = theta};
+            return 0;
+        default:
+            fprintf(stderr, "Unexpected function: %c\n", val);
             return 1;
     }
 }
@@ -218,6 +251,11 @@ static int handleOperator(char val)
     {
         fprintf(stderr, "Two operators in a row (parsing %c)\n", val);
         return 2;
+    }
+    if (j > 0 && func[j-1].atomType == function)
+    {
+        fprintf(stderr, "An operator can't follow a function call (parsing %c)\n", val);
+        return 3;
     }
     switch (val)
     {
@@ -314,4 +352,14 @@ static int isOperator(char c)
         c == '+' ||
         c == '-' ||
         c == '^';
+}
+
+static int isFunction(char c)
+{
+    return c == 's' ||
+        c == 'c' ||
+        c == 't' ||
+        c == 'e' ||
+        c == 'd' ||
+        c == 'h';
 }
