@@ -142,12 +142,6 @@ public class Numericanvas extends JPanel
         g.drawString("Function", 20, 30);
         g.setColor(Color.BLACK);
         g.drawString("Potential", 20, 50);
-
-        //Draw Box
-        g.drawLine(15, 15 , 100, 15);
-        g.drawLine(15, 65 , 100, 65);
-        g.drawLine(15, 15 , 15, 65);
-        g.drawLine(100, 15 , 100, 65);
     }
 
     public void drawData(List<Coordinate> coordinates) {
