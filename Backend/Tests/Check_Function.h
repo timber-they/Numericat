@@ -70,7 +70,7 @@ START_TEST(test_Evaluate)
             * cos(in0.x),
             pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
             * sin(in0.x)
-        };
+        );
     double expected04 = pow(2, in0.x) + 1;
     double expected06 = pow(1.0/(2*3*1.0/1000), (1.0/2))*pow(2.7,(0-pow(in0.x, 2)*1000.0/2));
 

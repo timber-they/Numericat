@@ -14,27 +14,27 @@ START_TEST(test_Parse_Functions)
 
     Element expected1[] =
     {
-        (Element) {.atomType = value, .atom.value=COMPLEX(8861,0}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(8861,0)},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = value, .atom.value=COMPLEX(0,7}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(0,7)},
         (Element) {.atomType = operator, .atom.op=plus},
-        (Element) {.atomType = variable, .atom.value=COMPLEX(0,0}),
+        (Element) {.atomType = variable, .atom.value=COMPLEX(0,0)},
         (Element) {.atomType = operator, .atom.op=times},
-        (Element) {.atomType = value, .atom.value=COMPLEX(6,0}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(6,0)},
         (Element) {.atomType = end, .atom.value={0}}
     };
     Element expected2[] =
     {
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
-        (Element) {.atomType = value, .atom.value=COMPLEX(1,0}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(1,0)},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = value, .atom.value=COMPLEX(29,0}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(29,0)},
         (Element) {.atomType = operator, .atom.op=plus},
         (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = operator, .atom.op=times},
-        (Element) {.atomType = value, .atom.value=COMPLEX(9,0}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(9,0)},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=COMPLEX(88,0}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(88,0)},
         (Element) {.atomType = operator, .atom.op=divide},
         (Element) {.atomType = variable, .atom.variable=variableT},
         (Element) {.atomType = operator, .atom.op=power},
@@ -42,12 +42,12 @@ START_TEST(test_Parse_Functions)
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
         (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=COMPLEX(1,0}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(1,0)},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=COMPLEX(0,1}),
+        (Element) {.atomType = value, .atom.value=COMPLEX(0,1)},
         (Element) {.atomType = end, .atom.value={0}}
     };
 
