@@ -11,6 +11,7 @@ START_TEST(test_Parse_Functions)
 {
     char *function1 = " 8861/7i+x*6";
     char *function2 = "(1/29+x*9-88/t^((x-1)))-i";
+    char *function3 = "s(2*x)*d(t-3)+e(x^2)/c(x+a(42i))*hx";
 
     Element expected1[] =
     {
@@ -51,14 +52,55 @@ START_TEST(test_Parse_Functions)
         (Element) {.atomType = end, .atom.value={0}}
     };
 
+    Element expected3[] =
+    {
+        (Element) {.atomType = function, .atom.function=fsin},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = value, .atom.value=COMPLEX(2,0)},
+        (Element) {.atomType = operator, .atom.op=times},
+        (Element) {.atomType = variable, .atom.variable=variableX},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=times},
+        (Element) {.atomType = function, .atom.function=fdelta},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = variable, .atom.variable=variableT},
+        (Element) {.atomType = operator, .atom.op=minus},
+        (Element) {.atomType = value, .atom.value=COMPLEX(3,0)},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=plus},
+        (Element) {.atomType = function, .atom.function=fexp},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = variable, .atom.variable=variableX},
+        (Element) {.atomType = operator, .atom.op=power},
+        (Element) {.atomType = value, .atom.value=COMPLEX(2,0)},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=divide},
+        (Element) {.atomType = function, .atom.function=fcos},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = variable, .atom.variable=variableX},
+        (Element) {.atomType = operator, .atom.op=plus},
+        (Element) {.atomType = function, .atom.function=ftan},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = value, .atom.value=COMPLEX(0,42)},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=times},
+        (Element) {.atomType = function, .atom.function=ftheta},
+        (Element) {.atomType = variable, .atom.variable=variableX},
+        (Element) {.atomType = end, .atom.value={0}}
+    };
+
     Function actual1 = parseFunction(function1);
     Function actual2 = parseFunction(function2);
+    Function actual3 = parseFunction(function3);
 
     assertFunctionsEq(function1, expected1, actual1);
     assertFunctionsEq(function2, expected2, actual2);
+    assertFunctionsEq(function3, expected3, actual3);
 
     free(actual1);
     free(actual2);
+    free(actual3);
 }
 END_TEST
 

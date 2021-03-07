@@ -308,7 +308,15 @@ void printFunction(Function func)
                 }
                 break;
             case variable:
-                printf("x");
+                switch(func->atom.variable)
+                {
+                    case variableX:
+                        printf("x");
+                        break;
+                    case variableT:
+                        printf("t");
+                        break;
+                }
                 break;
             case function:
                 switch(func->atom.function)

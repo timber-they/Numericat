@@ -56,6 +56,8 @@ Function parseFunction(char *raw)
 
     size_t length = strlen(raw);
     func = malloc((length + 1) * sizeof(*func));
+    for (int i = 0; i < length+1; i++)
+        func[i] = (Element) {.atomType = end, .atom.value={0}};
 
     if (iterate(raw, length))
         goto error;
@@ -78,7 +80,6 @@ Function parseFunction(char *raw)
 }
 static int iterate(char *raw, int length)
 {
-
     for (int i = 0; i < length; i++)
     {
         if (raw[i] == ' ')
@@ -101,6 +102,7 @@ static int iterate(char *raw, int length)
 
     finishNumber();
     func[j] = (Element) {.atomType=end, .atom.value={0}};
+    printFunction(func);
     return 0;
 }
 
@@ -158,7 +160,7 @@ static int handleFunction(char val)
         case 'c':
             func[j++] = (Element) {.atomType=function, .atom.function = fcos};
             return 0;
-        case 't':
+        case 'a':
             func[j++] = (Element) {.atomType=function, .atom.function = ftan};
             return 0;
         case 'e':
@@ -360,7 +362,7 @@ static int isFunction(char c)
 {
     return c == 's' ||
         c == 'c' ||
-        c == 't' ||
+        c == 'a' ||
         c == 'e' ||
         c == 'd' ||
         c == 'h';
