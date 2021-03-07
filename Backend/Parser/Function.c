@@ -43,24 +43,24 @@ Complex evaluate(Function func, Input in) // NOLINT(misc-no-recursion)
                 // Must be opening
                 closing = findClosingParanthesis(func);
                 if (closing == NULL)
-                    return (Complex) {.real = -1, .imaginary = 0};
+                    return COMPLEX(-1, 0);
 
                 lhs = evaluateParanthesis(func, closing, in);
 
                 if (closing[1].atomType == end)
                     return lhs;
                 fprintf(stderr, "Expected end after paranthesis\n");
-                return (Complex) {.real = -1, .imaginary = 0};
+                return COMPLEX(-1, 0);
             case function:
                 switch((func+1)->atomType)
                 {
                     case end:
                         fprintf(stderr, "Expected parameter after function call\n");
-                        return (Complex) {.real = -1, .imaginary = 0};
+                        return COMPLEX(-1, 0);
                     case paranthesis:
                         closing = findClosingParanthesis(func+1);
                         if (closing == NULL)
-                            return (Complex) {.real = -1, .imaginary = 0};
+                            return COMPLEX(-1, 0);
 
                         rhs = evaluateParanthesis(func+1, closing, in);
                         break;
@@ -120,7 +120,7 @@ static Complex evaluateFunction(Function func, Complex rhs)
                 return COMPLEX(0.5,0);
             return rhs.real > 0 ? COMPLEX(1,0) : COMPLEX(0,0);
     }
-    return (Complex) {0};
+    return COMPLEX(0,0);
 }
 
 static Complex evaluateParanthesis(Function func, Function closing, Input in)
@@ -234,16 +234,16 @@ static Complex evaluateAtomic(Function func, Input in)
             switch (func->atom.variable)
             {
                 case variableX:
-                    return (Complex) {.real = in.x, .imaginary = 0};
+                    return COMPLEX(in.x, 0);
                 case variableT:
-                    return (Complex) {.real = in.t, .imaginary = 0};
+                    return COMPLEX(in.t, 0);
                 default:
                     fprintf(stderr, "Unexpected variable: %d\n", func->atom.variable);
-                    return (Complex) {.real = -1, .imaginary = 0};
+                    return COMPLEX(-1, 0);
             }
         default:
             fprintf(stderr, "Unexpected atomic: %d\n", func->atomType);
-            return (Complex) {.real = -1, .imaginary = 0};
+            return COMPLEX(-1, 0);
     }
 }
 
@@ -263,7 +263,7 @@ static Complex applyOperator(Complex current, Complex operand, Operator operator
             return powerComplex(current, operand);
         default:
             fprintf(stderr, "Unexpected operator %d\n", operator);
-            return (Complex) {.real = -1, .imaginary = 0};
+            return COMPLEX(-1, 0);
     }
 }
 

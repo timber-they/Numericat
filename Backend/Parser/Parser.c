@@ -289,9 +289,9 @@ static void finishNumber()
         return;
     // Number is finished
     if (currentNumberState == 2)
-        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = 0, .imaginary = currentNumber}};
+        func[j++] = (Element) {.atomType=value, .atom.value=COMPLEX(0,currentNumber)};
     else
-        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = currentNumber, .imaginary = 0}};
+        func[j++] = (Element) {.atomType=value, .atom.value=COMPLEX(currentNumber,0)};
     currentNumberState = 0;
     currentNumber = 1;
 }

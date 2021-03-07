@@ -12,18 +12,18 @@ START_TEST(test_multiply)
     printf("----------------------------------------\n");
     printf("test_multiply \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 3.0, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 1.0, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 5.0, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 2.0, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(3.0,0);
+    input1.matrix[0][1] = COMPLEX(1.0,0);
+    input1.matrix[1][0] = COMPLEX(5.0,0);
+    input1.matrix[1][1] = COMPLEX(2.0,0);
     printf("Input Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 1.0, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 2.0, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 3.0, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 4.0, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(1.0,0);
+    input2.matrix[0][1] = COMPLEX(2.0,0);
+    input2.matrix[1][0] = COMPLEX(3.0,0);
+    input2.matrix[1][1] = COMPLEX(4.0,0);
     printf("Input Matrix 2: \n");
     printMatrix(input2);
 
@@ -32,10 +32,10 @@ START_TEST(test_multiply)
     printMatrix(multiplied);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 6.0, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 10.0, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 11.0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 18.0, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(6.0,0);
+    expected.matrix[0][1] = COMPLEX(10.0,0);
+    expected.matrix[1][0] = COMPLEX(11.0,0);
+    expected.matrix[1][1] = COMPLEX(18.0,0);
 
     assertMatrixEq(expected, multiplied);
     printf("\n");
@@ -51,28 +51,28 @@ START_TEST(test_multiply_3x3)
 {
     printf("test_multiply 3x3:\n");
     Matrix input1 = createMatrix(3, 3);
-    input1.matrix[0][0] = (Complex) {.real = 2.6, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 4.2, .imaginary = 0};
-    input1.matrix[0][2] = (Complex) {.real = 1.5, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 6.4, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 3.0, .imaginary = 0};
-    input1.matrix[1][2] = (Complex) {.real = 4.5, .imaginary = 0};
-    input1.matrix[2][0] = (Complex) {.real = 3.4, .imaginary = 0};
-    input1.matrix[2][1] = (Complex) {.real = 5.6, .imaginary = 0};
-    input1.matrix[2][2] = (Complex) {.real = 4.0, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(2.6,0);
+    input1.matrix[0][1] = COMPLEX(4.2,0);
+    input1.matrix[0][2] = COMPLEX(1.5,0);
+    input1.matrix[1][0] = COMPLEX(6.4,0);
+    input1.matrix[1][1] = COMPLEX(3.0,0);
+    input1.matrix[1][2] = COMPLEX(4.5,0);
+    input1.matrix[2][0] = COMPLEX(3.4,0);
+    input1.matrix[2][1] = COMPLEX(5.6,0);
+    input1.matrix[2][2] = COMPLEX(4.0,0);
     printf("Input Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(3, 3);
-    input2.matrix[0][0] = (Complex) {.real = 4, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 3, .imaginary = 0};
-    input2.matrix[0][2] = (Complex) {.real = 4.5, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 4.6, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 5.7, .imaginary = 0};
-    input2.matrix[1][2] = (Complex) {.real = 1.1, .imaginary = 0};
-    input2.matrix[2][0] = (Complex) {.real = 0.6, .imaginary = 0};
-    input2.matrix[2][1] = (Complex) {.real = 4.3, .imaginary = 0};
-    input2.matrix[2][2] = (Complex) {.real = 6.7, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(4,0);
+    input2.matrix[0][1] = COMPLEX(3,0);
+    input2.matrix[0][2] = COMPLEX(4.5,0);
+    input2.matrix[1][0] = COMPLEX(4.6,0);
+    input2.matrix[1][1] = COMPLEX(5.7,0);
+    input2.matrix[1][2] = COMPLEX(1.1,0);
+    input2.matrix[2][0] = COMPLEX(0.6,0);
+    input2.matrix[2][1] = COMPLEX(4.3,0);
+    input2.matrix[2][2] = COMPLEX(6.7,0);
     printf("Input Matrix 2: \n");
     printMatrix(input2);
 
@@ -81,15 +81,15 @@ START_TEST(test_multiply_3x3)
     printMatrix(multiplied);
 
     Matrix expected = createMatrix(3, 3);
-    expected.matrix[0][0] = (Complex) {.real = 30.62, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 38.19, .imaginary = 0};
-    expected.matrix[0][2] = (Complex) {.real = 26.37, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 42.1, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 55.65, .imaginary = 0};
-    expected.matrix[1][2] = (Complex) {.real = 62.25, .imaginary = 0};
-    expected.matrix[2][0] = (Complex) {.real = 41.76, .imaginary = 0};
-    expected.matrix[2][1] = (Complex) {.real = 59.32, .imaginary = 0};
-    expected.matrix[2][2] = (Complex) {.real = 48.26, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(30.62,0);
+    expected.matrix[0][1] = COMPLEX(38.19,0);
+    expected.matrix[0][2] = COMPLEX(26.37,0);
+    expected.matrix[1][0] = COMPLEX(42.1,0);
+    expected.matrix[1][1] = COMPLEX(55.65,0);
+    expected.matrix[1][2] = COMPLEX(62.25,0);
+    expected.matrix[2][0] = COMPLEX(41.76,0);
+    expected.matrix[2][1] = COMPLEX(59.32,0);
+    expected.matrix[2][2] = COMPLEX(48.26,0);
 
     assertMatrixEq(expected, multiplied);
     freeMatrix(input1);
@@ -104,15 +104,15 @@ START_TEST(test_multiply_tri)
 {
     printf("test_multiply tri:\n");
     Matrix input1 = createMatrix(3, 3);
-    input1.matrix[0][0] = (Complex) {.real = 2.6, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[0][2] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 3.0, .imaginary = 0};
-    input1.matrix[1][2] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[2][0] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[2][1] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[2][2] = (Complex) {.real = 4.0, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(2.6,0);
+    input1.matrix[0][1] = COMPLEX(0,0);
+    input1.matrix[0][2] = COMPLEX(0,0);
+    input1.matrix[1][0] = COMPLEX(0,0);
+    input1.matrix[1][1] = COMPLEX(3.0,0);
+    input1.matrix[1][2] = COMPLEX(0,0);
+    input1.matrix[2][0] = COMPLEX(0,0);
+    input1.matrix[2][1] = COMPLEX(0,0);
+    input1.matrix[2][2] = COMPLEX(4.0,0);
     /*
      * 2.6  0   0
      *  0  3.0  0
@@ -121,15 +121,15 @@ START_TEST(test_multiply_tri)
     printf("Input Matrix 1: \n");
     printMatrix(input1);
     Matrix input2 = createMatrix(3, 3);
-    input2.matrix[0][0] = (Complex) {.real = 4, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 3, .imaginary = 0};
-    input2.matrix[0][2] = (Complex) {.real = 4.5, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 4.6, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 5.7, .imaginary = 0};
-    input2.matrix[1][2] = (Complex) {.real = 1.1, .imaginary = 0};
-    input2.matrix[2][0] = (Complex) {.real = 0.6, .imaginary = 0};
-    input2.matrix[2][1] = (Complex) {.real = 4.3, .imaginary = 0};
-    input2.matrix[2][2] = (Complex) {.real = 6.7, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(4,0);
+    input2.matrix[0][1] = COMPLEX(3,0);
+    input2.matrix[0][2] = COMPLEX(4.5,0);
+    input2.matrix[1][0] = COMPLEX(4.6,0);
+    input2.matrix[1][1] = COMPLEX(5.7,0);
+    input2.matrix[1][2] = COMPLEX(1.1,0);
+    input2.matrix[2][0] = COMPLEX(0.6,0);
+    input2.matrix[2][1] = COMPLEX(4.3,0);
+    input2.matrix[2][2] = COMPLEX(6.7,0);
     /*
      *  4    3  4.5
      *  4.6 5.7 1.1
@@ -142,15 +142,15 @@ START_TEST(test_multiply_tri)
     printMatrix(multiplied);
 
     Matrix expected = createMatrix(3, 3);
-    expected.matrix[0][0] = (Complex) {.real = 4*2.6, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 3*2.6, .imaginary = 0};
-    expected.matrix[0][2] = (Complex) {.real = 4.5*2.6, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 4.6*3.0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 5.7*3.0, .imaginary = 0};
-    expected.matrix[1][2] = (Complex) {.real = 1.1*3.0, .imaginary = 0};
-    expected.matrix[2][0] = (Complex) {.real = 0.6*4.0, .imaginary = 0};
-    expected.matrix[2][1] = (Complex) {.real = 4.3*4.0, .imaginary = 0};
-    expected.matrix[2][2] = (Complex) {.real = 6.7*4.0, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(4*2.6,0);
+    expected.matrix[0][1] = COMPLEX(3*2.6,0);
+    expected.matrix[0][2] = COMPLEX(4.5*2.6,0);
+    expected.matrix[1][0] = COMPLEX(4.6*3.0,0);
+    expected.matrix[1][1] = COMPLEX(5.7*3.0,0);
+    expected.matrix[1][2] = COMPLEX(1.1*3.0,0);
+    expected.matrix[2][0] = COMPLEX(0.6*4.0,0);
+    expected.matrix[2][1] = COMPLEX(4.3*4.0,0);
+    expected.matrix[2][2] = COMPLEX(6.7*4.0,0);
 
     assertMatrixEq(expected, multiplied);
     freeMatrix(input1);
@@ -170,10 +170,10 @@ START_TEST(test_identity)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 1, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 1, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(1,0);
+    expected.matrix[0][1] = COMPLEX(0,0);
+    expected.matrix[1][0] = COMPLEX(0,0);
+    expected.matrix[1][1] = COMPLEX(1,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(result);
@@ -191,10 +191,10 @@ START_TEST(test_ones)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 1, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 1, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 1, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 1, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(1,0);
+    expected.matrix[0][1] = COMPLEX(1,0);
+    expected.matrix[1][0] = COMPLEX(1,0);
+    expected.matrix[1][1] = COMPLEX(1,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(result);
@@ -208,23 +208,23 @@ START_TEST(test_factor)
     printf("\n");
     printf("test_factor \n");
     Matrix input = createMatrix(2, 2);
-    input.matrix[0][0] = (Complex) {.real = 1.0, .imaginary = 0};
-    input.matrix[0][1] = (Complex) {.real = 2.0, .imaginary = 0};
-    input.matrix[1][0] = (Complex) {.real = 3.0, .imaginary = 0};
-    input.matrix[1][1] = (Complex) {.real = 4.0, .imaginary = 0};
+    input.matrix[0][0] = COMPLEX(1.0,0);
+    input.matrix[0][1] = COMPLEX(2.0,0);
+    input.matrix[1][0] = COMPLEX(3.0,0);
+    input.matrix[1][1] = COMPLEX(4.0,0);
     printf("Input Matrix: \n");
     printMatrix(input);
 
-    Complex f = {.real = 5, .imaginary = 0};
+    Complex f = COMPLEX(5,0);
     Matrix result = factor(input, f);
     printf("result: \n");
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 5.0, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 10.0, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 15.0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 20.0, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(5.0,0);
+    expected.matrix[0][1] = COMPLEX(10.0,0);
+    expected.matrix[1][0] = COMPLEX(15.0,0);
+    expected.matrix[1][1] = COMPLEX(20.0,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(result);
@@ -239,22 +239,22 @@ START_TEST(test_factorIpTri)
     printf("\n");
     printf("test_factor IpTri \n");
     Matrix input = createMatrix(2, 2);
-    input.matrix[0][0] = (Complex) {.real = 1.0, .imaginary = 0};
-    input.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input.matrix[1][1] = (Complex) {.real = 4.0, .imaginary = 0};
+    input.matrix[0][0] = COMPLEX(1.0,0);
+    input.matrix[0][1] = COMPLEX(0,0);
+    input.matrix[1][0] = COMPLEX(0,0);
+    input.matrix[1][1] = COMPLEX(4.0,0);
     printf("Input Matrix 1: \n");
     printMatrix(input);
-    Complex f = {.real = 5, .imaginary = 0};
+    Complex f = COMPLEX(5,0);
     Matrix result = factorIpTri(input, f);
     printf("result: \n");
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 5.0, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 0.0, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 0.0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 20.0, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(5.0,0);
+    expected.matrix[0][1] = COMPLEX(0.0,0);
+    expected.matrix[1][0] = COMPLEX(0.0,0);
+    expected.matrix[1][1] = COMPLEX(20.0,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(result);
@@ -268,18 +268,18 @@ START_TEST(test_sum)
     printf("\n");
     printf("test_sum \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(1.1,0);
+    input1.matrix[0][1] = COMPLEX(2.2,0);
+    input1.matrix[1][0] = COMPLEX(3.3,0);
+    input1.matrix[1][1] = COMPLEX(4.4,0);
     printf("Input Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(4.4,0);
+    input2.matrix[0][1] = COMPLEX(3.3,0);
+    input2.matrix[1][0] = COMPLEX(2.2,0);
+    input2.matrix[1][1] = COMPLEX(1.1,0);
     printf("Input Matrix 2: \n");
     printMatrix(input2);
 
@@ -288,10 +288,10 @@ START_TEST(test_sum)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 5.5, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 5.5, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 5.5, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 5.5, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(5.5,0);
+    expected.matrix[0][1] = COMPLEX(5.5,0);
+    expected.matrix[1][0] = COMPLEX(5.5,0);
+    expected.matrix[1][1] = COMPLEX(5.5,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(input1);
@@ -307,18 +307,18 @@ START_TEST(test_sumIpTri)
     printf("\n");
     printf("test_sum IpTri \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(1.1,0);
+    input1.matrix[0][1] = COMPLEX(0,0);
+    input1.matrix[1][0] = COMPLEX(0,0);
+    input1.matrix[1][1] = COMPLEX(4.4,0);
     printf("Input Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(4.4,0);
+    input2.matrix[0][1] = COMPLEX(0,0);
+    input2.matrix[1][0] = COMPLEX(0,0);
+    input2.matrix[1][1] = COMPLEX(1.1,0);
     printf("Input Matrix 2: \n");
     printMatrix(input2);
 
@@ -327,10 +327,10 @@ START_TEST(test_sumIpTri)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 5.5, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 5.5, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(5.5,0);
+    expected.matrix[0][1] = COMPLEX(0,0);
+    expected.matrix[1][0] = COMPLEX(0,0);
+    expected.matrix[1][1] = COMPLEX(5.5,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(input2);
@@ -345,18 +345,18 @@ START_TEST(test_sumTri)
     printf("\n");
     printf("test_sum Tri \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(1.1,0);
+    input1.matrix[0][1] = COMPLEX(0,0);
+    input1.matrix[1][0] = COMPLEX(0,0);
+    input1.matrix[1][1] = COMPLEX(4.4,0);
     printf("Input Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(4.4,0);
+    input2.matrix[0][1] = COMPLEX(0,0);
+    input2.matrix[1][0] = COMPLEX(0,0);
+    input2.matrix[1][1] = COMPLEX(1.1,0);
     printf("Input Matrix 2: \n");
     printMatrix(input2);
 
@@ -365,10 +365,10 @@ START_TEST(test_sumTri)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 5.5, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 5.5, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(5.5,0);
+    expected.matrix[0][1] = COMPLEX(0,0);
+    expected.matrix[1][0] = COMPLEX(0,0);
+    expected.matrix[1][1] = COMPLEX(5.5,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(input1);
@@ -384,18 +384,18 @@ START_TEST(test_Matrixsubtract)
     printf("\n");
     printf("test_Matrixsubtract \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(1.1,0);
+    input1.matrix[0][1] = COMPLEX(2.2,0);
+    input1.matrix[1][0] = COMPLEX(3.3,0);
+    input1.matrix[1][1] = COMPLEX(4.4,0);
     printf("Input Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(4.4,0);
+    input2.matrix[0][1] = COMPLEX(3.3,0);
+    input2.matrix[1][0] = COMPLEX(2.2,0);
+    input2.matrix[1][1] = COMPLEX(1.1,0);
     printf("Input Matrix 2: \n");
     printMatrix(input2);
 
@@ -404,10 +404,10 @@ START_TEST(test_Matrixsubtract)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = -3.3, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = -1.1, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 1.1, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 3.3, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(-3.3,0);
+    expected.matrix[0][1] = COMPLEX(-1.1,0);
+    expected.matrix[1][0] = COMPLEX(1.1,0);
+    expected.matrix[1][1] = COMPLEX(3.3,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(input1);
@@ -423,18 +423,18 @@ START_TEST(test_MatrixsubtractTri)
     printf("\n");
     printf("test_Matrixsubtract Tri \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 0};
-    input1.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 0};
+    input1.matrix[0][0] = COMPLEX(1.1,0);
+    input1.matrix[0][1] = COMPLEX(0,0);
+    input1.matrix[1][0] = COMPLEX(0,0);
+    input1.matrix[1][1] = COMPLEX(4.4,0);
     printf("Input Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 0};
-    input2.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    input2.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 0};
+    input2.matrix[0][0] = COMPLEX(4.4,0);
+    input2.matrix[0][1] = COMPLEX(0,0);
+    input2.matrix[1][0] = COMPLEX(0,0);
+    input2.matrix[1][1] = COMPLEX(1.1,0);
     printf("Input Matrix 2: \n");
     printMatrix(input2);
 
@@ -443,10 +443,10 @@ START_TEST(test_MatrixsubtractTri)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = -3.3, .imaginary = 0};
-    expected.matrix[0][1] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[1][1] = (Complex) {.real = 3.3, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(-3.3,0);
+    expected.matrix[0][1] = COMPLEX(0,0);
+    expected.matrix[1][0] = COMPLEX(0,0);
+    expected.matrix[1][1] = COMPLEX(3.3,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(input1);
@@ -461,15 +461,15 @@ START_TEST(test_arrayToMatrix)
 {
     printf("\n");
     Complex *input = malloc(3 * sizeof(* input));
-    input[0] = (Complex) {.real= 1.0, .imaginary = 0};
-    input[1] = (Complex) {.real= 2.0, .imaginary = 0};
-    input[2] = (Complex) {.real= 3.0, .imaginary = 0};
+    input[0] = COMPLEX(1,0);
+    input[1] = COMPLEX(2,0);
+    input[2] = COMPLEX(3,0);
     Matrix result = arrayToMatrix(input, 3);
 
     Matrix expected = createMatrix(3, 1);
-    expected.matrix[0][0] = (Complex) {.real = 1, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 2, .imaginary = 0};
-    expected.matrix[2][0] = (Complex) {.real = 3, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(1,0);
+    expected.matrix[1][0] = COMPLEX(2,0);
+    expected.matrix[2][0] = COMPLEX(3,0);
 
     assertMatrixEq(expected, result);
     printf("Conversion from Array to Matrix was successful\n");
@@ -484,14 +484,14 @@ START_TEST(test_MatrixToArray)
 {
     printf("\n");
     Matrix input = createMatrix(3, 1);
-    input.matrix[0][0] = (Complex) {.real = 1.0, .imaginary = 0};
-    input.matrix[1][0] = (Complex) {.real = 2.0, .imaginary = 0};
-    input.matrix[2][0] = (Complex) {.real = 3.0, .imaginary = 0};
+    input.matrix[0][0] = COMPLEX(1.0,0);
+    input.matrix[1][0] = COMPLEX(2.0,0);
+    input.matrix[2][0] = COMPLEX(3.0,0);
     Complex *result = matrixToArray(input);
 
-    assertComplexEq((Complex) {.real = 1.0, .imaginary = 0}, result[0]);
-    assertComplexEq((Complex) {.real = 2.0, .imaginary = 0}, result[1]);
-    assertComplexEq((Complex) {.real = 3.0, .imaginary = 0}, result[2]);
+    assertComplexEq(COMPLEX(1.0,0), result[0]);
+    assertComplexEq(COMPLEX(2.0,0), result[1]);
+    assertComplexEq(COMPLEX(3.0,0), result[2]);
 
     printf("Conversion from Matrix to Array was successful\n");
     free(result);
@@ -507,15 +507,15 @@ START_TEST(test_thomas)
     Matrix input1 = createMatrix(5, 5);
     for(int i = 0; i < 5; i++)
     {
-        input1.matrix[i][i] = (Complex) {.real = -2, .imaginary = 0};
+        input1.matrix[i][i] = COMPLEX(-2,0);
     }
     for(int i = 0; i < 4; i++)
     {
-        input1.matrix[i][i + 1] = (Complex) {.real = -1, .imaginary = 0};
+        input1.matrix[i][i + 1] = COMPLEX(-1,0);
     }
     for(int i = 0; i < 4; i++)
     {
-        input1.matrix[i + 1][i] = (Complex) {.real = -1, .imaginary = 0};
+        input1.matrix[i + 1][i] = COMPLEX(-1,0);
     }
     printf("Matrix 1: \n");
     printMatrix(input1);
@@ -523,7 +523,7 @@ START_TEST(test_thomas)
     Matrix input2 = createMatrix(5, 1);
     for(int i = 0; i < 5; i++)
     {
-        input2.matrix[i][0] = (Complex) {.real = -1, .imaginary = 0};
+        input2.matrix[i][0] = COMPLEX(-1,0);
     }
     printf("Matrix 2: \n");
     printMatrix(input2);
@@ -533,11 +533,11 @@ START_TEST(test_thomas)
     printMatrix(result);
 
     Matrix expected = createMatrix(5, 1);
-    expected.matrix[0][0] = (Complex) {.real = 0.5, .imaginary = 0};
-    expected.matrix[1][0] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[2][0] = (Complex) {.real = 0.5, .imaginary = 0};
-    expected.matrix[3][0] = (Complex) {.real = 0, .imaginary = 0};
-    expected.matrix[4][0] = (Complex) {.real = 0.5, .imaginary = 0};
+    expected.matrix[0][0] = COMPLEX(0.5,0);
+    expected.matrix[1][0] = COMPLEX(0,0);
+    expected.matrix[2][0] = COMPLEX(0.5,0);
+    expected.matrix[3][0] = COMPLEX(0,0);
+    expected.matrix[4][0] = COMPLEX(0.5,0);
 
     assertMatrixEq(expected, result);
     freeMatrix(result);
@@ -553,18 +553,18 @@ START_TEST(test_sumComplexMatrix)
     printf("\n");
     printf("test_sumComplex: \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 4.4};
-    input1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 3.3};
-    input1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 2.2};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    input1.matrix[0][0] = COMPLEX(1.1,4.4);
+    input1.matrix[0][1] = COMPLEX(2.2,3.3);
+    input1.matrix[1][0] = COMPLEX(3.3,2.2);
+    input1.matrix[1][1] = COMPLEX(4.4,1.1);
     printf("Complexe Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 1.1};
-    input2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 2.2};
-    input2.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 3.3};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    input2.matrix[0][0] = COMPLEX(4.4,1.1);
+    input2.matrix[0][1] = COMPLEX(3.3,2.2);
+    input2.matrix[1][0] = COMPLEX(2.2,3.3);
+    input2.matrix[1][1] = COMPLEX(1.1,4.4);
     printf("Complexe Matrix 2: \n");
     printMatrix(input2);
 
@@ -574,10 +574,10 @@ START_TEST(test_sumComplexMatrix)
     printf("%f, %f", result.matrix[0][0].real, result.matrix[0][0].imaginary);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = 5.5, .imaginary = 5.5};
-    expected.matrix[0][1] = (Complex) {.real = 5.5, .imaginary = 5.5};
-    expected.matrix[1][0] = (Complex) {.real = 5.5, .imaginary = 5.5};
-    expected.matrix[1][1] = (Complex) {.real = 5.5, .imaginary = 5.5};
+    expected.matrix[0][0] = COMPLEX(5.5,5.5);
+    expected.matrix[0][1] = COMPLEX(5.5,5.5);
+    expected.matrix[1][0] = COMPLEX(5.5,5.5);
+    expected.matrix[1][1] = COMPLEX(5.5,5.5);
 
     assertMatrixEq(expected, result);
     freeMatrix(input1);
@@ -594,18 +594,18 @@ START_TEST(test_ComplexmultiplyMatrix)
     printf("\n");
     printf("test_Complexmultiply \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 4.4};
-    input1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 3.3};
-    input1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 2.2};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    input1.matrix[0][0] = COMPLEX(1.1,4.4);
+    input1.matrix[0][1] = COMPLEX(2.2,3.3);
+    input1.matrix[1][0] = COMPLEX(3.3,2.2);
+    input1.matrix[1][1] = COMPLEX(4.4,1.1);
     printf("Complexe Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 1.1};
-    input2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 2.2};
-    input2.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 3.3};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    input2.matrix[0][0] = COMPLEX(4.4,1.1);
+    input2.matrix[0][1] = COMPLEX(3.3,2.2);
+    input2.matrix[1][0] = COMPLEX(2.2,3.3);
+    input2.matrix[1][1] = COMPLEX(1.1,4.4);
     printf("Complexe Matrix 2: \n");
     printMatrix(input2);
 
@@ -614,10 +614,10 @@ START_TEST(test_ComplexmultiplyMatrix)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = -6.05, .imaginary = 35.09};
-    expected.matrix[0][1] = (Complex) {.real = -18.15, .imaginary = 30.25};
-    expected.matrix[1][0] = (Complex) {.real = 18.15, .imaginary = 30.25};
-    expected.matrix[1][1] = (Complex) {.real = 6.05, .imaginary = 35.09};
+    expected.matrix[0][0] = COMPLEX(-6.05,35.09);
+    expected.matrix[0][1] = COMPLEX(-18.15,30.25);
+    expected.matrix[1][0] = COMPLEX(18.15,30.25);
+    expected.matrix[1][1] = COMPLEX(6.05,35.09);
 
     assertMatrixEq(expected, result);
     freeMatrix(input1);
@@ -632,18 +632,18 @@ START_TEST(test_ComplexMatrixsubtract)
     printf("\n");
     printf("test_Complexsubtract \n");
     Matrix input1 = createMatrix(2, 2);
-    input1.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 4.4};
-    input1.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 3.3};
-    input1.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 2.2};
-    input1.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    input1.matrix[0][0] = COMPLEX(1.1,4.4);
+    input1.matrix[0][1] = COMPLEX(2.2,3.3);
+    input1.matrix[1][0] = COMPLEX(3.3,2.2);
+    input1.matrix[1][1] = COMPLEX(4.4,1.1);
     printf("Complexe Matrix 1: \n");
     printMatrix(input1);
 
     Matrix input2 = createMatrix(2, 2);
-    input2.matrix[0][0] = (Complex) {.real = 4.4, .imaginary = 1.1};
-    input2.matrix[0][1] = (Complex) {.real = 3.3, .imaginary = 2.2};
-    input2.matrix[1][0] = (Complex) {.real = 2.2, .imaginary = 3.3};
-    input2.matrix[1][1] = (Complex) {.real = 1.1, .imaginary = 4.4};
+    input2.matrix[0][0] = COMPLEX(4.4,1.1);
+    input2.matrix[0][1] = COMPLEX(3.3,2.2);
+    input2.matrix[1][0] = COMPLEX(2.2,3.3);
+    input2.matrix[1][1] = COMPLEX(1.1,4.4);
     printf("Complexe Matrix 2: \n");
     printMatrix(input2);
 
@@ -652,10 +652,10 @@ START_TEST(test_ComplexMatrixsubtract)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = -3.3, .imaginary = 3.3};
-    expected.matrix[0][1] = (Complex) {.real = -1.1, .imaginary = 1.1};
-    expected.matrix[1][0] = (Complex) {.real = 1.1, .imaginary = -1.1};
-    expected.matrix[1][1] = (Complex) {.real = 3.3, .imaginary = -3.3};
+    expected.matrix[0][0] = COMPLEX(-3.3,3.3);
+    expected.matrix[0][1] = COMPLEX(-1.1,1.1);
+    expected.matrix[1][0] = COMPLEX(1.1,-1.1);
+    expected.matrix[1][1] = COMPLEX(3.3,-3.3);
 
     assertMatrixEq(expected, result);
     printf("----------------------------------------\n");
@@ -671,10 +671,10 @@ START_TEST(test_ComplexFactor)
     printf("\n");
     printf("test_ComplexFactor \n");
     Matrix input = createMatrix(2, 2);
-    input.matrix[0][0] = (Complex) {.real = 1.1, .imaginary = 4.4};
-    input.matrix[0][1] = (Complex) {.real = 2.2, .imaginary = 3.3};
-    input.matrix[1][0] = (Complex) {.real = 3.3, .imaginary = 2.2};
-    input.matrix[1][1] = (Complex) {.real = 4.4, .imaginary = 1.1};
+    input.matrix[0][0] = COMPLEX(1.1,4.4);
+    input.matrix[0][1] = COMPLEX(2.2,3.3);
+    input.matrix[1][0] = COMPLEX(3.3,2.2);
+    input.matrix[1][1] = COMPLEX(4.4,1.1);
     printf("Input Matrix: \n");
     printMatrix(input);
 
@@ -688,10 +688,10 @@ START_TEST(test_ComplexFactor)
     printMatrix(result);
 
     Matrix expected = createMatrix(2, 2);
-    expected.matrix[0][0] = (Complex) {.real = -18.15, .imaginary = 30.25};
-    expected.matrix[0][1] = (Complex) {.real = -6.05, .imaginary = 30.25};
-    expected.matrix[1][0] = (Complex) {.real = 6.05, .imaginary = 30.25};
-    expected.matrix[1][1] = (Complex) {.real = 18.15, .imaginary = 30.25};
+    expected.matrix[0][0] = COMPLEX(-18.15,30.25);
+    expected.matrix[0][1] = COMPLEX(-6.05,30.25);
+    expected.matrix[1][0] = COMPLEX(6.05,30.25);
+    expected.matrix[1][1] = COMPLEX(18.15,30.25);
 
     assertMatrixEq(expected, result);
     freeMatrix(result);

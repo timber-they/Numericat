@@ -37,44 +37,40 @@ START_TEST(test_Evaluate)
     double expected0 = 0.01;
     double expectedNormal1 = 8861.0 / 7.0 + inNormal.x * 6.0;
     double expectedNormal2 = 1.0 / 29.0 + inNormal.x * 9.0 - 88.0 / inNormal.t;
-    Complex expectedNormal3 = (Complex)
-        {
-            .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
+    Complex expectedNormal3 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
                         * cos(inNormal.x),
-            .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
                          * sin(inNormal.x)
-        };
+        );
     double expectedNormal4 = pow(2, inNormal.x) + 1;
     double expectedNormal5 = 3-2-1;
     double expectedNegative1 = 8861.0 / 7.0 + inNegative.x * 6;
     double expectedNegative2 = 1.0 / 29.0 + inNegative.x * 9.0 - 88.0 / inNegative.t;
-    Complex expectedNegative3 = (Complex)
-        {
-            .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
+    Complex expectedNegative3 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
                     * cos(inNegative.x),
-            .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
                     * sin(inNegative.x)
-        };
+        );
     double expectedNegative4 = pow(2, inNegative.x) + 1;
     double expected11 = 8861.0 / 7.0 + in1.x * 6;
     double expected12 = 1.0 / 29.0 + in1.x * 9.0 - 88.0 / in1.t;
-    Complex expected13 = (Complex)
-            {
-                    .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
-                            * cos(in1.x),
-                    .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
-                                 * sin(in1.x)
-            };
+    Complex expected13 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
+            * cos(in1.x),
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
+            * sin(in1.x)
+        );
     double expected14 = pow(2, in1.x) + 1;
     double expected01 = 8861.0 / 7.0 + in0.x * 6;
     double expected02 = 1.0/29.0+in0.x*9.0-88.0/in0.t;
-    Complex expected03 = (Complex)
-            {
-                    .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
-                            * cos(in0.x),
-                    .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
-                                 * sin(in0.x)
-            };
+    Complex expected03 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
+            * cos(in0.x),
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
+            * sin(in0.x)
+        };
     double expected04 = pow(2, in0.x) + 1;
     double expected06 = pow(1.0/(2*3*1.0/1000), (1.0/2))*pow(2.7,(0-pow(in0.x, 2)*1000.0/2));
 
