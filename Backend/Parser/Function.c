@@ -91,40 +91,34 @@ static Complex evaluateFunction(Function func, Complex rhs)
     {
         case fsin:
             return divideComplex(subtractComplex(
-                        expComplex(multiplyComplex(rhs, 
-                                (Complex) {.real = 0, .imaginary = 1})),
-                        expComplex(multiplyComplex(rhs, 
-                                (Complex) {.real = 0, .imaginary = -1}))
-                        ), (Complex) {.real = 0, .imaginary = 2});
+                        expComplex(multiplyComplex(rhs, COMPLEX(0,1))),
+                        expComplex(multiplyComplex(rhs, COMPLEX(0,-1)))
+                        ), COMPLEX(0,2));
         case fcos:
             return divideComplex(sumComplex(
-                        expComplex(multiplyComplex(rhs, 
-                                (Complex) {.real = 0, .imaginary = 1})),
-                        expComplex(multiplyComplex(rhs, 
-                                (Complex) {.real = 0, .imaginary = -1}))
-                        ), (Complex) {.real = 2, .imaginary = 0});
+                        expComplex(multiplyComplex(rhs, COMPLEX(0,1))),
+                        expComplex(multiplyComplex(rhs, COMPLEX(0,-1)))
+                        ), COMPLEX(2,0));
         case ftan:
             return divideComplex(
                     divideComplex(subtractComplex(
-                            expComplex(multiplyComplex(rhs, 
-                                    (Complex) {.real = 0, .imaginary = 1})),
-                            expComplex(multiplyComplex(rhs, 
-                                    (Complex) {.real = 0, .imaginary = -1}))
-                            ), (Complex) {.real = 0, .imaginary = 2}),
+                            expComplex(multiplyComplex(rhs, COMPLEX(0,1))),
+                            expComplex(multiplyComplex(rhs, COMPLEX(0,-1)))
+                            ), COMPLEX(0,2)),
                     divideComplex(sumComplex(
-                            expComplex(multiplyComplex(rhs, 
-                                    (Complex) {.real = 0, .imaginary = 1})),
-                            expComplex(multiplyComplex(rhs, 
-                                    (Complex) {.real = 0, .imaginary = -1}))
-                            ), (Complex) {.real = 2, .imaginary = 0}));
+                            expComplex(multiplyComplex(rhs, COMPLEX(0,1))),
+                            expComplex(multiplyComplex(rhs, COMPLEX(0,-1)))
+                            ), COMPLEX(2,0)));
         case fexp:
             return expComplex(rhs);
         case fdelta:
-            // TODO
-            break;
+            return rhs.real < 0.001 && rhs.real > 0.001
+                ? COMPLEX(2000,0)
+                : COMPLEX(0,0);
         case ftheta:
-            // TODO
-            break;
+            if (rhs.real == 0)
+                return COMPLEX(0.5,0);
+            return rhs.real > 0 ? COMPLEX(1,0) : COMPLEX(0,0);
     }
     return (Complex) {0};
 }
