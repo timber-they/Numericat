@@ -116,6 +116,8 @@ START_TEST(test_Parse_Failing)
     char *tailingOperator = "2+";
     char *missingOperator = "(2+x)(3)";
     char *complexInNumber = "1i2";
+    char *valueFunction = "1s";
+    char *functionVariables = "sxx";
 
     Function emptyRes = parseFunction(empty);
     Function nullRes = parseFunction(null);
@@ -127,6 +129,8 @@ START_TEST(test_Parse_Failing)
     Function tailingOperatorRes = parseFunction(tailingOperator);
     Function missingOperatorRes = parseFunction(missingOperator);
     Function complexInNumberRes = parseFunction(complexInNumber);
+    Function valueFunctionRes = parseFunction(valueFunction);
+    Function functionVariablesRes = parseFunction(functionVariables);
 
     ck_assert(emptyRes == NULL);
     ck_assert(nullRes == NULL);
@@ -138,6 +142,8 @@ START_TEST(test_Parse_Failing)
     ck_assert(tailingOperatorRes == NULL);
     ck_assert(missingOperatorRes == NULL);
     ck_assert(complexInNumberRes == NULL);
+    ck_assert(valueFunctionRes == NULL);
+    ck_assert(functionVariablesRes == NULL);
 }
 END_TEST
 

@@ -88,11 +88,11 @@ static int iterate(char *raw, int length)
             continue;
         }
         HANDLE(Digit)
-        HANDLE(Variable)
-        HANDLE(Function)
 
         finishNumber();
 
+        HANDLE(Variable)
+        HANDLE(Function)
         HANDLE(Paranthesis)
         HANDLE(Operator)
 
@@ -152,6 +152,12 @@ static int handleParanthesis(char val)
 
 static int handleFunction(char val)
 {
+    if (j > 0 && func[j-1].atomType != operator && 
+            (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
+    {
+        fprintf(stderr, "Missing operator\n");
+        return 2;
+    }
     switch (val)
     {
         case 's':
