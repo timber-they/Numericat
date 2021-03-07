@@ -112,7 +112,7 @@ static Complex evaluateFunction(Function func, Complex rhs)
         case fexp:
             return expComplex(rhs);
         case fdelta:
-            return rhs.real < 0.001 && rhs.real > 0.001
+            return rhs.real <= 0.001 && rhs.real >= -0.001
                 ? COMPLEX(2000,0)
                 : COMPLEX(0,0);
         case ftheta:

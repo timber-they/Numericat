@@ -130,7 +130,9 @@ static int handleParanthesis(char val)
     switch (val)
     {
         case '(':
-            if (j > 0 && func[j-1].atomType != operator && (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
+            if (j > 0 && func[j-1].atomType != operator && 
+                    func[j-1].atomType != function &&
+                    (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
             {
                 fprintf(stderr, "Missing operator\n");
                 return 2;
