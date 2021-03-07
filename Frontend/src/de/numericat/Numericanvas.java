@@ -20,6 +20,70 @@ public class Numericanvas extends JPanel
     private static final Stroke graphStroke = new BasicStroke(2f);
     private List<Integer> values = new ArrayList<>(10);
 
+    private void paintBackGround(Graphics2D g, int width, int height)
+    {
+        // draw white background
+        g.setColor(Color.WHITE);
+        g.fillRect(
+                padding + labelPadding,
+                padding,
+                width - (2 * padding) - labelPadding,
+                height - 2 * padding - labelPadding);
+    }
+
+    private void paintXandYAxis(Graphics2D g, int width, int height)
+    {
+        // create x and y axes
+        g.drawLine(padding + labelPadding, height - padding - labelPadding, padding + labelPadding, padding);
+        g.drawLine(
+                padding + labelPadding,
+                height - padding - labelPadding,
+                width - padding,
+                height - padding - labelPadding);
+    }
+
+    private void painHatchY(Graphics2D g, int width, int height, int minScore, int scoreRange, int length, FontMetrics fontMetrics)
+    {
+        final int fontHeight = fontMetrics.getHeight();
+        // create hatch marks and grid lines for y axis.
+        for (int i = 0; i < numberYDivisions + 1; i++) {
+            final int x1 = padding + labelPadding;
+            final int x2 = pointWidth + padding + labelPadding;
+            final int y = height - ((i * (height - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);
+            if (length > 0) {
+                g.setColor(gridColor);
+                g.drawLine(padding + labelPadding + 1 + pointWidth, y, width - padding, y);
+                g.setColor(Color.BLACK);
+                final int tickValue = (int) (minScore + ((scoreRange * i) / numberYDivisions));
+                final String yLabel = tickValue + "";
+                final int labelWidth = fontMetrics.stringWidth(yLabel);
+                g.drawString(yLabel, x1 - labelWidth - 5, y + (fontHeight / 2) - 3);
+            }
+            g.drawLine(x1, y, x2, y);
+        }
+    }
+
+    private void paintHatchX(Graphics2D g, int width, int height, int minScore, int scoreRange, int length, FontMetrics fontMetrics)
+    {
+        final int fontHeight = fontMetrics.getHeight();
+        if (length > 1) {
+            for (int i = 0; i < length; i++) {
+                final int x = i * (width - padding * 2 - labelPadding) / (length - 1) + padding + labelPadding;
+                final int y1 = height - padding - labelPadding;
+                final int y2 = y1 - pointWidth;
+                if ((i % ((int) ((length / 20.0)) + 1)) == 0) {
+                    g.setColor(gridColor);
+                    g.drawLine(x, height - padding - labelPadding - 1 - pointWidth, x, padding);
+                    g.setColor(Color.BLACK);
+                    final String xLabel = i + "";
+                    final int labelWidth = fontMetrics.stringWidth(xLabel);
+                    g.drawString(xLabel, x - labelWidth / 2, y1 + fontHeight + 3);
+                }
+                g.drawLine(x, y1, x, y2);
+            }
+        }
+    }
+
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
@@ -37,60 +101,15 @@ public class Numericanvas extends JPanel
         final int minScore = (int) getMinScore();
         final int scoreRange = maxScore - minScore;
 
-        // draw white background
-        g.setColor(Color.WHITE);
-        g.fillRect(
-                padding + labelPadding,
-                padding,
-                width - (2 * padding) - labelPadding,
-                height - 2 * padding - labelPadding);
+        paintBackGround(g, width, height);
         g.setColor(Color.BLACK);
 
         final FontMetrics fontMetrics = g.getFontMetrics();
-        final int fontHeight = fontMetrics.getHeight();
 
-        // create hatch marks and grid lines for y axis.
-        for (int i = 0; i < numberYDivisions + 1; i++) {
-            final int x1 = padding + labelPadding;
-            final int x2 = pointWidth + padding + labelPadding;
-            final int y = height - ((i * (height - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);
-            if (length > 0) {
-                g.setColor(gridColor);
-                g.drawLine(padding + labelPadding + 1 + pointWidth, y, width - padding, y);
-                g.setColor(Color.BLACK);
-                final int tickValue = (int) (minScore + ((scoreRange * i) / numberYDivisions));
-                final String yLabel = tickValue + "";
-                final int labelWidth = fontMetrics.stringWidth(yLabel);
-                g.drawString(yLabel, x1 - labelWidth - 5, y + (fontHeight / 2) - 3);
-            }
-            g.drawLine(x1, y, x2, y);
-        }
+        painHatchY(g, width, height, minScore, scoreRange, length, fontMetrics);
+        paintHatchX(g, width, height, minScore, scoreRange, length, fontMetrics);
 
-        // and for x axis
-        if (length > 1) {
-            for (int i = 0; i < length; i++) {
-                final int x = i * (width - padding * 2 - labelPadding) / (length - 1) + padding + labelPadding;
-                final int y1 = height - padding - labelPadding;
-                final int y2 = y1 - pointWidth;
-                if ((i % ((int) ((length / 20.0)) + 1)) == 0) {
-                    g.setColor(gridColor);
-                    g.drawLine(x, height - padding - labelPadding - 1 - pointWidth, x, padding);
-                    g.setColor(Color.BLACK);
-                    final String xLabel = i + "";
-                    final int labelWidth = fontMetrics.stringWidth(xLabel);
-                    g.drawString(xLabel, x - labelWidth / 2, y1 + fontHeight + 3);
-                }
-                g.drawLine(x, y1, x, y2);
-            }
-        }
-
-        // create x and y axes
-        g.drawLine(padding + labelPadding, height - padding - labelPadding, padding + labelPadding, padding);
-        g.drawLine(
-                padding + labelPadding,
-                height - padding - labelPadding,
-                width - padding,
-                height - padding - labelPadding);
+        paintXandYAxis(g, width, height);
 
         final Stroke oldStroke = g.getStroke();
         g.setColor(lineColor);
@@ -125,7 +144,6 @@ public class Numericanvas extends JPanel
             }
         }
 
-        //
         for (int j = 0; j < coordinates.size(); j++)
         {
             if (coordinates.get(j) == null)
@@ -137,7 +155,7 @@ public class Numericanvas extends JPanel
                         coordinates.get(i).roundX(), getSize().height - coordinates.get(i).roundY());
         }
 
-        //Draw Leegend
+        //Draw Legend
         g.setColor(Color.RED);
         g.drawString("Function", 20, 30);
         g.setColor(Color.BLACK);
