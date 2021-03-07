@@ -332,6 +332,7 @@ void printFunction(Function func)
                         printf("theta");
                         break;
                 }
+                break;
             case end:
                 printf("\n");
                 return;

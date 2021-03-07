@@ -19,6 +19,7 @@ START_TEST(test_sumComplex)
     Complex result = sumComplex(a,b);
     printf("result: \n");
     printComplex(result);
+    printf("\n");
     assertComplexEq(COMPLEX(5.5,5.5), result);
     printf("\n----------------------------------------\n");
 }
@@ -36,6 +37,7 @@ START_TEST(test_subtractComplex)
     Complex result = subtractComplex(a,b);
     printf("result: \n");
     printComplex(result);
+    printf("\n");
     assertComplexEq(COMPLEX(3.3,2.2), result);
     printf("\n----------------------------------------\n");
 }
@@ -53,7 +55,8 @@ START_TEST(test_multiplyComplex)
     Complex result = multiplyComplex(a,b);
     printf("result: \n");
     printComplex(result);
-    assertComplexEq(COMPLEX(-2.02,13.31), result);
+    printf("\n");
+    assertComplexEq(COMPLEX(-2.92,13.31), result);
     printf("\n----------------------------------------\n");
 }
 END_TEST
@@ -70,7 +73,8 @@ START_TEST(test_divideComplex)
     Complex result = divideComplex(a,b);
     printf("result: \n");
     printComplex(result);
-    assertComplexEq(COMPLEX(0.80276,0.49481), result);
+    printf("\n");
+    assertComplexEq(COMPLEX(0.802768,0.4948097), result);
     printf("\n----------------------------------------\n");
 }
 END_TEST
@@ -87,7 +91,8 @@ START_TEST(test_powerComplex)
     Complex result = powerComplex(a,b);
     printf("result: \n");
     printComplex(result);
-    assertComplexEq(COMPLEX(3.94783,0.601310), result);
+    printf("\n");
+    assertComplexEq(COMPLEX(3.947834,0.601310), result);
     printf("\n----------------------------------------\n");
 }
 END_TEST

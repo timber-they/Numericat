@@ -46,6 +46,8 @@ void assertComplexEq(Complex expected, Complex actual)
     printf("\n");
     double diff = (expected.real - actual.real) * (expected.real - actual.real) +
                   (expected.imaginary - actual.imaginary) * (expected.imaginary - actual.imaginary);
+    if (diff > 0.001)
+        fprintf(stderr, "UNEQUAL\n");
     ck_assert(diff < 0.001);
 }
 
