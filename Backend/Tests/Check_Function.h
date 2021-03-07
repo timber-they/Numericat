@@ -151,6 +151,73 @@ START_TEST(test_Evaluate)
 }
 END_TEST
 
+START_TEST(test_Functions)
+{
+    printf("Test Functions\n");
+    char *sin = "s(x)";
+    char *cos = "c(42)";
+    char *tan = "a(x^2)";
+    char *exp = "e(0.002*(t+2))";
+    char *delta1 = "d(0)";
+    char *delta2 = "d(1)";
+    char *theta1 = "h(0-1)";
+    char *theta2 = "h(0)";
+    char *theta3 = "h(1)";
+
+    Function parsedSin = parseFunction(sin);
+    Function parsedCos = parseFunction(cos);
+    Function parsedTan = parseFunction(tan);
+    Function parsedExp = parseFunction(exp);
+    Function parsedDelta1 = parseFunction(delta1);
+    Function parsedDelta2 = parseFunction(delta2);
+    Function parsedTheta1 = parseFunction(theta1);
+    Function parsedTheta2 = parseFunction(theta2);
+    Function parsedTheta3 = parseFunction(theta3);
+
+    Input in = {.x = 42, .t = 25};
+
+    Complex expectedSin = COMPLEX(-0.9165215215479,0);
+    Complex expectedCos = COMPLEX(-0.3999853149,0);
+    Complex expectedTan = COMPLEX(233.917214233,0);
+    Complex expectedExp = COMPLEX(1.05548460215,0);
+    Complex expectedDelta1 = COMPLEX(2000,0);
+    Complex expectedDelta2 = COMPLEX(0,0);
+    Complex expectedTheta1 = COMPLEX(0,0);
+    Complex expectedTheta2 = COMPLEX(0.5,0);
+    Complex expectedTheta3 = COMPLEX(1,0);
+
+    Complex resSin = evaluate(parsedSin, in);
+    Complex resCos = evaluate(parsedCos, in);
+    Complex resTan = evaluate(parsedTan, in);
+    Complex resExp = evaluate(parsedExp, in);
+    Complex resDelta1 = evaluate(parsedDelta1, in);
+    Complex resDelta2 = evaluate(parsedDelta2, in);
+    Complex resTheta1 = evaluate(parsedTheta1, in);
+    Complex resTheta2 = evaluate(parsedTheta2, in);
+    Complex resTheta3 = evaluate(parsedTheta3, in);
+
+    assertComplexEq(expectedSin, resSin);
+    assertComplexEq(expectedCos, resCos);
+    assertComplexEq(expectedTan, resTan);
+    assertComplexEq(expectedExp, resExp);
+    assertComplexEq(expectedDelta1, resDelta1);
+    assertComplexEq(expectedDelta2, resDelta2);
+    assertComplexEq(expectedTheta1, resTheta1);
+    assertComplexEq(expectedTheta2, resTheta2);
+    assertComplexEq(expectedTheta3, resTheta3);
+
+    free(parsedSin);
+    free(parsedCos);
+    free(parsedTan);
+    free(parsedExp);
+    free(parsedDelta1);
+    free(parsedDelta2);
+    free(parsedTheta1);
+    free(parsedTheta2);
+    free(parsedTheta3);
+}
+END_TEST
+
 START_TEST(test_TimeDependence)
 {
     char *empty = "";
