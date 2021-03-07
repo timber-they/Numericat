@@ -30,12 +30,12 @@ public class Numericanvas extends JPanel
         final Graphics2D g = (Graphics2D) graphics;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        final var length = values.size();
-        final var width = getWidth();
-        final var height = getHeight();
-        final var maxScore = getMaxScore();
-        final var minScore = getMinScore();
-        final var scoreRange = maxScore - minScore;
+        final int length = values.size();
+        final int width = getWidth();
+        final int height = getHeight();
+        final int maxScore = (int) getMaxScore();
+        final int minScore = (int) getMinScore();
+        final int scoreRange = maxScore - minScore;
 
         // draw white background
         g.setColor(Color.WHITE);
