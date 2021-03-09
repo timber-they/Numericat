@@ -1,6 +1,6 @@
 $(info $(SHELL))
 CC?=gcc
-CFLAGS=-g -Wall -Werror -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address -fsanitize-recover=address
+CFLAGS=-g -Wall -Wunused-parameter -Wunused-variable -Ofast -fsanitize=address -fsanitize-recover=address -fsanitize=undefined -fstack-protector-all
 CLIBS=-lcheck -pthread -lm
 MACCLIBS=-lcheck -pthread -pthread -lm
 UBUNTUFLAGS=-lsubunit

@@ -25,6 +25,8 @@ static int handleVariable(char val);
 
 static int handleParanthesis(char val);
 
+static int handleFunction(char val);
+
 static int validateEnd();
 
 static void initialize();
@@ -36,6 +38,8 @@ static int isVariable(char c);
 static int isParanthesis(char c);
 
 static int isOperator(char c);
+
+static int isFunction(char c);
 
 // Assumes raw is already validated / will be validated afterwards and everything is already initialized
 static int iterate(char *raw, int length);
@@ -52,6 +56,8 @@ Function parseFunction(char *raw)
 
     size_t length = strlen(raw);
     func = malloc((length + 1) * sizeof(*func));
+    for (int i = 0; i < length+1; i++)
+        func[i] = (Element) {.atomType = end, .atom.value={0}};
 
     if (iterate(raw, length))
         goto error;
@@ -74,7 +80,6 @@ Function parseFunction(char *raw)
 }
 static int iterate(char *raw, int length)
 {
-
     for (int i = 0; i < length; i++)
     {
         if (raw[i] == ' ')
@@ -83,10 +88,11 @@ static int iterate(char *raw, int length)
             continue;
         }
         HANDLE(Digit)
-        HANDLE(Variable)
 
         finishNumber();
 
+        HANDLE(Variable)
+        HANDLE(Function)
         HANDLE(Paranthesis)
         HANDLE(Operator)
 
@@ -96,6 +102,7 @@ static int iterate(char *raw, int length)
 
     finishNumber();
     func[j] = (Element) {.atomType=end, .atom.value={0}};
+    printFunction(func);
     return 0;
 }
 
@@ -125,7 +132,9 @@ static int handleParanthesis(char val)
     switch (val)
     {
         case '(':
-            if (j > 0 && func[j-1].atomType != operator && (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
+            if (j > 0 && func[j-1].atomType != operator && 
+                    func[j-1].atomType != function &&
+                    (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
             {
                 fprintf(stderr, "Missing operator\n");
                 return 2;
@@ -137,6 +146,40 @@ static int handleParanthesis(char val)
             return 0;
         default:
             fprintf(stderr, "Unexpected paranthesis character: %c\n", val);
+            return 1;
+    }
+}
+
+static int handleFunction(char val)
+{
+    if (j > 0 && func[j-1].atomType != operator && 
+            (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
+    {
+        fprintf(stderr, "Missing operator\n");
+        return 2;
+    }
+    switch (val)
+    {
+        case 's':
+            func[j++] = (Element) {.atomType=function, .atom.function = fsin};
+            return 0;
+        case 'c':
+            func[j++] = (Element) {.atomType=function, .atom.function = fcos};
+            return 0;
+        case 'a':
+            func[j++] = (Element) {.atomType=function, .atom.function = ftan};
+            return 0;
+        case 'e':
+            func[j++] = (Element) {.atomType=function, .atom.function = fexp};
+            return 0;
+        case 'd':
+            func[j++] = (Element) {.atomType=function, .atom.function = fdelta};
+            return 0;
+        case 'h':
+            func[j++] = (Element) {.atomType=function, .atom.function = ftheta};
+            return 0;
+        default:
+            fprintf(stderr, "Unexpected function: %c\n", val);
             return 1;
     }
 }
@@ -219,6 +262,11 @@ static int handleOperator(char val)
         fprintf(stderr, "Two operators in a row (parsing %c)\n", val);
         return 2;
     }
+    if (j > 0 && func[j-1].atomType == function)
+    {
+        fprintf(stderr, "An operator can't follow a function call (parsing %c)\n", val);
+        return 3;
+    }
     switch (val)
     {
         case '+':
@@ -251,9 +299,9 @@ static void finishNumber()
         return;
     // Number is finished
     if (currentNumberState == 2)
-        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = 0, .imaginary = currentNumber}};
+        func[j++] = (Element) {.atomType=value, .atom.value=COMPLEX(0,currentNumber)};
     else
-        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = currentNumber, .imaginary = 0}};
+        func[j++] = (Element) {.atomType=value, .atom.value=COMPLEX(currentNumber,0)};
     currentNumberState = 0;
     currentNumber = 1;
 }
@@ -314,4 +362,14 @@ static int isOperator(char c)
         c == '+' ||
         c == '-' ||
         c == '^';
+}
+
+static int isFunction(char c)
+{
+    return c == 's' ||
+        c == 'c' ||
+        c == 'a' ||
+        c == 'e' ||
+        c == 'd' ||
+        c == 'h';
 }

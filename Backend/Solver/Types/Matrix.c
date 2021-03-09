@@ -40,7 +40,7 @@ Matrix ones(int r, int c)
     {
         for (int j = 0; j < m.rowCount; j++)
         {
-            m.matrix[i][j] = (Complex) {.real = 1.0, .imaginary = 0};
+            m.matrix[i][j] = COMPLEX(1, 0);
         }
     }
     return m;
@@ -51,7 +51,7 @@ Matrix identity(int n)
     Matrix result = createMatrix(n,n);
     for(int i = 0; i < n; i++)
     {
-        result.matrix[i][i] = (Complex) {.real = 1.0, .imaginary = 0};
+        result.matrix[i][i] = COMPLEX(1,0);
     }
     return result;
 }
@@ -86,7 +86,7 @@ Matrix multiply(Matrix a, Matrix b)
     for (int i = 0; i < l; i++)
         for (int k = 0; k < n; k++)
         {
-            result.matrix[i][k] = (Complex) {0};
+            result.matrix[i][k] = COMPLEX(0,0);
             for (int j = 0; j < m; j++)
                 result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
         }
@@ -115,7 +115,7 @@ Matrix multiplyTri(Matrix a, Matrix b)
     for (int i = 0; i < l; i++)
         for (int k = 0; k < n; k++)
         {
-            result.matrix[i][k] = (Complex) {0};
+            result.matrix[i][k] = COMPLEX(0,0);
             for (int j = (i == 0 ? 0 : i-1); j < l && j < i+2; j++)
                 result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
         }

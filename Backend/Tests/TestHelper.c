@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <math.h>
 #include <check.h>
+#include <stdlib.h>
 #include "../Parser/Parser.h"
 #include "TestHelper.h"
 #include "TestHelper.h"
 
-void assertFunctionsEq(char *function, Function expected, Function actual)
+void assertFunctionsEq(char *func, Function expected, Function actual)
 {
-    printf(">>> %s\n", function);
+    printf(">>> %s\n", func);
     printf("=== ");
     printFunction(expected);
     printf("<<< ");
@@ -25,8 +26,14 @@ void assertFunctionsEq(char *function, Function expected, Function actual)
             case operator:
                 ck_assert(actual[i].atom.op == expected[i].atom.op);
                 break;
+            case variable:
+                ck_assert(actual[i].atom.variable == expected[i].atom.variable);
+                break;
             case paranthesis:
                 ck_assert(actual[i].atom.paranthesis == expected[i].atom.paranthesis);
+                break;
+            case function:
+                ck_assert(actual[i].atom.function == expected[i].atom.function);
                 break;
             case end:
                 return;
@@ -46,6 +53,8 @@ void assertComplexEq(Complex expected, Complex actual)
     printf("\n");
     double diff = (expected.real - actual.real) * (expected.real - actual.real) +
                   (expected.imaginary - actual.imaginary) * (expected.imaginary - actual.imaginary);
+    if (diff > 0.001)
+        fprintf(stderr, "UNEQUAL\n");
     ck_assert(diff < 0.001);
 }
 

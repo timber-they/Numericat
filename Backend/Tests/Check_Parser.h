@@ -11,30 +11,31 @@ START_TEST(test_Parse_Functions)
 {
     char *function1 = " 8861/7i+x*6";
     char *function2 = "(1/29+x*9-88/t^((x-1)))-i";
+    char *function3 = "s(2*x)*d(t-3)+e(x^2)/c(x+a(42i))*hx";
 
     Element expected1[] =
     {
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 8861, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(8861,0)},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 0, .imaginary = 7}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(0,7)},
         (Element) {.atomType = operator, .atom.op=plus},
-        (Element) {.atomType = variable, .atom.value=(Complex) {.real = 0, .imaginary = 0}},
+        (Element) {.atomType = variable, .atom.value=COMPLEX(0,0)},
         (Element) {.atomType = operator, .atom.op=times},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 6, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(6,0)},
         (Element) {.atomType = end, .atom.value={0}}
     };
     Element expected2[] =
     {
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 1, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(1,0)},
         (Element) {.atomType = operator, .atom.op=divide},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 29, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(29,0)},
         (Element) {.atomType = operator, .atom.op=plus},
         (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = operator, .atom.op=times},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 9, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(9,0)},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 88, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(88,0)},
         (Element) {.atomType = operator, .atom.op=divide},
         (Element) {.atomType = variable, .atom.variable=variableT},
         (Element) {.atomType = operator, .atom.op=power},
@@ -42,23 +43,64 @@ START_TEST(test_Parse_Functions)
         (Element) {.atomType = paranthesis, .atom.paranthesis=open},
         (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 1, .imaginary = 0}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(1,0)},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = paranthesis, .atom.paranthesis=close},
         (Element) {.atomType = operator, .atom.op=minus},
-        (Element) {.atomType = value, .atom.value=(Complex) {.real = 0, .imaginary = 1}},
+        (Element) {.atomType = value, .atom.value=COMPLEX(0,1)},
+        (Element) {.atomType = end, .atom.value={0}}
+    };
+
+    Element expected3[] =
+    {
+        (Element) {.atomType = function, .atom.function=fsin},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = value, .atom.value=COMPLEX(2,0)},
+        (Element) {.atomType = operator, .atom.op=times},
+        (Element) {.atomType = variable, .atom.variable=variableX},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=times},
+        (Element) {.atomType = function, .atom.function=fdelta},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = variable, .atom.variable=variableT},
+        (Element) {.atomType = operator, .atom.op=minus},
+        (Element) {.atomType = value, .atom.value=COMPLEX(3,0)},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=plus},
+        (Element) {.atomType = function, .atom.function=fexp},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = variable, .atom.variable=variableX},
+        (Element) {.atomType = operator, .atom.op=power},
+        (Element) {.atomType = value, .atom.value=COMPLEX(2,0)},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=divide},
+        (Element) {.atomType = function, .atom.function=fcos},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = variable, .atom.variable=variableX},
+        (Element) {.atomType = operator, .atom.op=plus},
+        (Element) {.atomType = function, .atom.function=ftan},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=open},
+        (Element) {.atomType = value, .atom.value=COMPLEX(0,42)},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = paranthesis, .atom.paranthesis=close},
+        (Element) {.atomType = operator, .atom.op=times},
+        (Element) {.atomType = function, .atom.function=ftheta},
+        (Element) {.atomType = variable, .atom.variable=variableX},
         (Element) {.atomType = end, .atom.value={0}}
     };
 
     Function actual1 = parseFunction(function1);
     Function actual2 = parseFunction(function2);
+    Function actual3 = parseFunction(function3);
 
     assertFunctionsEq(function1, expected1, actual1);
     assertFunctionsEq(function2, expected2, actual2);
+    assertFunctionsEq(function3, expected3, actual3);
 
     free(actual1);
     free(actual2);
+    free(actual3);
 }
 END_TEST
 
@@ -74,6 +116,8 @@ START_TEST(test_Parse_Failing)
     char *tailingOperator = "2+";
     char *missingOperator = "(2+x)(3)";
     char *complexInNumber = "1i2";
+    char *valueFunction = "1s";
+    char *functionVariables = "sxx";
 
     Function emptyRes = parseFunction(empty);
     Function nullRes = parseFunction(null);
@@ -85,6 +129,8 @@ START_TEST(test_Parse_Failing)
     Function tailingOperatorRes = parseFunction(tailingOperator);
     Function missingOperatorRes = parseFunction(missingOperator);
     Function complexInNumberRes = parseFunction(complexInNumber);
+    Function valueFunctionRes = parseFunction(valueFunction);
+    Function functionVariablesRes = parseFunction(functionVariables);
 
     ck_assert(emptyRes == NULL);
     ck_assert(nullRes == NULL);
@@ -96,6 +142,8 @@ START_TEST(test_Parse_Failing)
     ck_assert(tailingOperatorRes == NULL);
     ck_assert(missingOperatorRes == NULL);
     ck_assert(complexInNumberRes == NULL);
+    ck_assert(valueFunctionRes == NULL);
+    ck_assert(functionVariablesRes == NULL);
 }
 END_TEST
 

@@ -15,4 +15,6 @@ Complex expComplex(Complex b);
 double absSquareComplex(Complex c);
 void printComplex(Complex c);
 
+#define COMPLEX(r,i) ((Complex) {.real = (r), .imaginary = (i)})
+
 #endif //BACKEND_COMPLEX_H
