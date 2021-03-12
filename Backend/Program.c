@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     printf("Initial wave function: ");
     printFunction(initial);
 
-    int n = 200;
+    int n = 400;
     Complex **res = Iterate1d(potential, initial, n);
     writeResults(res, potential, n);
 

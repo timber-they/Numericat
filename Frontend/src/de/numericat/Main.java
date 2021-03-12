@@ -2,19 +2,16 @@ package de.numericat;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main {
 
     private static Numericanvas canvas;
     private static Timer timer;
+
+    private static final Object lock = new Object();
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -26,16 +23,14 @@ public class Main {
         createWindow();
 
         final double[] scalingFactor =  Io.getScalingFactor(canvas.getHeight());
-        ActionListener action = e -> {
-            List<List<Coordinate>> data = Io.getData(scalingFactor);
-            if (data == null) {
-                Io.reset();
-                return;
+        timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                List<List<Coordinate>> data = Io.getData(scalingFactor);
+                canvas.drawMultipleData(data);
             }
-            canvas.drawMultipleData(data);
-        };
-        timer = new Timer(10, action);
-        timer.start();
+        }, 0, 33);
     }
 
     private static void createWindow() {

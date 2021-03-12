@@ -171,6 +171,7 @@ public class Numericanvas extends JPanel
     public void drawMultipleData(List<List<Coordinate>> coordinates) {
         this.coordinates = coordinates;
         repaint();
+//        paintImmediately(getBounds());
     }
 
     private double getMinScore() {

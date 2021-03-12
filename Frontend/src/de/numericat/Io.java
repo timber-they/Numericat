@@ -4,17 +4,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public final class Io {
 
     public static String outputPath;
     private static int currentLine = 0;
+    private static List<List<List<Coordinate>>> allData = null;
 
     static double[] getScalingFactor(double height) {
-        double[] scalingFactor = {0.0,0.0};
+        double[] scalingFactor = {0.0, 0.0};
         Scanner scanner = null;
         FileInputStream inputStream = null;
         try {
@@ -41,7 +42,7 @@ public final class Io {
 
     private static double getMaximumOfBlock(Scanner scanner) {
         double maximum = 0;
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line.isEmpty())
                 break;
@@ -56,47 +57,62 @@ public final class Io {
         return maximum;
     }
 
-    static List<List<Coordinate>> getData(double[] scalingFactor) {
-        String line;
-        String potentialLine;
+    private static List<Coordinate> lineToCoordinates(String line, double scalingFactor) {
+        String[] split = line.split(" ");
+        List<Coordinate> calculated = new ArrayList<>(split.length);
+
+        for (int i = 0; i < split.length; i++) {
+            calculated.add(new Coordinate(i + 1, scalingFactor * Double.parseDouble(split[i])));
+        }
+        return calculated;
+    }
+
+    static void reset() {
+        currentLine = 0;
+    }
+
+    public static List<List<Coordinate>> getData(double[] scalingFactor) {
+        if (allData == null)
+            allData = readAllData(scalingFactor);
+        if (allData == null)
+            return null;
+        if (currentLine >= allData.size())
+            currentLine = 0;
+        return allData.get(currentLine++);
+    }
+
+    private static List<List<List<Coordinate>>> readAllData(double[] scalingFactor) {
         FileInputStream fis = null;
         Scanner sc = null;
         try {
-            try {
-                fis = new FileInputStream(outputPath);
-                sc = new Scanner(fis);
-
-                if (!skipLines(sc, currentLine) || !sc.hasNextLine())
-                    return null;
-                line = sc.nextLine();
-
-                if (!skipTillEmptyLine(sc) || !skipLines(sc, currentLine) || !sc.hasNextLine())
-                    return null;
-                potentialLine = sc.nextLine();
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return null;
+            List<List<List<Coordinate>>> res = new LinkedList<>();
+            fis = new FileInputStream(outputPath);
+            sc = new Scanner(fis);
+            // Wavefunction
+            String line;
+            for (line = sc.nextLine(); sc.hasNextLine() && !line.isEmpty(); line = sc.nextLine()) {
+                List<List<Coordinate>> data = new ArrayList<>(2);
+                data.add(lineToCoordinates(line, scalingFactor[0]));
+                res.add(data);
             }
-            if (line == null || Objects.equals(line, "")) {
-                System.out.println("Invalid line: " + line);
+            if (!sc.hasNextLine()) {
+                System.err.println("Expected potential");
                 return null;
             }
 
-            currentLine++;
-            List<List<Coordinate>> res = new ArrayList<>(2);
-            res.add(lineToCoordinates(line, scalingFactor[0]));
-            if (potentialLine == null) {
-                System.err.println("Didn't find potential line");
-                return res;
+            // Potential
+            line = sc.nextLine();
+            for (int i = 0; i < res.size() && sc.hasNextLine(); i++, line = sc.nextLine()) {
+                res.get(i).add(lineToCoordinates(line, scalingFactor[1]));
             }
-            res.add(lineToCoordinates(potentialLine, scalingFactor[1]));
-            try {
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (sc.hasNextLine()) {
+                System.err.println("Didn't expect anymore potential lines");
             }
             return res;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         } finally {
             try {
                 if (fis != null)
@@ -108,35 +124,5 @@ public final class Io {
             if (sc != null)
                 sc.close();
         }
-    }
-
-    private static boolean skipLines(Scanner scanner, int lines) {
-        for (int i = 0; i < lines; i++)
-            if (!scanner.hasNextLine())
-                return false;
-            else
-                scanner.nextLine();
-        return true;
-    }
-
-    private static boolean skipTillEmptyLine(Scanner scanner) {
-        while (scanner.hasNextLine())
-            if (scanner.nextLine().isEmpty())
-                return true;
-        return false;
-    }
-
-    private static List<Coordinate> lineToCoordinates(String line, double scalingFactor) {
-        String[] split = line.split(" ");
-        List<Coordinate> calculated = new ArrayList<>(split.length);
-
-        for (int i = 0; i < split.length; i++) {
-            calculated.add(new Coordinate(i + 1, scalingFactor * Double.parseDouble(split[i])));
-        }
-        return calculated;
-    }
-
-    static void reset(){
-        currentLine = 0;
     }
 }
