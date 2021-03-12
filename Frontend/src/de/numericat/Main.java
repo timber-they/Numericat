@@ -30,7 +30,7 @@ public class Main {
             List<List<Coordinate>> data = Io.getBufferedData(scalingFactor);
             canvas.drawMultipleData(data);
         };
-        timer = new Timer(10, action);
+        timer = new Timer(33, action);
         timer.start();
     }
 
