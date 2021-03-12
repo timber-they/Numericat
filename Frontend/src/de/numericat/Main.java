@@ -27,11 +27,7 @@ public class Main {
 
         final double[] scalingFactor =  Io.getScalingFactor(canvas.getHeight());
         ActionListener action = e -> {
-            List<List<Coordinate>> data = Io.getData(scalingFactor);
-            if (data == null) {
-                Io.reset();
-                return;
-            }
+            List<List<Coordinate>> data = Io.getBufferedData(scalingFactor);
             canvas.drawMultipleData(data);
         };
         timer = new Timer(10, action);

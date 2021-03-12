@@ -3,15 +3,19 @@ package de.numericat;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public final class Io {
 
     public static String outputPath;
     private static int currentLine = 0;
+
+    private static Queue<List<List<Coordinate>>> buffer;
+
+    private static final int refreshInterval = 10;
+    private static final int bufferSize = 10;
+
+    private static final Object lock = new Object();
 
     static double[] getScalingFactor(double height) {
         double[] scalingFactor = {0.0,0.0};
@@ -54,6 +58,49 @@ public final class Io {
             }
         }
         return maximum;
+    }
+
+    static List<List<Coordinate>> getBufferedData(final double[] scalingFactor){
+        synchronized (lock) {
+            if (buffer == null) {
+                buffer = new LinkedList<>();
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        refreshData(scalingFactor);
+                    }
+                }, 0, refreshInterval);
+            }
+        }
+
+        while (buffer.isEmpty()) {
+            System.out.println("Buffer not up to date, have to wait");
+            try {
+                synchronized (lock) {
+                    lock.wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        synchronized (lock) {
+            return buffer.remove();
+        }
+    }
+
+    static void refreshData(double[] scalingFactor){
+        while (buffer.size() < bufferSize) {
+            synchronized (lock) {
+                List<List<Coordinate>> data = getData(scalingFactor);
+                if (data == null) {
+                    reset();
+                    continue;
+                }
+                buffer.add(data);
+                lock.notify();
+            }
+        }
     }
 
     static List<List<Coordinate>> getData(double[] scalingFactor) {
