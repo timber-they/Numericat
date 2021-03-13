@@ -1,14 +1,13 @@
-#include "../Parser/Parser.h"
-#include "../Parser/Function.h"
 #include <float.h>
 #include <stdio.h>
 #include <math.h>
-#include "check.h"
+#include <check.h>
+#include "../Parser/Parser.h"
+#include "../Parser/Function.h"
+#include "TestHelper.h"
 
 #ifndef BACKEND_CHECK_FUNCTION_H
 #define BACKEND_CHECK_FUNCTION_H
-
-static void assertFloatEq(double expected, double actual);
 
 // Note that these tests depends on Parser to work properly
 START_TEST(test_Evaluate)
@@ -38,44 +37,40 @@ START_TEST(test_Evaluate)
     double expected0 = 0.01;
     double expectedNormal1 = 8861.0 / 7.0 + inNormal.x * 6.0;
     double expectedNormal2 = 1.0 / 29.0 + inNormal.x * 9.0 - 88.0 / inNormal.t;
-    Complex expectedNormal3 = (Complex)
-        {
-            .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
+    Complex expectedNormal3 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
                         * cos(inNormal.x),
-            .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNormal.x, 2) / pow(3, 2)))
                          * sin(inNormal.x)
-        };
+        );
     double expectedNormal4 = pow(2, inNormal.x) + 1;
     double expectedNormal5 = 3-2-1;
     double expectedNegative1 = 8861.0 / 7.0 + inNegative.x * 6;
     double expectedNegative2 = 1.0 / 29.0 + inNegative.x * 9.0 - 88.0 / inNegative.t;
-    Complex expectedNegative3 = (Complex)
-        {
-            .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
+    Complex expectedNegative3 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
                     * cos(inNegative.x),
-            .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(inNegative.x, 2) / pow(3, 2)))
                     * sin(inNegative.x)
-        };
+        );
     double expectedNegative4 = pow(2, inNegative.x) + 1;
     double expected11 = 8861.0 / 7.0 + in1.x * 6;
     double expected12 = 1.0 / 29.0 + in1.x * 9.0 - 88.0 / in1.t;
-    Complex expected13 = (Complex)
-            {
-                    .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
-                            * cos(in1.x),
-                    .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
-                                 * sin(in1.x)
-            };
+    Complex expected13 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
+            * cos(in1.x),
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in1.x, 2) / pow(3, 2)))
+            * sin(in1.x)
+        );
     double expected14 = pow(2, in1.x) + 1;
     double expected01 = 8861.0 / 7.0 + in0.x * 6;
     double expected02 = 1.0/29.0+in0.x*9.0-88.0/in0.t;
-    Complex expected03 = (Complex)
-            {
-                    .real = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
-                            * cos(in0.x),
-                    .imaginary = pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
-                                 * sin(in0.x)
-            };
+    Complex expected03 = COMPLEX(
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
+            * cos(in0.x),
+            pow((2 / (3.14159265358979323 * pow(3, 2))), (1.0 / 4)) * pow(2.718281828, (-pow(in0.x, 2) / pow(3, 2)))
+            * sin(in0.x)
+        );
     double expected04 = pow(2, in0.x) + 1;
     double expected06 = pow(1.0/(2*3*1.0/1000), (1.0/2))*pow(2.7,(0-pow(in0.x, 2)*1000.0/2));
 
@@ -156,6 +151,73 @@ START_TEST(test_Evaluate)
 }
 END_TEST
 
+START_TEST(test_Functions)
+{
+    printf("Test Functions\n");
+    char *sin = "s(x)";
+    char *cos = "c(42)";
+    char *tan = "a(x^2)";
+    char *exp = "e(0.002*(t+2))";
+    char *delta1 = "d(0)";
+    char *delta2 = "d(1)";
+    char *theta1 = "h(0-1)";
+    char *theta2 = "h(0)";
+    char *theta3 = "h(1)";
+
+    Function parsedSin = parseFunction(sin);
+    Function parsedCos = parseFunction(cos);
+    Function parsedTan = parseFunction(tan);
+    Function parsedExp = parseFunction(exp);
+    Function parsedDelta1 = parseFunction(delta1);
+    Function parsedDelta2 = parseFunction(delta2);
+    Function parsedTheta1 = parseFunction(theta1);
+    Function parsedTheta2 = parseFunction(theta2);
+    Function parsedTheta3 = parseFunction(theta3);
+
+    Input in = {.x = 42, .t = 25};
+
+    Complex expectedSin = COMPLEX(-0.9165215215479,0);
+    Complex expectedCos = COMPLEX(-0.3999853149,0);
+    Complex expectedTan = COMPLEX(233.917214233,0);
+    Complex expectedExp = COMPLEX(1.05548460215,0);
+    Complex expectedDelta1 = COMPLEX(2000,0);
+    Complex expectedDelta2 = COMPLEX(0,0);
+    Complex expectedTheta1 = COMPLEX(0,0);
+    Complex expectedTheta2 = COMPLEX(0.5,0);
+    Complex expectedTheta3 = COMPLEX(1,0);
+
+    Complex resSin = evaluate(parsedSin, in);
+    Complex resCos = evaluate(parsedCos, in);
+    Complex resTan = evaluate(parsedTan, in);
+    Complex resExp = evaluate(parsedExp, in);
+    Complex resDelta1 = evaluate(parsedDelta1, in);
+    Complex resDelta2 = evaluate(parsedDelta2, in);
+    Complex resTheta1 = evaluate(parsedTheta1, in);
+    Complex resTheta2 = evaluate(parsedTheta2, in);
+    Complex resTheta3 = evaluate(parsedTheta3, in);
+
+    assertComplexEq(expectedSin, resSin);
+    assertComplexEq(expectedCos, resCos);
+    assertComplexEq(expectedTan, resTan);
+    assertComplexEq(expectedExp, resExp);
+    assertComplexEq(expectedDelta1, resDelta1);
+    assertComplexEq(expectedDelta2, resDelta2);
+    assertComplexEq(expectedTheta1, resTheta1);
+    assertComplexEq(expectedTheta2, resTheta2);
+    assertComplexEq(expectedTheta3, resTheta3);
+
+    free(parsedSin);
+    free(parsedCos);
+    free(parsedTan);
+    free(parsedExp);
+    free(parsedDelta1);
+    free(parsedDelta2);
+    free(parsedTheta1);
+    free(parsedTheta2);
+    free(parsedTheta3);
+}
+END_TEST
+
 START_TEST(test_TimeDependence)
 {
     char *empty = "";
@@ -183,16 +245,5 @@ START_TEST(test_TimeDependence)
     free(parsedYes);
 }
 END_TEST
-
-static void assertFloatEq(double expected, double actual)
-{
-    printf(">>> %lf\n<<< %lf\n", expected, actual);
-    double diff = expected - actual;
-    if (diff < 0)
-        diff = -diff;
-    ck_assert(!isnan(actual));
-    ck_assert(!isinf(actual));
-    ck_assert(diff < 0.001);
-}
 
 #endif //BACKEND_CHECK_FUNCTION_H

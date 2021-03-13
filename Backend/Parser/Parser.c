@@ -15,7 +15,7 @@ static int currentNumberState;
 static int j;
 static Function func;
 
-static int handleNumber(char val);
+static int handleDigit(char val);
 
 static int handleOperator(char val);
 
@@ -25,29 +25,61 @@ static int handleVariable(char val);
 
 static int handleParanthesis(char val);
 
+static int handleFunction(char val);
+
 static int validateEnd();
 
 static void initialize();
 
 static int isDigit(char c);
 
-// TODO: This function is too long
+static int isVariable(char c);
+
+static int isParanthesis(char c);
+
+static int isOperator(char c);
+
+static int isFunction(char c);
+
+// Assumes raw is already validated / will be validated afterwards and everything is already initialized
+static int iterate(char *raw, int length);
+
 Function parseFunction(char *raw)
 {
     if (raw == NULL)
         return NULL;
 
     if (validateDyck(raw))
-    {
-        fprintf(stderr, "Not a valid Dyck language\n");
         return NULL;
-    }
 
     initialize();
 
     size_t length = strlen(raw);
     func = malloc((length + 1) * sizeof(*func));
+    for (int i = 0; i < length+1; i++)
+        func[i] = (Element) {.atomType = end, .atom.value={0}};
 
+    if (iterate(raw, length))
+        goto error;
+
+    if (validateEnd())
+        goto error;
+    return func;
+
+    error:
+    free(func);
+    return NULL;
+}
+
+#define HANDLE(type) if (is##type(raw[i])) \
+{                                          \
+    int returnCode = handle##type(raw[i]); \
+    if (returnCode)                        \
+        return returnCode;                 \
+    continue;                              \
+}
+static int iterate(char *raw, int length)
+{
     for (int i = 0; i < length; i++)
     {
         if (raw[i] == ' ')
@@ -55,57 +87,24 @@ Function parseFunction(char *raw)
             finishNumber();
             continue;
         }
-        if (isDigit(raw[i]))
-        {
-            if (handleNumber(raw[i]))
-            {
-                free(func);
-                return NULL;
-            }
-            continue;
-        }
-
-        if (raw[i] == 'x' || raw[i] == 't')
-        {
-            // For now only x and t - later maybe multiple dimensions
-            if (handleVariable(raw[i]))
-            {
-                free(func);
-                return NULL;
-            }
-            continue;
-        }
+        HANDLE(Digit)
 
         finishNumber();
 
-        if (raw[i] == '(' || raw[i] == ')')
-        {
-            if (handleParanthesis(raw[i]))
-            {
-                free(func);
-                return NULL;
-            }
-            continue;
-        }
+        HANDLE(Variable)
+        HANDLE(Function)
+        HANDLE(Paranthesis)
+        HANDLE(Operator)
 
-        if (handleOperator(raw[i]))
-        {
-            free(func);
-            return NULL;
-        }
+        fprintf(stderr, "Unexpected character: %c\n", raw[i]);
+        return 6;
     }
 
     finishNumber();
-    if (validateEnd())
-    {
-        free(func);
-        return NULL;
-    }
     func[j] = (Element) {.atomType=end, .atom.value={0}};
-
-    return func;
+    printFunction(func);
+    return 0;
 }
-
 
 int validateDyck(char *in)
 {
@@ -117,9 +116,14 @@ int validateDyck(char *in)
         if (*it == ')')
             depth--;
         if (depth < 0)
+        {
+            fprintf(stderr, "Not a valid Dyck language\n");
             return depth;
+        }
     }
 
+    if (depth != 0)
+        fprintf(stderr, "Not a valid Dyck language\n");
     return depth;
 }
 
@@ -128,7 +132,9 @@ static int handleParanthesis(char val)
     switch (val)
     {
         case '(':
-            if (j > 0 && func[j-1].atomType != operator && (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
+            if (j > 0 && func[j-1].atomType != operator && 
+                    func[j-1].atomType != function &&
+                    (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
             {
                 fprintf(stderr, "Missing operator\n");
                 return 2;
@@ -140,6 +146,40 @@ static int handleParanthesis(char val)
             return 0;
         default:
             fprintf(stderr, "Unexpected paranthesis character: %c\n", val);
+            return 1;
+    }
+}
+
+static int handleFunction(char val)
+{
+    if (j > 0 && func[j-1].atomType != operator && 
+            (func[j-1].atomType != paranthesis || func[j-1].atom.paranthesis != open))
+    {
+        fprintf(stderr, "Missing operator\n");
+        return 2;
+    }
+    switch (val)
+    {
+        case 's':
+            func[j++] = (Element) {.atomType=function, .atom.function = fsin};
+            return 0;
+        case 'c':
+            func[j++] = (Element) {.atomType=function, .atom.function = fcos};
+            return 0;
+        case 'a':
+            func[j++] = (Element) {.atomType=function, .atom.function = ftan};
+            return 0;
+        case 'e':
+            func[j++] = (Element) {.atomType=function, .atom.function = fexp};
+            return 0;
+        case 'd':
+            func[j++] = (Element) {.atomType=function, .atom.function = fdelta};
+            return 0;
+        case 'h':
+            func[j++] = (Element) {.atomType=function, .atom.function = ftheta};
+            return 0;
+        default:
+            fprintf(stderr, "Unexpected function: %c\n", val);
             return 1;
     }
 }
@@ -160,7 +200,7 @@ static int validateEnd()
     return 0;
 }
 
-static int handleNumber(char val)
+static int handleDigit(char val)
 {
     if (currentNumberState != 2 && val == 'i')
     {
@@ -222,6 +262,11 @@ static int handleOperator(char val)
         fprintf(stderr, "Two operators in a row (parsing %c)\n", val);
         return 2;
     }
+    if (j > 0 && func[j-1].atomType == function)
+    {
+        fprintf(stderr, "An operator can't follow a function call (parsing %c)\n", val);
+        return 3;
+    }
     switch (val)
     {
         case '+':
@@ -254,9 +299,9 @@ static void finishNumber()
         return;
     // Number is finished
     if (currentNumberState == 2)
-        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = 0, .imaginary = currentNumber}};
+        func[j++] = (Element) {.atomType=value, .atom.value=COMPLEX(0,currentNumber)};
     else
-        func[j++] = (Element) {.atomType=value, .atom.value=(Complex) {.real = currentNumber, .imaginary = 0}};
+        func[j++] = (Element) {.atomType=value, .atom.value=COMPLEX(currentNumber,0)};
     currentNumberState = 0;
     currentNumber = 1;
 }
@@ -300,3 +345,31 @@ static int isDigit(char c)
     return (c >= '0' && c <= '9') || c == 'i' || c == '.';
 }
 
+static int isVariable(char c)
+{
+    return c == 'x' || c == 't';
+}
+
+static int isParanthesis(char c)
+{
+    return c == '(' || c == ')';
+}
+
+static int isOperator(char c)
+{
+    return c == '*' ||
+        c == '/' ||
+        c == '+' ||
+        c == '-' ||
+        c == '^';
+}
+
+static int isFunction(char c)
+{
+    return c == 's' ||
+        c == 'c' ||
+        c == 'a' ||
+        c == 'e' ||
+        c == 'd' ||
+        c == 'h';
+}

@@ -1,5 +1,5 @@
 #include "Iterate.h"
-#include "../Matrix/Complex.h"
+#include "../Types/Complex.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -21,7 +21,7 @@ void normalize(Complex **values, int n)
         }
         for (int j = 0; j < nx; j++)
         {
-            values[i][j] = divideComplex(values[i][j], (Complex) {.real = sum, . imaginary = 0});
+            values[i][j] = divideComplex(values[i][j], COMPLEX(sum,0));
         }
     }
 }
@@ -31,15 +31,15 @@ static Matrix createInitialDerivative()
     Matrix res = createMatrix(nx, nx);
     // Main diagonal
     for (int i = 0; i < nx; i++)
-        res.matrix[i][i] = (Complex) {.real = -2, .imaginary = 0};
+        res.matrix[i][i] = COMPLEX(-2,0);
     // Secondary diagonals
     for (int i = 0; i < nx - 1; i++)
     {
-        res.matrix[i + 1][i] = (Complex) {.real = 1, .imaginary = 0};
-        res.matrix[i][i+1] = (Complex) {.real = 1, .imaginary = 0};
+        res.matrix[i + 1][i] = COMPLEX(1,0);
+        res.matrix[i][i+1] = COMPLEX(1,0);
     }
 
-    Complex f = (Complex) {.real = 0, .imaginary = -hBarc * c / (2 * E0p) / (dx * dx)};
+    Complex f = COMPLEX(0,-hBarc * c / (2 * E0p) / (dx * dx));
     return factorIpTri(res, f);
 }
 
@@ -49,7 +49,7 @@ static Matrix createPotentialMatrix(Matrix potentialValues)
     for (int i = 0; i < nx; i++)
         res.matrix[i][i] = potentialValues.matrix[i][0];
 
-    Complex f = (Complex) {.real = 0, .imaginary = c / hBarc};
+    Complex f = COMPLEX(0,c / hBarc);
     return factorIpTri(res, f);
 }
 
@@ -85,7 +85,7 @@ Complex **Iterate1d(Function potential, Function psi0, int n)
         res[i] = matrixToArray(psi);
         // A = (I - dt/2 * (D2 + V))
         Matrix s = sumTri(potentialMatrix, d2);
-        Matrix f = factorIpTri(s, (Complex) {.real = dt/2, .imaginary = 0});
+        Matrix f = factorIpTri(s, COMPLEX(dt/2, 0));
         Matrix a = subtractTri(ident, f);
         // b = (I + dt/2 * (D2 + V)) * Psi
         Matrix b = multiplyTri(sumIpTri(f, ident), psi);

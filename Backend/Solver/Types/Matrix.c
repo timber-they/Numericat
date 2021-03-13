@@ -1,26 +1,22 @@
-#include "Utility.h"
+#include "Matrix.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 void freeMatrix(Matrix a)
 {
-    for (int i = 0; i < a.dimension; i++)
+    for (int i = 0; i < a.rowCount; i++)
         free(a.matrix[i]);
     free(a.matrix);
 }
 
 Matrix createMatrix(int r, int c)
 {
-    Matrix result = {r, c, calloc(r, sizeof(Complex *))};
-    result.rowCount = r;
-    result.columnCount = c;
-    result.dimension = r;
+    Matrix result = {.rowCount = r, .columnCount = c, .matrix = calloc(r, sizeof(Complex *))};
 
     if (result.matrix == NULL)
     {
-        // In case something goes wrong, I dont know what should go wrong
-        fprintf(stderr, "Empty Matrix not allowed\n");
+        fprintf(stderr, "Out of memory\n");
         exit(EXIT_FAILURE);
     }
 
@@ -30,7 +26,7 @@ Matrix createMatrix(int r, int c)
 
         if (result.matrix[i] == NULL)
         {
-            fprintf(stderr, "Empty Matrix Element not allowed\n");
+            fprintf(stderr, "Out of memory\n");
             exit(EXIT_FAILURE);
         }
     }
@@ -44,7 +40,7 @@ Matrix ones(int r, int c)
     {
         for (int j = 0; j < m.rowCount; j++)
         {
-            m.matrix[i][j] = (Complex) {.real = 1.0, .imaginary = 0};
+            m.matrix[i][j] = COMPLEX(1, 0);
         }
     }
     return m;
@@ -55,7 +51,7 @@ Matrix identity(int n)
     Matrix result = createMatrix(n,n);
     for(int i = 0; i < n; i++)
     {
-        result.matrix[i][i] = (Complex) {.real = 1.0, .imaginary = 0};
+        result.matrix[i][i] = COMPLEX(1,0);
     }
     return result;
 }
@@ -81,7 +77,7 @@ Matrix multiply(Matrix a, Matrix b)
     if (m != b.rowCount)
     {
         fprintf(stderr, "Error: columns of Matrix a = %d != %d = rows of Matrix b\n", a.columnCount, b.rowCount);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     int n = b.columnCount;
 
@@ -90,7 +86,7 @@ Matrix multiply(Matrix a, Matrix b)
     for (int i = 0; i < l; i++)
         for (int k = 0; k < n; k++)
         {
-            result.matrix[i][k] = (Complex) {0};
+            result.matrix[i][k] = COMPLEX(0,0);
             for (int j = 0; j < m; j++)
                 result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
         }
@@ -105,12 +101,12 @@ Matrix multiplyTri(Matrix a, Matrix b)
     if (m != b.rowCount)
     {
         fprintf(stderr, "Error: columns of Matrix a = %d != %d = rows of Matrix b\n", a.columnCount, b.rowCount);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if (l != m)
     {
         fprintf(stderr, "Error: a is not an nxn matrix and hence can't be tridiagonal\n");
-        exit(2);
+        exit(EXIT_FAILURE);
     }
     int n = b.columnCount;
 
@@ -119,7 +115,7 @@ Matrix multiplyTri(Matrix a, Matrix b)
     for (int i = 0; i < l; i++)
         for (int k = 0; k < n; k++)
         {
-            result.matrix[i][k] = (Complex) {0};
+            result.matrix[i][k] = COMPLEX(0,0);
             for (int j = (i == 0 ? 0 : i-1); j < l && j < i+2; j++)
                 result.matrix[i][k] = sumComplex(result.matrix[i][k], multiplyComplex(a.matrix[i][j], b.matrix[j][k]));
         }
@@ -130,7 +126,7 @@ Matrix sum(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
         fprintf(stderr, "Error: a and b have different dimensions");
-        exit(2);
+        exit(EXIT_FAILURE);
     }
     int r = a.rowCount;
     int c = a.columnCount;
@@ -149,7 +145,7 @@ Matrix sumIpTri(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
         fprintf(stderr, "Error: a and b have different dimensions or are not nxn\n");
-        exit(2);
+        exit(EXIT_FAILURE);
     }
     int n = a.rowCount;
     Matrix result = a;
@@ -167,7 +163,7 @@ Matrix sumTri(Matrix a, Matrix b)
 {
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
         fprintf(stderr, "Error: a and b have different dimensions or are not nxn\n");
-        exit(2);
+        exit(EXIT_FAILURE);
     }
     int n = a.rowCount;
     Matrix result = createMatrix(n, n);
@@ -186,7 +182,7 @@ Matrix subtract(Matrix a, Matrix b)
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount){
         fprintf(stderr, "Error: = matrices are not compatible for subtraction: a.rowCount != b.rowCount or "
                         "a.columnCount != b.columnCount");
-        exit(2);
+        exit(EXIT_FAILURE);
     }
     int r = a.rowCount;
     int c = a.columnCount;
@@ -206,7 +202,7 @@ Matrix subtractTri(Matrix a, Matrix b)
     if(a.rowCount != b.rowCount || a.columnCount != b.columnCount || a.rowCount != a.columnCount){
         fprintf(stderr, "Error: = matrices are not compatible for subtraction: a.rowCount != b.rowCount or "
                         "a.columnCount != b.columnCount or a is not nxn matrix and hence not tridiagonal");
-        exit(2);
+        exit(EXIT_FAILURE);
     }
     int n = a.rowCount;
     Matrix result = createMatrix(n,n);
@@ -261,7 +257,7 @@ Matrix factorIpTri(Matrix a, Complex f)
     if (a.rowCount != a.columnCount)
     {
         fprintf(stderr, "a is not nxn, can't be tridiagonal\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     int n = a.rowCount;
     Matrix result = a;
@@ -302,7 +298,7 @@ Matrix thomasSolve(Matrix m, Matrix r)
     if (m.columnCount != m.rowCount || m.columnCount != r.rowCount || r.columnCount != 1)
     {
         fprintf(stderr, "Invalid dimensions\n");
-        exit(2);
+        exit(EXIT_FAILURE);
     }
 
     int n = m.columnCount;

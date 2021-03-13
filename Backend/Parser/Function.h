@@ -1,4 +1,4 @@
-#include "../Solver/Matrix/Complex.h"
+#include "../Solver/Types/Complex.h"
 
 #ifndef BACKEND_FUNCTION_H
 #define BACKEND_FUNCTION_H
@@ -18,6 +18,15 @@ typedef enum Paranthesis{
     close       // )
 } Paranthesis;
 
+typedef enum FunctionType{
+    fsin,
+    fcos,
+    ftan,
+    fexp,
+    fdelta,
+    ftheta
+} FunctionType;
+
 typedef enum Variable{
     variableX,
     // variableY,
@@ -29,6 +38,7 @@ typedef enum AtomType{
     operator,
     variable,
     paranthesis,
+    function,
     end
 } AtomType;
 
@@ -37,6 +47,7 @@ typedef union Atom{
     Operator op;
     Paranthesis paranthesis;
     Variable variable;
+    FunctionType function;
 } Atom;
 
 typedef struct Element {
