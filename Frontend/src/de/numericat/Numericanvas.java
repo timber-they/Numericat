@@ -157,9 +157,9 @@ public class Numericanvas extends JPanel
 
         //Draw Legend
         g.setColor(Color.RED);
-        g.drawString("Function", 20, 30);
+        g.drawString("Potential", 20, 30);
         g.setColor(Color.BLACK);
-        g.drawString("Potential", 20, 50);
+        g.drawString("Function", 20, 50);
     }
 
     public void drawData(List<Coordinate> coordinates) {
